@@ -1,0 +1,52 @@
+Giancarlo Rigo
+Rafael Reggiani Manzo
+
+Supervisor: Professor Doutor Marcel P. Jackowski
+
+Tema
+Implementação do Método Numérico Runge-Kutta em GPGPU para Aplicações Científicas
+
+
+Resumo
+
+Objetivos
+
+Atividades Já realizadas
+
+Cronograma de atividades
+
+
+
+Estrutura da Monografia
+
+> Introdução: nesta seção você deverá descrever suas motivações para a preparação da monografia, os objetivos do trabalho, os principais problemas a serem resolvidos e contextualizar a área em que a mesma se insere.
+
+- Motivações
+- Objetivos
+- Desafios
+
+> Conceitos e tecnologias estudadas: nesta seção você deverá fazer uma apresentação da área de sua monografia através de uma resenha bibliográfica sobre a área e da descrição dos principais resultados ou tecnologias disponíveis para solução dos problemas encontrados.
+
+- Problemas de Valor Inicial
+- Método Numérico Runge-Kutta
+- Algoritmo Nearest Neighbour
+- Método de Interpolação Linear
+- General-Purpose computing on Graphics Processing Units (GPGPU)
+- Linguagem CUDA
+- Linguagem OpenCL
+
+Atividades realizadas: nesta seção você deverá descrever a metodologia utilizada para a realização do trabalho e as atividades realizadas.
+- Implementações dos Métodos Runge-Kutta, Nearest Neighbour e Interpolação Linear em C
+- Implementações dos Métodos Runge-Kutta, Nearest Neighbour e Interpolação Linear em CUDA
+- Implementações dos Métodos Runge-Kutta, Nearest Neighbour e Interpolação Linear OpenCL
+- "Casca" em OpenGL
+- Filtro VTK
+- Integração com o MedSquare
+
+> Resultados e produtos obtidos: nesta seção deverão ser apresentados os principais resultados do trabalho realizado, assim como o que foi produzido no período. Se houve produção de algum programa é bastante recomendado que ele seja incluído no trabalho para entrega
+- Implementações dos Métodos Runge-Kutta, Nearest Neighbour e Interpolação Linear
+- Integração com o MedSquare
+
+> Conclusões.
+
+> Bibliografia.

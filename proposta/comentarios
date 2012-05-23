@@ -1,0 +1,18 @@
+INTRODUÇÂO
+- introdução explicação do metodo rk, valor inicial
+- quero resolver isso com mtos pontos iniciais
+- campo de vetores q representa a discretização da edo
+- exemplo de campo vetorial, mostrando a complexidade
+- rk2 e rk4 em dois slides
+" em campos vetoriais temos discretização de EDO's"
+"no ponto da função que desejamos"
+- explicar variaveis do rk
+- GPU/ linguagem CUDA, OpenCL
+MOTIVAÇãO
+DESAFIOS: mapear o problema da GPU, interpolação, tamanho do dataset...
+
+METODOLOGIA
+APLICAÇÕES
+- definir fibra
+
+- qual parametros na imagens

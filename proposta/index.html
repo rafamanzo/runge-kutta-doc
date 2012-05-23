@@ -1,0 +1,156 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+	Design by Free CSS Templates
+	http://www.freecsstemplates.org
+	Released for free under a Creative Commons Attribution 2.5 License
+-->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>MAC0499 - Trabalho de Formatura Supervisionado</title>
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<link href="default.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="outer">
+	<div id="header">
+		<h1><a href="#">MAC0499</a></h1>
+		<h2> Trabalho de Formatura Supervisionado</h2>
+	</div>
+	<div id="menu">
+		<ul>
+			<li class="first"><a href="#" accesskey="1" title="">Proposta</a></li>
+			<li><a href="#" accesskey="2" title="">Monografia</a></li>
+			<li><a href="#" accesskey="3" title="">Código</a></li>
+			<li><a href="#" accesskey="4" title="">Pôster</a></li>
+			<li><a href="#" accesskey="5" title="">Apresentação</a></li>
+		</ul>
+	</div>
+	<div id="content">
+		<div id="primaryContentContainer">
+			<div id="primaryContent">
+				<h2>Proposta</h2>
+				<h3>Tema</h3>
+				<p>Implementação do Método de Integração Numérica Runge-Kutta em GPGPU para Aplicações Científicas</p>
+				<h3>Resumo</h3>
+				<p>O objetivo deste trabalho é a produção de implementações paralelizadas do método de integração numérica de Runge-Kutta aplicado a campos vetoriais tridimensionais a fim de obter seus resultados em "tempo real". Para tanto serão feitas implementações em GPGPU (computação de propósito geral na unidade de processamento gráfico) nas linguagens CUDA e OpenCL.</p>
+				<p>Estas implementações podem ser utilizadas por aplicações científicas como as que geram trajetórias de fibras de substância branca cerebral utilizando ressonância magnética. E como resultado final adicionar esta funcionalidade ao software para visualização de imagens médicas MedSquare.</p>
+				<h3>Objetivos</h3>
+				  <ul>
+				    <li>Algoritmos de paralelização do método de integração numérica de Runge-Kutta</li>
+            <li>Calcular as trajetórias de fibras de substância branca cerebral utilizando ressonância magnética</li>
+          </ul>
+				<h3>Atividades já Realizadas</h3>
+				  <ul>
+				    <li>Instalação prévia do MedSquare em Linux Ubuntu, com confecção de um script shell para futuras instalações</li>
+				    <li>Estudo dos métodos de integração numéricos Runge-Kutta de ordens 2 e 4</li>
+				    <li>Estudo dos algoritmos Nearest Neighbour e de Interpolação Trilinear</li>
+				    <li>Implementações dos algoritmos estudados em C++, CUDA 4.2 e OpenCL 1.2</li>
+				    <li>Geração de campos vetoriais sintéticos para teste
+				    <li>Início da implementação da interface de visualização dos resultados do método em Glut e OpenGL</li>
+				  </ul>
+				
+				<h3>Cronograma de Atividades</h3>
+				<table>
+					<tr class="rowA">
+						<th>Janeiro</th>
+						<th>Fevereiro</th>
+						<th>Março</th>
+						<th>Abril</th>
+						<th>Maio</th>
+						<th>Junho</th>
+					</tr>
+					<tr class="rowB">
+						<td><ul><li>Instalação do MedSquare</li></ul></td>
+						<td><ul><li>Estudo do método de integração numérica de Runge-Kutta</li></ul></td>
+						<td><ul><li>Implementação do método para duas dimensões e EDOs em C++ e CUDA</li></ul></td>
+						<td><ul><li>Implementação tridimensional para campos vetoriais do método em C++ e CUDA</li><li>Estudo e teste do algoritmo Nearest Neighbour</li><li>Estudo e teste da interpolação trilinear e geração de campos vetoriais para teste</li></ul></td>
+						<td><ul><li>Implementação em OpenCL do método</li><li>Interface de visualização dos resultados em Glut e OpenGL</li></ul></td>
+						<td><ul><li>Geração de campos vetoriais mais complexos para teste</li><li>Testes nestes campos</li></ul></td>
+				  </tr>
+					<tr class="rowA">
+						<th>Julho</th>
+						<th>Agosto</th>
+						<th>Setembro</th>
+						<th>Outubro</th>
+						<th>Novembro</th>
+						<th>Dezembro</th>
+					</tr>
+					<tr class="rowB">
+					  <td><ul><li>Estudo sobre como integrar as implementações ao VTK</li><li>Elaboração dos capítulos já desenvolvidos da monografia</li></ul></td>
+						<td><ul><li>Integração das implementações ao MedSquare</li></ul></td>
+						<td><ul><li>Entrega da prévia da monografia</li></ul></td>
+						<td><ul><li>Elaboração dos capítulos restantes da monografia</li></ul></td>
+						<td><ul><li>Confecção do pôster e apresentação</li></ul></td>
+						<td><ul><li>Entrega da monografia</li></ul></td>
+					</tr>
+				</table>
+
+      <h3>Estrutura da Monografia</h3>
+			<ul>
+			  <li>Introdução</li>
+        <ul>
+			    <li>Motivações</li>
+			    <li>Objetivos</li>
+			    <li>Desafios</li>
+			  </ul>
+			</ul>
+      <ul>
+        <li>Conceitos e tecnologias estudadas</li>
+			  <ul>
+				  <li>Problemas de Valor Inicial</li>
+				  <li>Método de Integração Numérica Runge-Kutta</li>
+				  <li>Campo vetorial como discretização de EDOs</li>
+				  <li>Algoritmo Nearest Neighbour</li>
+				  <li>Método de Interpolação Linear</li>
+				  <li>General-Purpose computing on Graphics Processing Units (GPGPU)</li>
+				  <li>Linguagem CUDA</li>
+				  <li>Linguagem OpenCL</li>
+			  </ul>
+      </ul>
+      <ul>
+        <li>Atividades realizadas</li>
+        <ul>
+				  <li>Implementações dos Métodos Runge-Kutta, Nearest Neighbour e Interpolação Linear em C++</li>
+				  <li>Implementações dos Métodos Runge-Kutta, Nearest Neighbour e Interpolação Linear em CUDA</li>
+				  <li>Implementações dos Métodos Runge-Kutta, Nearest Neighbour e Interpolação Linear em OpenCL</li>
+				  <li>Interface de Visualização dos Resultados em OpenGL</li>
+				  <li>Integração com o MedSquare através do VTK</li>
+			  </ul>
+      </ul>
+      <ul>
+        <li>Resultados e produtos obtidos</li>
+			  <ul>
+				  <li>Implementação concorrentes dos Métodos Runge-Kutta, Nearest Neighbour e Interpolação Linear</li>
+				  <li>Integração com o MedSquare</li>
+			  </ul>
+			</ul>
+      <li>Conclusões</li>
+      <li>Bibliografia</li>
+      </ul>
+			</div>
+		</div>
+		<div id="secondaryContent">
+			<h3>Alunos</h3>
+			<p>Giancarlo Rigo<br>Rafael Reggiani Manzo</p>
+			<h3>Supervisor</h3>
+			<p>Prof. Doutor Marcel P. Jackowski</p>
+			<h3>Links</h3>
+			<ul>
+				<li><a href="http://noo.stoa.usp.br/gianrigo/blog">Stoa Giancarlo</a></li>
+				<li><a href="http://noo.stoa.usp.br/rrmanzo/blog">Stoa Rafael</a></li>
+				<li><a href="http://tccimeusp2012.blogspot.com.br/">Blog</a></li>
+				<li><a href="#">GitHub</a></li>
+			</ul>
+			<h3> </h3>
+			<p>Instituto de Matemática e Estatística da Universidade de São Paulo (IME-USP)</p>
+		</div>
+		<div class="clear"></div>
+	</div>
+	<div id="footer">
+		<p>Designed by <a href="http://www.freecsstemplates.org">Free CSS Templates</a></p>
+	</div>
+</div>
+</body>
+</html>
