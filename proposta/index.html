@@ -35,7 +35,8 @@
 				<p>Implementação do Método de Integração Numérica Runge-Kutta em GPGPU para Aplicações Científicas</p>
 				<h3>Resumo</h3>
 				<p>O objetivo deste trabalho é a produção de implementações paralelizadas do método de integração numérica de Runge-Kutta aplicado a campos vetoriais tridimensionais a fim de obter seus resultados em "tempo real". Para tanto serão feitas implementações em GPGPU (computação de propósito geral na unidade de processamento gráfico) nas linguagens CUDA e OpenCL.</p>
-				<p>Estas implementações podem ser utilizadas por aplicações científicas como as que geram trajetórias de fibras de substância branca cerebral utilizando ressonância magnética. E como resultado final adicionar esta funcionalidade ao software para visualização de imagens médicas MedSquare.</p>
+				<p>Estas implementações podem ser utilizadas por aplicações científicas como as que geram trajetórias a partir de campos vetoriais. Uma aplicação em especial é o traçado de trajetórias de fibras neuronais a partir de imagens de ressonância magnética. Como resultado final, esta funcionalidade será adicionada ao software para visualização de imagens médicas MedSquare.</p>
+
 				<h3>Objetivos</h3>
 				  <ul>
 				    <li>Algoritmos de paralelização do método de integração numérica de Runge-Kutta</li>
@@ -45,7 +46,7 @@
 				  <ul>
 				    <li>Instalação prévia do MedSquare em Linux Ubuntu, com confecção de um script shell para futuras instalações</li>
 				    <li>Estudo dos métodos de integração numéricos Runge-Kutta de ordens 2 e 4</li>
-				    <li>Estudo dos algoritmos Nearest Neighbour e de Interpolação Trilinear</li>
+				    <li>Estudo dos métodos de interpolação "Nearest Neighbour" e de Interpolação Trilinear</li>
 				    <li>Implementações dos algoritmos estudados em C++, CUDA 4.2 e OpenCL 1.2</li>
 				    <li>Geração de campos vetoriais sintéticos para teste
 				    <li>Início da implementação da interface de visualização dos resultados do método em Glut e OpenGL</li>
@@ -65,7 +66,7 @@
 						<td><ul><li>Instalação do MedSquare</li></ul></td>
 						<td><ul><li>Estudo do método de integração numérica de Runge-Kutta</li></ul></td>
 						<td><ul><li>Implementação do método para duas dimensões e EDOs em C++ e CUDA</li></ul></td>
-						<td><ul><li>Implementação tridimensional para campos vetoriais do método em C++ e CUDA</li><li>Estudo e teste do algoritmo Nearest Neighbour</li><li>Estudo e teste da interpolação trilinear e geração de campos vetoriais para teste</li></ul></td>
+						<td><ul><li>Implementação tridimensional para campos vetoriais do método em C++ e CUDA</li><li>Estudo e teste do método de interpolação "Nearest Neighbour"</li><li>Estudo e teste do método interpolação trilinear e geração de campos vetoriais para teste</li></ul></td>
 						<td><ul><li>Implementação em OpenCL do método</li><li>Interface de visualização dos resultados em Glut e OpenGL</li></ul></td>
 						<td><ul><li>Geração de campos vetoriais mais complexos para teste</li><li>Testes nestes campos</li></ul></td>
 				  </tr>
@@ -102,7 +103,7 @@
 				  <li>Problemas de Valor Inicial</li>
 				  <li>Método de Integração Numérica Runge-Kutta</li>
 				  <li>Campo vetorial como discretização de EDOs</li>
-				  <li>Algoritmo Nearest Neighbour</li>
+				  <li>Método de interpolação "Nearest Neighbour"</li>
 				  <li>Método de Interpolação Linear</li>
 				  <li>General-Purpose computing on Graphics Processing Units (GPGPU)</li>
 				  <li>Linguagem CUDA</li>
