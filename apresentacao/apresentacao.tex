@@ -1,37 +1,66 @@
-\documentclass[brazil]{beamer}
+\documentclass[brazil, 10pt]{beamer}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage{lmodern}
 \usepackage[brazilian]{babel}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{}
 \usetheme{JuanLesPins}
 
-\title{Implementações de Runge-Kutta em C, CUDA e OpenCL}
-\author{Giancarlo Rigo (gian.rigo@gmail.com) \\
-        Rafael Reggiani Manzo (rr.manzo@gmail.com)}
+\title{Implementação do Método de Integração Numérica Runge-Kutta em GPGPU para Aplicações Científicas}
+\author{Giancarlo Rigo\\
+        Rafael Reggiani Manzo\\
+        \textbf{Surpevisor:} Prof. Doutor Marcel P. Jackowski}
 
 \begin{document}
 \maketitle
 
-\section{Motivação}
+\section{Introdução}
 \begin{frame}
-  \frametitle{Motivação}
-  
+  \frametitle{}
+  \framesubtitle{}
+  \begin{Large}
+  \begin{center}
+  \textbf{Introdução}
+  \end{center}
+  \end{Large}
+\end{frame}
+
+\subsection{Base matemática}
+\begin{frame}
+  \frametitle{Problemas de Valor Inicial\footnote{PRESS, William H. et al. \textit{Numerical Recipes in C}}}
+  \framesubtitle{ou \textit{IVP (Initial Value Problem)}}
+
+  Dados:
   \begin{itemize}
-    \item Aplicações para visualização de imagens de tensores difusos (\textit{DTI - Diffusal Tensors Images}) costumam oferecer uma funcionalidade chamada de tractografia (\textit{fiber tracking}).
-    \item Uma das formas de oferecer esta funcionalidade é com o algoritmo de Runge-Kutta para aproximação de problemas de valor inicial (\textit{IVP - Initial Value Problem}).
-    \item Mas este algotimo é computacionalmente custoso na CPU. O que torna impossível sua implementação em tempo real.
-    \item Para tonar possível os cálculos em tempo real implementações em GPU são uma solução já utilizada. 
+    \item Equação Diferencial Ordinária (EDO): $f(x, y(x)) = \frac{dy}{dx} $
+    \item Lista de pontos iniciais: $ (x_{0}, y_{0}),...,(x_{n},y_{n}) $
+    \item Tamanho de passo $ h $
   \end{itemize}
+   
+  Para cada ponto inicial $ (x_{i}, y_{i}) $ queremos calcular o valor de $ y $ em $ x_{i} + h $ 
+\end{frame}
+
+\begin{frame}
+  \frametitle{Método de Integração Numérica Runge-Kutta\footnote{PRESS, William H. et al. \textit{Numerical Recipes in C}}}
+  \framesubtitle{Ordem 2}
+  \begin{itemize}
+    \item O algoritmo é uma generalização do método de Euler para aproximação de solução de EDOs usando séries de Taylor
+    \item Para ordem 2 temos a seguinte expressão, onde $ k_{1} $ e $ k_{2} $ são variáveis auxiliares:
+  \end{itemize}
+ 
+  $ k_{1} = h\ldotp f(x_{n},y_{n}) $\\
+  $ k_{2} = h\ldotp f(x_{n} + \frac{h}{2},y_{n} + \frac{k_{1}}{2}) $\\
+  $ y_{n+1} = y_{n} + k_{2} + O(h^{3}) $ 
   
 \end{frame}
 
-\section{Runge-Kutta}
 \begin{frame}
-  \frametitle{Método de Runge-Kutta}
-  
+  \frametitle{Método de Integração Numérica Runge-Kutta\footnote{PRESS, William H. et al. \textit{Numerical Recipes in C}}}
+  \framesubtitle{Ordem 4}
   \begin{itemize}
-    \item O algoritmo é uma generalização do método de Euler para aproximação de solução de EDOs usando séries de Taylor
-    \item Para o nosso caso vamos nos focar no método de ordem 2 (RK2) e  ordem 4 (RK4):
+    \item Para ordem 4 temos a seguinte expressão, onde $ k_{1} $, $ k_{2} $, $ k_{3} $ e $ k_{4} $ são variáveis auxiliares:
   \end{itemize}
  
   $ k_{1} = h\ldotp f(x_{n},y_{n}) $\\
@@ -42,62 +71,15 @@
   
 \end{frame}
 
-\subsection{Adapatação a campos vetoriais}
 \begin{frame}
-  \frametitle{Problemas para campos vetoriais}
-  
-  \begin{itemize}
-    \item Em campos vetoriais não temos EDOs.
-    \item Campos vetoriais são discretos e no caso de \textit{DTI} nem todos os pontos possuem um vetor associado.
-  \end{itemize}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Soluções}
-  \framesubtitle{Quanto as EDOs}
-  
-  \begin{itemize}
-    \item Temos vetores que podemos interpretar como a direção da reta tangente na direção da função que desejamos aproximar.
-    \item O que nos leva a seguinte expressão para o RK4:
-  \end{itemize}
-
-  $k_{1} = h\ldotp (\alpha ,\beta ,\gamma )$\\
-  $k_{2} = \frac{k_{1}}{2} + h\ldotp (\alpha ,\beta ,\gamma )$\\
-  $k_{3} = \frac{k_{2}}{2} + h\ldotp (\alpha ,\beta ,\gamma )$\\
-  $k_{4} = k_{3} + h\ldotp (\alpha ,\beta ,\gamma )$\\
-  $(x_{n+1}, y_{n+1}, z_{n+1}) = (x_{n}, y_{n}, z_{n}) + \frac{k_{1}}{6} + \frac{k_{2}}{3} + \frac{k_{3}}{3} + \frac{k_{4}}{6}$
-
-\end{frame}
-
-\begin{frame}
-  \frametitle{Soluções}
-  \framesubtitle{Quanto a natureza discreta do campo}
+  \frametitle{Campos Vetoriais}
 
   \begin{itemize}
-    \item Em pontos nos quais não há um vetor associado, fazemos a interpolação (\textit{Trilinear interpolation}).
-    \item No limite do campo não teremos todos os pontos necessários para a interpolação. Então usamos o mais simples possível que é buscar o vizinho mais próximo (\textit{Nearest Neighbour}).
+    \item Representam a discretização de uma ou mais EDOs
+    \item $ x_{i} + h $ pode não estar definido no campo
+    \item Podem ser muito complexos (várias EDOs misturadas no mesmo campo)
   \end{itemize}
 \end{frame}
-
-\section{Implementação}
-
-\begin{frame}
-  \frametitle{Problema que desejamos resolver}
-  \begin{itemize}
-    \item Muitas vezes queremos calcular as fibras (equivalente à função) que passam por vários pontos iniciais diferentes e nos sentidos positivo e negativo. Tudo isso ao mesmo tempo.
-    \item Ou seja, temos que aplicar o mesmo método repetidamente uma quantidade muito grande de vezes para fazer isto em tempo real.
-  \end{itemize}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Paralelizável}
-  
-  \begin{itemize}
-    \item Cada ponto inicial e cada direção são instâncias independentes (o ponto de uma fibra, idealmente, não é influenciado por outra fibra) do problema que podem ser resolvidas concorrentemente.
-    \item Então temos um problema altamente paralelizável que envolve múltiplas operações de ponto flutuante.
-  \end{itemize}
-\end{frame}
-
 
 \subsection{GPGPU}
 \begin{frame}
@@ -108,7 +90,7 @@
   
   \begin{itemize}
     \item As GPUs são utilizadas principalmente para processamento gráfico, mas descobriu-se seu poder de processamento é muito interessante também para outros tipos de processamento que envolvam cálculos e sejam altamente paralelizáveis.
-    \item Uma NVIDIA GeForce GTX 690 possui mais de 3000 núcleos de processamento (\textit{CUDA Cores}) a aproximadamente 900MHz cada e 4GB de memória dedicada.
+    \item Uma NVIDIA GeForce GTX 690 possui mais de 3000 núcleos de processamento (\textit{CUDA Cores}) a aproximadamente 900MHz cada e 4GB de memória dedicada\footnote{\href{http://www.nvidia.com.br/object/geforce-gtx-690-br.html}{Catálogo NVIDIA}}.
   \end{itemize}
   
   Então este é um ambiente bastante propenso para implementarmos nosso algoritmo e obtermos a tractografia em tempo real.
@@ -161,16 +143,135 @@
   \end{itemize}
 \end{frame}
 
-\subsection{Estado atual}
+\section{Motivação}
+\begin{frame}
+  \begin{Large}
+  \begin{center}
+  \textbf{Motivação}
+  \end{center}
+  \end{Large}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Desafios}
+
+  \begin{itemize}
+    \item Aplicar o método em campos vetoriais
+    \item Implementar o método de forma concorrente em \textit{GPU} com CUDA e OpenCL
+  \end{itemize}
+\end{frame}
+
+\section{Metodologia}
+\begin{frame}
+  \frametitle{}
+  \framesubtitle{}
+  \begin{Large}
+  \begin{center}
+  \textbf{Metodologia}
+  \end{center}
+  \end{Large}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Adapatação a campos vetoriais}
+  \framesubtitle{Quanto as EDOs}
+  
+  \begin{itemize}
+    \item Temos vetores que podemos interpretar como a direção da reta tangente na direção da função que desejamos aproximar.
+    \item O que nos leva a seguinte expressão para o RK4, por exemplo:
+
+    $k_{1} = h\ldotp (\alpha ,\beta ,\gamma)$\\
+    $k_{2} = \frac{k_{1}}{2} + h\ldotp (\alpha ,\beta ,\gamma)$\\
+    $k_{3} = \frac{k_{2}}{2} + h\ldotp (\alpha ,\beta ,\gamma)$\\
+    $k_{4} = k_{3} + h\ldotp (\alpha ,\beta ,\gamma )$\\
+    $(x_{n+1}, y_{n+1}, z_{n+1}) = (x_{n}, y_{n}, z_{n}) + \frac{k_{1}}{6} + \frac{k_{2}}{3} + \frac{k_{3}}{3} + \frac{k_{4}}{6}$
+    
+    \item Onde $ (x_{n}, y_{n}, z_{n}) $ é um ponto inicial, $(\alpha ,\beta ,\gamma)$ é o vetor associado a este ponto e $ (x_{n+1}, y_{n+1}, z_{n+1}) $ é o ponto resultante do método
+  \end{itemize}
+
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Adapatação a campos vetoriais}
+  \framesubtitle{Quanto a natureza dos campos vetoriais}
+
+  \begin{itemize}
+    \item Em pontos nos quais não há um vetor associado, fazemos a interpolação (\textit{Trilinear interpolation}).
+    \item No limite do campo não teremos todos os pontos necessários para a interpolação. Então usamos o mais simples possível que é buscar o vizinho mais próximo (\textit{Nearest Neighbour}).
+  \end{itemize}
+\end{frame}
+
+\section{Aplicações}
+\begin{frame}
+  \frametitle{}
+  \framesubtitle{}
+  \begin{Large}
+  \begin{center}
+  \textbf{Aplicações}
+  \end{center}
+  \end{Large}
+\end{frame}
+
+\subsection{Trajetórias de fibras de substância branca cerebral utilizando ressonância magnética}
+\begin{frame}
+  \frametitle{Tractografia}
+  \framesubtitle{Fibra}
+  \textbf{Definição de fibra}
+  \begin{itemize}
+    \item Estrutura alongada em formato de linha;
+    \item Reconstrução tridimensional de trajetórias do trato como extensão natural do campo vetorial obtido através de uma ressonância magnética\footnote{Mori, S. and van Zijl, P. C. M. (2002), Fiber tracking: principles and strategies – a technical review. NMR Biomed., 15: 468–480. doi: 10.1002/nbm.781}.
+  \end{itemize}
+  
+\end{frame}
+
+\begin{frame}
+  \frametitle{Tractografia}
+  \framesubtitle{Quais fibras calcular}
+  \begin{itemize}
+    \item Geralmente são calculadas a partir de um ou mais pontos iniciais em ambos os sentidos (o mesmo processo é feito para o campo vetorial oposto).
+    \item Este conjunto de um ou mais pontos é chamado de região de interesse\footnote{Mori, S. and van Zijl, P. C. M. (2002), Fiber tracking: principles and strategies – a technical review. NMR Biomed., 15: 468–480. doi: 10.1002/nbm.781}.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Paralelizável}
+  
+  \begin{itemize}
+    \item Cada ponto inicial e cada direção são instâncias independentes (o ponto de uma fibra, idealmente, não é influenciado por outra fibra) do problema que podem ser resolvidas concorrentemente.
+    \item Então temos um problema altamente paralelizável que envolve múltiplas operações de ponto flutuante ideal para ser tratado na GPU.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Na prática}
+  
+  \begin{itemize}
+    \item Aplicações para visualização de imagens de tensores difusos (\textit{DTI - Diffusal Tensors Images}) costumam oferecer uma funcionalidade chamada de tractografia (\textit{fiber tracking}).
+    \item Uma das formas de oferecer esta funcionalidade é com o algoritmo de Runge-Kutta para aproximação de problemas de valor inicial (\textit{IVP - Initial Value Problem}).
+    \item Mas este algotimo é computacionalmente custoso na CPU. O que torna impossível sua implementação em tempo real.
+    \item Para tonar possível os cálculos em tempo real implementações em GPU são uma solução já utilizada. 
+  \end{itemize}
+  
+\end{frame}
+
+\subsection{Implementação}
 \begin{frame}
   \frametitle{O que foi feito}
 
   \begin{itemize}
-    \item Implementações do RK2 e RK4 em C++, CUDA e OpenCL.
+    \item Implementações do RK2 e RK4 em C++ e CUDA.
     \item Profiling para as implementações C++ e CUDA.
-    \item Visualização do campo vetorial e do resultado do método em OpenGL.
+    \item Visualização do resultado do método em OpenGL.
     \item Resultado do método pode ser exportado para o GNUPlot.
   \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Kernel RK4}
+  \framesubtitle{CUDA}
+  
+  \lstinputlisting[language=C++, basicstyle=\tiny]{code/rk4_kernel.cu}
 \end{frame}
 
 \begin{frame}
@@ -179,8 +280,9 @@
   
     \begin{figure}
     \begin{center}
-      \includegraphics[width=80mm, height=50mm]{rk2-vs-rk4.png}
-      \caption{Visualização no GNUPlot do resultado dos algoritmos para um campo vetorial 128x128x20 que representa uma rotação no eixo z.}
+      \includegraphics[width=80mm, height=50mm]{img/gnuplot-lines.png}
+      \label{fig:2}
+      \caption{Visualização no OpenGL do resultado dos algoritmos para um campo vetorial 512x512x128, com ponto inicial (0,64,64) e tamanho de passo 0.2, que representa a direção de retas mudando periodicamente.}
     \end{center}
   \end{figure}
 \end{frame}
@@ -191,10 +293,10 @@
   
     \begin{figure}
     \begin{center}
-      \includegraphics[width=80mm, height=50mm]{rk2-vs-rk4-opengl.png}
-      \caption{Visualização no OpenGL do resultado dos algoritmos para um campo vetorial 128x128x20 que representa uma rotação no eixo z.}
+      \includegraphics[width=80mm, height=50mm]{img/opengl-lines.png}
+      \label{fig:2}
+      \caption{Visualização no OpenGL do resultado dos algoritmos para um campo vetorial 512x512x128, com ponto inicial (0,64,64) e tamanho de passo 0.2, que representa a direção de retas mudando periodicamente. Podemos ver que a resolução é maior que com o gnuplot e que depois de muitas iterações o RK2 diverge mais rápido.}
     \end{center}
   \end{figure}
 \end{frame}
-
 \end{document}
