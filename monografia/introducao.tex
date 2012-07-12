@@ -1,5 +1,18 @@
 \chapter{Introdução}
 
 \section{Motivações}
+O método de integração numérica de Runge-Kutta permite a aproximação da solução de problemas de valor inicial, podendo ser generalizado para a reconstrução de trajetórias tridimensionais a partir de campos vetoriais, que será o objeto desta monografia.
+
 \section{Objetivos}
+Como este método é computacionalmente custoso, porém altamente paralelizável, o primeiro objetivo é tê-lo implementádo para \textit{GPU}, com \textit{CUDA} e \textit{OpenCL}, de forma que uma aplicação seja capaz de fazer sucessivas chamadas ao algoritmo e cada uma destas responda em um tempo curto o bastante para ser considerado em tempo real.
+
+Com isto em mãos, fazer a mesma implementação em \textit{C++} para que possa ser feita uma comparação tanto com relação ao tempo gasto por cada chamada, quanto à corretude da implementação em \textit{GPU}. Assim, também, permitindo a implementação de uma visualização gráfica dos resultados com \textit{OpenGL}.
+
+Por fim, quando alcançados estes objetivos, será possível implementar este algoritmo como um filtro para o \textit{VTK}, permitindo a implementação no software livre \textit{MedSquare}$^{\ref{medsquare}}$ da funcionalidade de tractografia em tempo real (\textit{real time fiber tracking}$^{\ref{fiber-tracking-article}}$).
+
 \section{Desafios}
+Quando programamos para \textit{GPU} temos que ter em mente certas limitações da linguagem, como complexidade das estruturas de dados, a melhor forma de utilizar toda sua capacidade em paralelo, a forma mais eficiente de usar seus vários níveis de memória e, principalmente, como minimizar a transferência da \textit{RAM} para a \textit{GPU} e vice-versa. Caso contrário, muito provavelmente, a implementação em \textit{GPU} será mais lenta que uma para \textit{CPU}.
+
+Ainda no contexto de programação para \textit{GPU}, um segundo desafio será a implementação em \textit{OpenCL} que é uma linguagem muito menos difundida que o \textit{CUDA} e ligeiramente diferente desta para implementar, pois permite que um mesmo código seja executado tanto em \textit{GPU} quanto \textit{CPU}.
+
+Por fim, a implementação de um filtro para o \textit{VTK} torna a implementação do método ainda mais complexa pois ela deve se adaptar a sua arquitetura. Bem como, a adição de uma nova funcionalidade ao \textit{MedSquare}$^{\ref{medsquare}}$ pode exigir mais adaptações.
