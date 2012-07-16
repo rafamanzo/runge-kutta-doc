@@ -1,10 +1,45 @@
 \chapter{Conceitos e tecnologias estudadas}
 
 \section{Problemas de Valor Inicial}
+São os problemas nos quais são dados:
+\begin{itemize}
+  \item um conjunto de pontos iniciais $P$;
+  \item o valor de $f(P_{0})$ para cada $P_{0} \in P$;
+  \item um sistema de uma ou mais equações diferenciais ordinárias em $f$;
+  \item e um tamanho de passo $h$.
+\end{itemize}
+
+E desejamos obter $f(P_{0} + h)$.
+
 \section{Método de Integração Numérica Runge-Kutta}
+É um dos métodos para resolução de Problemas de Valor Inicial através da obtenção de uma aproximação para o valor de $f(P_{0} + h)$. Ele é uma generalização do Método de Euler através de aplicação de séries de Taylor (\ref{numerical-recipes}). Essa generalização nos permite a obtenção de diversas ordens do método, dentre as quais as mais comuns são 2 e 4, conhecidos como \textit{RK2} e \textit{RK4}.
+
+Ambos os métodos possuem termos da ordem de $h$ elevado a uma potência. Estes termos são o erro associado ao método e, portanto, quanto menor o tamanho do passo, menor o erro do método.
+
+Logo, dado um Problema de Valor Inicial conforme descrito acima com uma única equação diferencial $g = f'$, temos os seguintes métodos definidos para apenas um ponto inicial, embora sua generalização seja apenas sucessivas aplicações do método.
+
+  \newpage
+  \subsection{Ordem 2}
+  Sejam $k_{1}$ e $k_{2}$ variáveis auxiliares, temos a seguinte expressão para o método de ordem 2:
+  \newline
+  \newline
+  $k_{1} = h\ldotp g(P_{0})$\\
+  $k_{2} = h\ldotp g(P_{0} + \frac{k_{1}}{2})$\\
+  $f(P_{1}) = f(P_{0}) + k_{2} + O(h^{3})$
+  
+  \subsection{Ordem 4}
+  Sejam $k_{1}$, $k_{2}$, $k_{3}$, $k_{4}$ variáveis auxiliares, temos a seguinte expressão para o método de ordem 4:
+  \newline
+  \newline
+  $k_{1} = h\ldotp g(P_{0})$\\
+  $k_{2} = h\ldotp g(P_{0} + \frac{k_{1}}{2})$\\
+  $k_{3} = h\ldotp g(P_{0} + \frac{k_{2}}{2})$\\
+  $k_{4} = h\ldotp g(P_{0} + k_{3})$\\
+  $f(P_{1}) = f(P_{0}) + \frac{k_{1}}{6} + \frac{k_{2}}{3} + \frac{k_{3}}{3} + \frac{k_{4}}{6} + O(h^{5})$
 \section{Campo vetorial como discretização de EDOs}
-\section{Algoritmo Nearest Neighbour}
-\section{Método de Interpolação Linear}
+\subsection{Algoritmos de aproximação}
+  \subsubsection{Nearest Neighbour}
+  \subsubsection{Interpolação trilinear}
 \section{General-Purpose computing on Graphics Processing Units (GPGPU)}
 \section{Linguagem CUDA}
 \section{Linguagem OpenCL}
