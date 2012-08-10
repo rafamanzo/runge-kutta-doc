@@ -26,6 +26,18 @@
   \end{Large}
 \end{frame}
 
+\begin{frame}
+  \frametitle{Na prática}
+  
+  \begin{itemize}
+    \item Aplicações para visualização de imagens por difusão de tensores (\textit{DTI - Diffusion Tensors Images}) costumam oferecer uma funcionalidade chamada de tractografia (\textit{fiber tracking}).
+    \item Uma das formas de oferecer esta funcionalidade é com o algoritmo de Runge-Kutta para aproximação de problemas de valor inicial (\textit{IVP - Initial Value Problem}).
+    \item Mas este algotimo é computacionalmente custoso na CPU. O que torna impossível sua implementação em tempo real.
+    \item Para tonar possível os cálculos em tempo real implementações em GPU são uma solução já utilizada. 
+  \end{itemize}
+  
+\end{frame}
+
 \subsection{Base matemática}
 \begin{frame}
   \frametitle{Problemas de Valor Inicial\footnote{PRESS, William H. et al. \textit{Numerical Recipes in C}}}
@@ -92,7 +104,7 @@
     \item Uma NVIDIA GeForce GTX 690 possui mais de 3000 núcleos de processamento (\textit{CUDA Cores}) a aproximadamente 900MHz cada e 4GB de memória dedicada\footnote{\href{http://www.nvidia.com.br/object/geforce-gtx-690-br.html}{Catálogo NVIDIA}}.
   \end{itemize}
   
-  Então este é um ambiente bastante propenso para implementarmos nosso algoritmo e obtermos a tractografia em tempo real.
+  Então este é um ambiente bastante propenso para implementarmos nosso algoritmo e obtermos uma implementação do método de Runge-Kutta em tempo real.
 \end{frame}
 
 \begin{frame}
@@ -152,7 +164,7 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Desafios}
+  \frametitle{Objetivos}
 
   \begin{itemize}
     \item Aplicar o método em campos vetoriais
@@ -218,7 +230,7 @@
   \framesubtitle{Fibra}
   \textbf{Definição de fibra}
   \begin{itemize}
-    \item Estrutura alongada em formato de linha;
+    \item Existem imagens de ressonância magnética por difusão de tensores que resultam em campos vetoriais que representam caminhos nervosos ou musculares;
     \item Reconstrução tridimensional de trajetórias do trato como extensão natural do campo vetorial obtido através de uma ressonância magnética\footnote{Mori, S. and van Zijl, P. C. M. (2002), Fiber tracking: principles and strategies – a technical review. NMR Biomed., 15: 468–480. doi: 10.1002/nbm.781}.
   \end{itemize}
   
@@ -240,18 +252,6 @@
     \item Cada ponto inicial e cada direção são instâncias independentes (o ponto de uma fibra, idealmente, não é influenciado por outra fibra) do problema que podem ser resolvidas concorrentemente.
     \item Então temos um problema altamente paralelizável que envolve múltiplas operações de ponto flutuante ideal para ser tratado na GPU.
   \end{itemize}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Na prática}
-  
-  \begin{itemize}
-    \item Aplicações para visualização de imagens de tensores difusos (\textit{DTI - Diffusal Tensors Images}) costumam oferecer uma funcionalidade chamada de tractografia (\textit{fiber tracking}).
-    \item Uma das formas de oferecer esta funcionalidade é com o algoritmo de Runge-Kutta para aproximação de problemas de valor inicial (\textit{IVP - Initial Value Problem}).
-    \item Mas este algotimo é computacionalmente custoso na CPU. O que torna impossível sua implementação em tempo real.
-    \item Para tonar possível os cálculos em tempo real implementações em GPU são uma solução já utilizada. 
-  \end{itemize}
-  
 \end{frame}
 
 \subsection{Implementação}
