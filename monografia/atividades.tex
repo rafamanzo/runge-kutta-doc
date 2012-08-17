@@ -22,11 +22,23 @@ As interações entre todas as classes que compõe podem ser vistas através do 
 \end{figure}
 
   \subsection{Estruturas compartilhadas em C++}
-  A estrutura mais básica é a \textit{vector} contida em \textit{include/dataset.h}, consistindo de três \textit{doubles}, sua responsabilidade é representar tanto vetores quanto ponto no $\Re ^{3}$.
+  A estrutura mais básica é a \textit{vector} contida em \textit{include/dataset.h}, consistindo de três \textit{doubles}, sua responsabilidade é representar tanto vetores quanto ponto no $\Re ^{3}$. Neste mesmo arquivo também está a representação da classe \textit{DataSet}, cujo uso é representar as informações de entrada referentes ao campo vetorial e encapsular seu acesso. Analogamente, a classe \textit{Fiber} é responsável por representar os resultados da aplicação do algoritmo.
   
-  \subsection{Método em C++}
-  \subsection{Método em CUDA}
-  \subsection{Método em OpenCL}
-  \subsection{Geração de campos vetoriais sintéticos}
+  Além destas abstrações de entrada e saída, existem classes que de fato são responsáveis pela entrada e saída do protótipo. A mais simples é a classe que cuida da entrada, \textit{Input}, que possui os métodos para ler um arquivo de texto que contenha as informações sobre o campo vetorial, pontos iniciais e tamanho de passo (conforme descrito no arquivo \textit{README} que acompanha o protótipo). Outra opção de entrada é o formato Analyze que é suportado pelo biblioteca $\textit{CImg}_{\ref{CImg}}$ e portanto o método da classe \textit{Input} que processa este tipo de entrada apenas faz uma chamada a esta biblioteca.
+  
+  Por fim, a última estrutura compartilhada entre as três implementações é a saída. A forma mais simples de visualizar os resultados é através do $\textit{gnuplot}_{\ref{gnuplot}}$ passando para este o arquivo \textit{rk2-vs-rk4} que é criado ao fim da execução do algoritmo.
+  
+  Por outro lado a saída pode ser bastante mais complexa que apenas uma classe como é a entrada devido à visualização com \textit{Glut} e \textit{OpenGL}. Neste caso, existe uma classe, \textit{WindowManager}, para representar a interface para o \textit{Glut}.
+  
+  Depois, classes aqui denomidas como primitivas que contém representações de cilindros e cones (classes \textit{Cylinder} e \textit{Cone}) e as responsáveis por representar coleções destas classes (\textit{CyllinderCollection} e \textit{ConeCollection}). Estas classes primitivas contém principalmente informações sobre como renderizar estes objetos.
+  
+  Por fim, ainda na interface gráfica, existe a classe \textit{Scene} que é responsável por fornecer métodos que utilizam as primitivas para evitar que a classe \textit{WindowManager} use diretamente as prmitivas e tenhas que conhecer suas especificidades. Ou seja, ela é como uma camada de abstração. 
+  
+  \subsection{Implementação do método}
+    \subsubsection{Método em C++}
+    \subsubsection{Método em CUDA}
+    \subsubsection{Método em OpenCL}
+    \subsubsection{Geração de campos vetoriais sintéticos}
+    
 \section{Abstrações da VTK para uso de CUDA e OpenCL}
 \section{Integração com o MedSquare através do VTK}
