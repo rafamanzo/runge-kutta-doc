@@ -8,7 +8,7 @@ O código pode ser encontrado em seu repositório Git em \newline\href{https://g
   \item \textbf{core} contém as três implementações do método nas pastas \textit{c}, \textit{cuda} e \textit{opencl}; além das estruturas de dados que repensentam a entrada (\textit{dataset.cpp}) e a saída do método (\textit{fiber.cpp}).
   \item \textbf{example-factories} contém os scripts que geram arquivos de entrada para o protótipo de campos vetoriais sintéticos como exemplos;
   \item \textbf{includes} contém todos os cabeçalhos necessários, facilitando sua inclusão;
-  \item \textbf{io} contém as classes que cuidam da entrada e saída do protótipo. A pasta \textit{gui} contém as abstrações utilizadas para a criação de uma interface gráfica com Glut e OpenGL. 
+  \item \textbf{io} contém as classes que cuidam da entrada e saída do protótipo. A pasta \textit{gui} contém as abstrações utilizadas para a criação de uma interface gráfica com Glut e OpenGL.
 \end{itemize}
 
 \newpage
@@ -35,10 +35,24 @@ As interações entre todas as classes que compõe podem ser vistas através do 
   Por fim, ainda na interface gráfica, existe a classe \textit{Scene} que é responsável por fornecer métodos que utilizam as primitivas para evitar que a classe \textit{WindowManager} use diretamente as prmitivas e tenhas que conhecer suas especificidades. Ou seja, ela é como uma camada de abstração. 
   
   \subsection{Implementação do método}
-    \subsubsection{Método em C++}
-    \subsubsection{Método em CUDA}
-    \subsubsection{Método em OpenCL}
-    \subsubsection{Geração de campos vetoriais sintéticos}
+  A implementação em cada linguagem pode ser encontrada nas subpastas de \textit{core} (\textit{c}, \textit{cuda} e \textit{opencl}), nos arquivos \textit{rk\_kernel.*} aos quais iremos nos referir apenas como \textit{kernel}. Também cada uma destas pastas contém um arquivo \textit{rk.cpp} cada qual funcionando como interface para seu respectivo \textit{kernel}.
+  
+  Estas interfaces são utilizadas pois a implementação, por limitação do \textit{CUDA} e do \textit{OpenCL}, a imaplementação não pode ser feita utilizando orientação a objetos. Então a classe (\textit{RungeKutta}) implementada no arquivo \textit{rk.cpp} é a responsável por utlizar o conjunto de funções definidas em seu respectivo \textit{kernel}.
+
+  Cada arquivo de \textit{kernel}, além de conter a implementação do método, possui funções auxiliares para se trabalhar com elementos do $\Re ^{3}$ (soma, subtração, módulo, distância e produto por um escalar) e as funções de aproximação necessárias (\ref{aproximacao}).
+  
+  Com todo esta estrutura descrita, o método em si é a simples implementação do que é descfito para as ordens 2 e 4 na seção \ref{rungekutta} com especificidades para as diferentes linguagens utilizadas descritas a seguir. Vale apenas destacar que todas as implementações de diferentes ordens são funções independentes umas das outras e que, para evitar que falte memória, os resultados foram limitados a 10000 pontos que podem ser gerados a partir de cada ponto inicial.
+  
+    \subsubsection{Observações sobre o método em C++}
+    Esta implementação, ao contrário das demais, foi feita sequencial e apenas não foi feita orientada a objetos para seguir a arquitetura necessária para as outras duas implementações.
+    
+    \subsubsection{Observações sobre o método em CUDA}
+    Nesta implementação para \textit{GPU}, além do limite de 10000 pontos que podem ser gerados por cada ponto, é feita uma rechecagem após alocar toda a memória necessária para o \textit{DataSet} e calculado novamente a quantidade máxima de pontos que podem ser gerados a partir de cada ponto inicial. Então o limite é o mínimo entre 10000 e este valor calculado.
+    Outro ponto importante de destacar é que a chamada é feita com apenas um bloco contendo uma \textit{thread} para cada ponto inicial sobre o qual o algoritmo deverá ser aplicado.
+    
+    \subsubsection{Observações sobre o método em OpenCL}
+    
+  \subsection{Geração de campos vetoriais sintéticos}
     
 \section{Abstrações da VTK para uso de CUDA e OpenCL}
 \section{Integração com o MedSquare através do VTK}

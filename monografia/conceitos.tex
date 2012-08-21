@@ -11,7 +11,7 @@ São os problemas nos quais são dados:
 
 E desejamos obter $f(P_{0} + h)$.
 
-\section{Método de Integração Numérica Runge-Kutta}
+\section{Método de Integração Numérica Runge-Kutta}\label{rungekutta}
 É um dos métodos para resolução de Problemas de Valor Inicial através da obtenção de uma aproximação para o valor de $f(P_{0} + h)$. Ele é uma generalização do Método de Euler através da aplicação de séries de Taylor (\ref{numerical-recipes}). Essa generalização nos permite a obtenção de diversas ordens do método, dentre as quais as mais comuns são 2 e 4, conhecidos como \textit{RK2} (ou, também, \textit{método do ponto médio}) e \textit{RK4}.
 
 Ambos os métodos possuem termos da ordem de uma potência de $h$. Estes termos são o erro associado ao método e, portanto, quanto menor o tamanho do passo, menor o erro do método.
@@ -39,7 +39,7 @@ Logo, dado um Problema de Valor Inicial conforme descrito acima com uma única e
 
 \section{Campo vetorial como discretização de EDOs}
 Se calcularmos o valor de cada EDO em um conjunto finito de pontos $P$ obteremos então um campo vetorial que pode ser compreendido como a discretização destas equações neste conjunto limitado.
-  \subsection{Algoritmos de aproximação}
+  \subsection{Algoritmos de aproximação}\label{aproximacao}
   Porém esta discretização exige uma aproximação para o caso onde desejamos obter um o valor da equação, em um ponto não definido no campo vetorial.
 
   \label{exemplo-campo}Como, por exemplo, o caso onde as coordenadas de todos os pontos são inteiros e o ponto desejado possui alguma coordenada racional.
@@ -114,5 +114,5 @@ Antes de apresentar os detalhes das linguagens, é preciso destacar específicid
   A hierarquia de agrupamento consiste de dois níveis: grades (\textit{grids}) e blocos (\textit{blocks}). Um bloco agrupa muitas threads e uma grade, por sua vez, agrupa muitos blocos. Além de os blocos afetarem diretamente o escalonamento como descrito em \ref{gpgpu}, cada bloco possui um limite de threads que pode conter e o mesmo para grades com relação a blocos (este limite depende do hardware). Outro uso interessante para este agrupamento, é organizar processamento sobre dados que possuem três dimensões.
   
   O primeiro nível de memória é a memória local de cada thread privada, depois a memória compartilhada de cada bloco e, por fim, a memória global acessível por todas as threads. A memória global persiste até que seja desalocada pelo programa, enquanto as demais persistem apenas enquanto suas estruturas existem. As memórias local da thread e compartilhada do bloco são as mais rápidas ao custo de seu escopo reduzido.
-  
+    
   \subsection{Linguagem OpenCL}
