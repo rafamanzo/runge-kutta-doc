@@ -1,7 +1,7 @@
 \chapter{Introdução}
 
 \section{Motivações}
-O método de integração numérica de Runge-Kutta permite a aproximação da solução de equações diferenciais ordinárias, podendo ser generalizado para a reconstrução de trajetórias tridimensionais a partir de campos vetoriais, que será o objeto desta monografia.
+O método de integração numérica de Runge-Kutta permite a aproximação da solução de equações diferenciais ordinárias (EDOs), podendo ser generalizado para a reconstrução de trajetórias tridimensionais a partir de campos vetoriais, que será o objeto desta monografia.
 
 Este método é computacionalmente custoso o que impossibilita o seu uso em aplicações em tempo real quando programada para CPU. Contudo, já existem implementações que conseguem isto através do uso de uma placa gráfica dedicada (\ref{lapix}) para realizar o processamento em paralelo.
 
@@ -10,13 +10,15 @@ Hoje o que há de mais moderno para programação de propósito geral na placa g
 Por fim, uma das aplicações para este método é a reconstrução de fibras musculares ou do tecido branco cerebral a partir de imagens por difusão de tensores (conhecido por tractografia). Isto é uma funcionalidade comum em softwares para exploração de imagens médicas, como o \textit{MedSquare} (\ref{medsquare}).
 
 \section{Objetivos}
-Primeiramente é preciso criar um protótipo em \textit{C++} capaz de processar o dataset de entrada, aplicar o método e exibir seus resultados. Isto será útil para ganhar familiaridade com todos os aspectos que envolvem a implementação.
+Primeiramente, é preciso criar um protótipo em \textit{C++} capaz de processar o \textit{dataset} de entrada, aplicar o método e exibir seus resultados. Isto será útil para ganhar familiaridade com todos os aspectos que envolvem a implementação.
 
-Após, como este método é computacionalmente custoso, porém altamente paralelizável, o segundo objetivo é tê-lo implementado para \textit{GPU}, com \textit{CUDA} e \textit{OpenCL}, de forma que uma aplicação seja capaz de fazer sucessivas chamadas ao algoritmo e cada uma destas responda em um tempo curto o bastante para ser considerado em tempo real.
+\newpage
+Após, como este método é computacionalmente custoso porém altamente paralelizável, o segundo objetivo é tê-lo implementado para \textit{GPU}, com \textit{CUDA} e \textit{OpenCL}, de forma que uma aplicação seja capaz de fazer sucessivas chamadas ao algoritmo e cada uma destas responda em um tempo curto o bastante para ser considerado em tempo real.
+
+Com estas três implementações em prontas, para ganhar familiaridade com a \textit{VTK}, será igualmente importante fazer um prótipo equivalente ao anterior, mas que use esta biblioteca que é muito poderosa e difundida, mas igualmente complicada.
 
 Por fim, quando alcançados estes objetivos, será possível implementar este algoritmo como um \textit{pipeline} para o \textit{VTK}, permitindo a implementação no software livre \textit{MedSquare}$^{\ref{medsquare}}$ onde um de seus possíveis usos será a adição da funcionalidade de tractografia em tempo real (\textit{real time fiber tracking}$^{\ref{fiber-tracking-article}}$).
 
-\newpage
 \section{Desafios}
 Quando programamos para \textit{GPU} temos que ter em mente certas limitações da linguagem, como complexidade das estruturas de dados, a melhor forma de utilizar toda sua capacidade em paralelo, a forma mais eficiente de usar seus vários níveis de memória e, principalmente, como minimizar a transferência da \textit{RAM} para a \textit{GPU} e vice-versa. Caso contrário, muito provavelmente, a implementação em \textit{GPU} será mais lenta que uma para \textit{CPU}.
 
