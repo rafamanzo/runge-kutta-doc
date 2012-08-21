@@ -53,6 +53,15 @@ As interações entre todas as classes que compõe o protótipo podem ser vistas
     \subsubsection{Observações sobre o método em OpenCL}
     
   \subsection{Geração de campos vetoriais sintéticos}
+  Campos vetoriais extensos ocupam muito espaço em disco, mesmo, compactados para serem distribuídos de forma prática junto do protótipo. Então, para torna-los disponíveis junto com o protótipo, foram escritos scripts \textit{PHP} que os geram todos eles contidos dentro da pasta \textit{example-factories}.
+  
+  O campo mais simples gerado possui dimensões 128x128x20, representando uma rotação sobre o eixo z. Nele, o método é aplicado com tamanho de passo 0.1 e pontos iniciais: (0, 16, 10); (0, 32, 10); (0, 48, 10); (0, 64, 10); (0, 80, 10); (0, 96, 10); e  (0, 112, 10). O segundo campo é uma inversão periódica no sentido da coordenada y, num campo de tamanho 512x512x128. A aplicação do método sobre ele se dá com tamanho de passo 0.2 e tem um único ponto inicial: (0, 64, 64).
+  
+  Os dois campos anteriores são úteis para vrificar se o método se comporta como esperado, mas são pouco úteis para medir a performance e não reproduzem uma variedade de casos. Portanto, os dois exemplos a seguir procuram suprir estas carências.
+  
+  O terceiro exemplo é um campo com direções aleatórias com dimensão 256x256x256. Para este campo o método é aplicado com tamanho de passo 0.1 e também são criados 256 pontos iniciais com posições aleatórias.
+  
+  Por fim, no último campo as direções possuem uma distribuição normal com média 10 e variância 1 e sua dimensão é 256x256x256. Ele possui um único ponto inicial aleatório e tamanho de passo 0.1.
 
 \section{Protótipo das implementações utilizando a biblioteca VTK}
 \section{Abstrações da VTK para uso de CUDA e OpenCL}
