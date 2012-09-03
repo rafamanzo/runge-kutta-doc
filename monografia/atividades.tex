@@ -28,7 +28,7 @@ As interações entre todas as classes que compõe o protótipo podem ser vistas
   
   Por fim, a última estrutura compartilhada entre as três implementações é a saída. A forma mais simples de visualizar os resultados é através do $\textit{gnuplot}_{\ref{gnuplot}}$ passando para este o arquivo \textit{rk2-vs-rk4} que é criado ao fim da execução do algoritmo. Por outro lado, a saída pode ser bastante mais complexa que apenas uma classe, como é a entrada, devido à visualização com \textit{Glut} e \textit{OpenGL}.
   
-  Esta visualização é composta das classes, aqui denomidas como primitivas, contém representações de cilindros e cones (classes \textit{Cylinder} e \textit{Cone}) e as responsáveis por representar coleções destas classes (\textit{CyllinderCollection} e \textit{ConeCollection}). Estas classes primitivas contém principalmente informações sobre como renderizar estes objetos.
+  Esta visualização é composta das classes, aqui denomidas como primitivas, que contém representações de cilindros e cones (classes \textit{Cylinder} e \textit{Cone}) e as responsáveis por representar coleções destas classes (\textit{CyllinderCollection} e \textit{ConeCollection}). Estas classes primitivas contém principalmente informações sobre como renderizar estes objetos.
   
   Por fim, ainda na interface gráfica, existe a classe \textit{Scene} que é responsável por fornecer métodos que utilizam as primitivas para evitar que a classe \textit{WindowManager} use diretamente as primitivas e tenha que conhecer suas especificidades. Ou seja, ela é como uma camada de abstração para a \textit{WindowManager}, permitindo que esta seja responsável apenas pela interação com a \textit{Glut}. 
   
@@ -39,7 +39,7 @@ As interações entre todas as classes que compõe o protótipo podem ser vistas
 
   Cada arquivo de \textit{kernel}, além de conter a implementação do método, possui funções auxiliares para se trabalhar com elementos do $\Re ^{3}$ (soma, subtração, módulo, distância e produto por um escalar) e as funções de aproximação necessárias (\ref{aproximacao}).
   
-  Com todo esta estrutura descrita, o método em si é a simples implementação do que é descrito para as ordens 2 e 4 na seção \ref{rungekutta} com especificidades para as diferentes linguagens utilizadas descritas a seguir.
+  Com toda esta estrutura descrita, o método em si é a simples implementação do que é descrito para as ordens 2 e 4 na seção \ref{rungekutta} com especificidades para as diferentes linguagens utilizadas descritas a seguir.
   
   Antes é preciso destacar que todas as implementações de diferentes ordens são funções independentes umas das outras e que, para evitar que falte memória, os resultados foram limitados a 10000 pontos que podem ser gerados a partir de cada ponto inicial.
   
@@ -64,5 +64,6 @@ As interações entre todas as classes que compõe o protótipo podem ser vistas
   Por fim, no último campo as direções possuem uma distribuição normal com média 10 e variância 1 e sua dimensão é 256x256x256. Ele possui um único ponto inicial aleatório e tamanho de passo 0.1.
 
 \section{Protótipo das implementações utilizando a biblioteca VTK}
+\section{Comparação de perfomance entre as implementações}
 \section{Abstrações da VTK para uso de CUDA e OpenCL}
 \section{Integração com o MedSquare através do VTK}
