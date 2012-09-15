@@ -1,0 +1,36 @@
+\documentclass[a4paper,11pt]{report}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[brazil]{babel}
+
+\title{Andamento da monografia até o mês de Setembro}
+\author{Giancarlo Rigo\\
+        Rafael Reggiani Manzo\\
+        \textbf{Supervisor:} Prof. Doutor Marcel P. Jackowski}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+\begin{abstract}
+O objetivo desta monografia é implementar o método de integração numérica de Runge-Kutta de forma paralela na unidade de processamento gráfico, permitindo a reconstrução de trajetórias tridimensionais em tempo real. Isto é útil em softwares de análise de imagems médicas para reconstruir fibras musculares e do tecido branco cerebral.
+
+Para isso estamos estudando o método matemático, sua implementação na placa gráfica, gerando protótipos e testes comparativos de performance.
+\end{abstract}
+
+\chapter{Atividades realizadas}
+O principal produto até o momento é um primeiro protótipo capaz de carregar imagens no formato \textit{Analyze 7.5}, gerar as fibras para esta imagem tanto utilizando a \textit{CPU} quanto a \textit{GPU}. Depois os resultados são mostrados através de uma interface utilizando as bibliotecas \textit{Glut} e \textit{OpenGL}.
+
+Para realizar este protótipo foi necessário o estudo dos conceitos matemáticos de problema de valor inicial, o método de integração numérica de Runge-Kutta e a técnica de interpolação trilinear. Por fim, foi preciso estudar as linguagens de programação para GPU.
+
+Estes estudos e protótipo foram documentados nos cinco capítulos da monografia já escritos.
+
+\chapter{Atividades em andamento}
+No momento está sendo feito um segundo protótipo utilizando a biblioteca \textit{VTK} com as mesmas funcionalidades do primeiro.
+
+\chapter{Atividades futuras}
+Para complementar o trabalho, faremos testes de performance entre as implementações em \textit{GPU} e \textit{CPU}, depois criar abstrações para o método na \textit{VTK} para tornar possível seu aproveitamento em outros softwares.
+
+\end{document}
