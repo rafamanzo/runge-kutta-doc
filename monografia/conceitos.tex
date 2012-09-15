@@ -117,14 +117,5 @@ Antes de apresentar os detalhes das linguagens, é preciso destacar específicid
   O primeiro nível de memória é a memória local de cada thread privada, depois a memória compartilhada de cada bloco e, por fim, a memória global acessível por todas as threads. A memória global persiste até que seja desalocada pelo programa, enquanto as demais persistem apenas enquanto suas estruturas existem. As memórias local da thread e compartilhada do bloco são as mais rápidas ao custo de seu escopo limitado.
     
   \subsection{Linguagem OpenCL}
-  A linguagem \textit{Open Computing Language (OpenCL)} foi especificada pelo \textit{Khronos Group} \ref{khronos}, um consórcio de várias empresas como AMD, ARM, Intel, IBM, Apple e até mesmo a NVIDIA, dentre muitas outras. O \textit{OpenCL} diferencia-se de \textit{CUDA} por ser um padrão aberto e de propósito geral para programação paralela em sistemas heterogêneos, ou seja, uma vez que o código seja desenvolvido em \textit{OpenCL}, poderá ser executado em \textit{GPU} e \textit{CPU}.
-
-  O OpenCL foi idealizado em um modelo de plataforma, isto é, uma camada de abstração do \textit{hardware} heterogêneo. Uma plataforma é composta por um hospedeiro (\textit{host}) e por mais dispositivos de computação (\textit{compute devices}), que por sua vez são formados por unidades de computação (\textit{compute units}). A comunicação entre um dispositivo e o hospedeiro ocorre através de uma fila de comandos (\textit{command-queue}), esta fila pode ser composta de comandos de tranferência de dados, sicronização e execução de \textit{kernels}.
-
-  A estrutura hierárquica de agrupamento ocorre em dois níveis, contexto e grupo de trabalho, e é similar a estrutura adotada por \textit{CUDA}. Um contexto (\textit{context}) é constituído dos recursos que um \textit{kernel} utilizará na sua execução, como dispositivos e dados armazenados na memória. Já um grupo de trabalho (\textit{work-group}) é um conjunto de itens de trabalho \textit{(work-items)}, que são equivalentes às \textit{threads} de \textit{CUDA}.
-
-  O primeiro nível de memória é a memória privada que pertence a cada item de trabalho, depois a memória local de cada grupo de trabalho que é compartilahada por todos os itens de trabalho. O próximo nível é a memória global ou constante que está contida em cada dispositivo de computação. O último nível de memória corresponde a memória do \textit{host}.
-
-
   
   \subsection{Biblioteca VTK}
