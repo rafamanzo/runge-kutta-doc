@@ -64,20 +64,24 @@ As interações entre todas as classes que compõe o protótipo podem ser vistas
   Por fim, no último campo as direções possuem uma distribuição normal com média 10 e variância 1 e sua dimensão é 256x256x256. Ele possui um único ponto inicial aleatório e tamanho de passo 0.1.
 
 \section{Protótipo das implementações utilizando a biblioteca VTK}
-\section{Comparação de perfomance entre as implementações}
-Foram feitas comparações entre as implementações do método para CPU utilizando \textit{POSIX threads} com o método para GPU em CUDA. Estes resultados foram obtidas em duas CPUs Intel e GPUs NVIDIA diferentes a fim de comprovar o que foi afirmado anteriormente sobre os desempenhos do método em cada um destes ambientes.
+  \subsection{Planejamento abstrações da VTK para uso de CUDA e OpenCL}
+
+\section{Comparação de perfomance do método entre as implementações em CPU e GPU}
+Foram feitas comparações entre as implementações do método para CPU utilizando \textit{POSIX threads} com o método para GPU em CUDA. Estes resultados foram obtidos em duas CPUs Intel e GPUs NVIDIA diferentes a fim de comprovar o que foi afirmado anteriormente sobre os desempenhos do método em cada um destes ambientes.
 
   \subsection{Metodologia}
     \subsubsection{Dados de entrada}
-    Para isto foi gerado um campo vetorial sintético com dimensões de 512 pontos no eixo x, 256 pontos no eixo y e outros 256 pontos no eixo z. Todos com o mesmo vetor direção $(0, 1, 0)$ e até 512 pontos iniciais da forma $(x, 0, 128)$, onde $0 \leq x \leq 512$.
+    Para isto foi gerado um campo vetorial sintético com dimensões de 512 pontos no eixo x, 256 pontos no eixo y e outros 256 pontos no eixo z. Todos com o mesmo vetor direção $(0, 1, 0)$ e até 1024 pontos iniciais da forma $(x, 0, 128)$, onde $0 \leq x \leq 512$ e $z = 128$ ou $z = 129$.
     
     Os testes foram realizados para os primeiros 16, 32, 64, 128 e 256 pontos iniciais a fim de se obter como que o método escala em cada um dos ambientes.
     
+    Todo o código utilizado nos testes pode ser encontrado em no repositório git: \href{https://github.com/rafamanzo/runge-kutta-benchmark}{https://github.com/rafamanzo/runge-kutta-benchmark}
+    
     \subsubsection{Medições de tempo}
-    A medição de tempo é dividida em tempo consumido por operações em memória (alocação e transferência) e processamento do método. Sempre realizando a contagem de \textit{clocks} em cada um dos ambientes.
+    A medição de tempo é dividida em tempo consumido por operações em memória (alocação e transferência) e processamento do método (operações de ponto flutuante). Sempre realizando a contagem de \textit{clocks} em cada um dos ambientes.
     
     \subsubsection{Casos}
-    Cada medição consistiu em executar, trinta vezes cada implementação para estes dados (restringindo a quantidade de pontos iniciais conforme descrito), obtendo a média e desvio padrão do tempo em segundos consumidos em operações de transferência de dados, alocação de memória e processamento dos pontos que compõe a trajetória.    
+    Cada medição consistiu em executar trinta vezes cada implementação para estes dados (restringindo a quantidade de pontos iniciais conforme descrito). Então, obtendo a média e desvio padrão do tempo em segundos consumidos em operações de transferência de dados, alocação de memória e processamento dos pontos que compõe a trajetória, bem como um histograma.
 
   \subsection{Resultados em CPU}
   Foram realizados os testes em duas CPUs Intel diferentes:
@@ -86,15 +90,15 @@ Foram feitas comparações entre as implementações do método para CPU utiliza
     \item Core i7-2620M, com quatro núcleos físicos e lógicos a 2.7GHz cada.
   \end{itemize}
   
-  O primeiro utiliza dois módulos de memória DDR2 em Dual Channel, enquanto que o segundo utiliza dois módulos de memória DDR3 em Dual Channel.
+  O primeiro utiliza dois módulos de memória DDR2 em Dual Channel, enquanto que o segundo utiliza dois módulos de memória DDR2 em Dual Channel.
     \subsubsection{Runge-Kutta Ordem 2}
     Média dos tempos de execução para processamento em segundos:\\
     \begin{tabular}{| c | c | c | c | c | c |}
       \hline
       \multirow{2}{*}{Processadores}& \multicolumn{5}{|c|}{Quantidade de pontos iniciais} \\ \cline{2-6}
       & 16 & 32 & 64 & 128 & 256 \\ \hline
-      Core 2 Duo & 1.142000 & 4.092000 & 16.435333 & 62.781000 & 302.174000 \\ \hline
-      Core i7 & 2.142667 & 7.820000 & 35.778333 & 148.151000 & 604.198333\\ \hline
+      Core 2 Duo & 1.182000 & 4.101000 & 17.046000 & 67.923333 & 317.030333 \\ \hline
+      Core i7 & 1.693000 & 7.443333 & 34.907333 & 143.061333 & 601.070000\\ \hline
 
       \hline
     \end{tabular}
@@ -106,8 +110,8 @@ Foram feitas comparações entre as implementações do método para CPU utiliza
       \hline
       \multirow{2}{*}{Processadores}& \multicolumn{5}{|c|}{Quantidade de pontos iniciais} \\ \cline{2-6}
       & 16 & 32 & 64 & 128 & 256 \\ \hline
-      Core 2 Duo & 0.066403 & 0.131108 & 0.241809 & 1.270736 & 15.763295 \\ \hline
-      Core i7 &  0.160933 & 0.572346 & 0.807395 & 1.323819 & 7.807908 \\ \hline
+      Core 2 Duo & 0.044377 & 0.143860 & 0.268398 & 1.632077 & 10.779398 \\ \hline
+      Core i7 &  0.095469 & 0.612320 & 0.856380 & 5.185798 & 9.779571 \\ \hline
 
       \hline
     \end{tabular}
@@ -119,8 +123,8 @@ Foram feitas comparações entre as implementações do método para CPU utiliza
       \hline
       \multirow{2}{*}{Processadores}& \multicolumn{5}{|c|}{Quantidade de pontos iniciais} \\ \cline{2-6}
       & 16 & 32 & 64 & 128 & 256 \\ \hline
-      Core 2 Duo & 2.118667 & 2.115333 & 2.109667 & 1.059667 & 2.120000 \\ \hline
-      Core i7 & 1.041333 & 1.063333 & 1.063667 & 1.118000 & 1.075333\\ \hline
+      Core 2 Duo & 1.034667 & 1.037000 & 1.046333 & 1.045667 & 1.048667\\ \hline
+      Core i7 & 0.946000 & 1.071333 & 1.069667 & 1.049667 & 1.048000\\ \hline
 
       \hline
     \end{tabular}
@@ -132,8 +136,8 @@ Foram feitas comparações entre as implementações do método para CPU utiliza
       \hline
       \multirow{2}{*}{Processadores}& \multicolumn{5}{|c|}{Quantidade de pontos iniciais} \\ \cline{2-6}
       & 16 & 32 & 64 & 128 & 256 \\ \hline
-      Core 2 Duo & 0.066403 & 0.014314 & 0.011075 & 0.011431 & 0.011255 \\ \hline
-      Core i7 & 0.052009 & 0.011643 & 0.807395 & 0.018345 & 0.023055 \\ \hline
+      Core 2 Duo & 0.007180 & 0.009000 & 0.010796 & 0.007608 & 0.008844\\ \hline
+      Core i7 & 0.042079 & 0.015217 & 0.009123 & 0.026139 & 0.006000 \\ \hline
 
       \hline
     \end{tabular}
@@ -144,8 +148,8 @@ Foram feitas comparações entre as implementações do método para CPU utiliza
       \hline
       \multirow{2}{*}{Processadores}& \multicolumn{5}{|c|}{Quantidade de pontos iniciais} \\ \cline{2-6}
       & 16 & 32 & 64 & 128 & 256 \\ \hline
-      Core 2 Duo & 1.309333 & 4.340333 & 16.764333 & 62.903667 & 294.720000 \\ \hline
-      Core i7 & 1.810333 & 7.136667 & 33.477333 & 138.473333 & 575.748333\\ \hline
+      Core 2 Duo & 1.271000 & 4.013000 & 17.485000 & 68.380000 & 318.383000 \\ \hline
+      Core i7 & 1.795333 & 7.721000 & 35.378667 & 144.985667 & 604.026667\\ \hline
 
       \hline
     \end{tabular}
@@ -157,8 +161,8 @@ Foram feitas comparações entre as implementações do método para CPU utiliza
       \hline
       \multirow{2}{*}{Processadores}& \multicolumn{5}{|c|}{Quantidade de pontos iniciais} \\ \cline{2-6}
       & 16 & 32 & 64 & 128 & 256 \\ \hline
-      Core 2 Duo & 0.049324 & 0.168018 & 0.309124 & 3.004899 & 12.153864 \\ \hline
-      Core i7 & 0.127370 & 0.592792 & 2.102053 & 1.559161 & 12.905657 \\ \hline
+      Core 2 Duo & 0.057175 & 0.469866 & 0.378724 & 1.335073 & 10.443222 \\ \hline
+      Core i7 & 0.138558 & 0.460647 & 0.445853 & 1.301178 & 11.964844 \\ \hline
 
       \hline
     \end{tabular}
@@ -170,8 +174,8 @@ Foram feitas comparações entre as implementações do método para CPU utiliza
       \hline
       \multirow{2}{*}{Processadores}& \multicolumn{5}{|c|}{Quantidade de pontos iniciais} \\ \cline{2-6}
       & 16 & 32 & 64 & 128 & 256 \\ \hline
-      Core 2 Duo & 2.097667 & 2.105000 & 2.102000 & 2.124333 & 2.116667 \\ \hline
-      Core i7 & 0.962667 & 1.079333 & 1.102333 & 1.118000 & 1.086667\\ \hline
+      Core 2 Duo & 1.034333 & 1.060333 & 1.045333 & 1.048667 & 1.048333 \\ \hline
+      Core i7 & 0.982000 & 1.068667 & 1.067333 & 1.051333 & 1.050667\\ \hline
 
       \hline
     \end{tabular}
@@ -183,8 +187,8 @@ Foram feitas comparações entre as implementações do método para CPU utiliza
       \hline
       \multirow{2}{*}{Processadores}& \multicolumn{5}{|c|}{Quantidade de pontos iniciais} \\ \cline{2-6}
       & 16 & 32 & 64 & 128 & 256 \\ \hline
-      Core 2 Duo & 0.025388 & 0.009220 & 0.011075 & 0.048558 & 0.014453 \\ \hline
-      Core i7 & 0.013149 & 0.028158 & 0.044772 & 0.028095 & 0.026874 \\ \hline
+      Core 2 Duo & 0.006155 & 0.048682 & 0.011175 & 0.013350 & 0.007341 \\ \hline
+      Core i7 & 0.064570 & 0.010242 & 0.007717 & 0.010242 & 0.014591 \\ \hline
 
       \hline
     \end{tabular}
@@ -203,8 +207,8 @@ Foram feitas comparações entre as implementações do método para CPU utiliza
       \hline
       \multirow{2}{*}{Processadores}& \multicolumn{5}{|c|}{Quantidade de pontos iniciais} \\ \cline{2-6}
       & 16 & 32 & 64 & 128 & 256 \\ \hline
-      GTS 450 & 0.050932 & 0.050917 & 0.050986 & 0.057882 & 0.082960 \\ \hline
-      GT 520M & 0.053987 & 0.053989 & 0.054044 & 0.061687 & 0.087785\\ \hline
+      GTS 450 & 0.049661 & 0.050175 & 0.057119 & 0.057070 & 0.057252 \\ \hline
+      GT 520M & 0.054739 & 0.054733 & 0.054850 & 0.061936 & 0.084663 \\ \hline
 
       \hline
     \end{tabular}
@@ -216,8 +220,8 @@ Foram feitas comparações entre as implementações do método para CPU utiliza
       \hline
       \multirow{2}{*}{Processadores}& \multicolumn{5}{|c|}{Quantidade de pontos iniciais} \\ \cline{2-6}
       & 16 & 32 & 64 & 128 & 256 \\ \hline
-      GTS 450 & 0.000256 & 0.000214 & 0.000262 & 0.000329 & 0.000375 \\ \hline
-      GT 520M & 0.000008 & 0.000013 & 0.000008 & 0.000317 & 0.000017 \\ \hline
+      GTS 450 & 0.002440 & 0.000243 & 0.000313 & 0.000089 & 0.000220 \\ \hline
+      GT 520M & 0.000033 & 0.000006 & 0.000019 & 0.000264 & 0.000120 \\ \hline
 
       \hline
     \end{tabular}
@@ -229,8 +233,8 @@ Foram feitas comparações entre as implementações do método para CPU utiliza
       \hline
       \multirow{2}{*}{Processadores}& \multicolumn{5}{|c|}{Quantidade de pontos iniciais} \\ \cline{2-6}
       & 16 & 32 & 64 & 128 & 256 \\ \hline
-      GTS 450 & 1.316534 & 1.474646 & 1.803720 & 2.459200 & 3.821162 \\ \hline
-      GT 520M & 1.413581 & 1.498690 & 1.700291 & 2.165609 & 3.002206\\ \hline
+      GTS 450 & 1.352077 & 1.488127 & 1.776701 & 2.388835 & 3.597740 \\ \hline
+      GT 520M & 1.402293 & 1.489929 & 1.680435 & 2.074177 & 2.836108\\ \hline
 
       \hline
     \end{tabular}
@@ -242,8 +246,8 @@ Foram feitas comparações entre as implementações do método para CPU utiliza
       \hline
       \multirow{2}{*}{Processadores}& \multicolumn{5}{|c|}{Quantidade de pontos iniciais} \\ \cline{2-6}
       & 16 & 32 & 64 & 128 & 256 \\ \hline
-      GTS 450 & 0.016359 & 0.012441 & 0.013954 & 0.016971 & 0.040012 \\ \hline
-      GT 520M & 0.043263 & 0.052338 & 0.042873 & 0.008214 & 0.073771 \\ \hline
+      GTS 450 & 0.014127 & 0.010570 & 0.013345 & 0.014769 & 0.011500 \\ \hline
+      GT 520M & 0.010907 & 0.010067 & 0.011193 & 0.007211 & 0.012150 \\ \hline
 
       \hline
     \end{tabular}
@@ -254,8 +258,8 @@ Foram feitas comparações entre as implementações do método para CPU utiliza
       \hline
       \multirow{2}{*}{Processadores}& \multicolumn{5}{|c|}{Quantidade de pontos iniciais} \\ \cline{2-6}
       & 16 & 32 & 64 & 128 & 256 \\ \hline
-      GTS 450 & 0.050919 & 0.050901 & 0.050975 & 0.057876 & 0.082850\\ \hline
-      GT 520M & 0.053989 & 0.053988 & 0.054041 & 0.061721 & 0.087788\\ \hline
+      GTS 450 & 0.089737 & 0.089613 & 0.102665 & 0.102715 & 0.102927\\ \hline
+      GT 520M & 0.098342 & 0.098343 & 0.098618 & 0.116622 & 0.164528\\ \hline
 
       \hline
     \end{tabular}
@@ -267,8 +271,8 @@ Foram feitas comparações entre as implementações do método para CPU utiliza
       \hline
       \multirow{2}{*}{Processadores}& \multicolumn{5}{|c|}{Quantidade de pontos iniciais} \\ \cline{2-6}
       & 16 & 32 & 64 & 128 & 256 \\ \hline
-      GTS 450 & 0.000213 & 0.000183 & 0.000213 & 0.000374 & 0.000352 \\ \hline
-      GT 520M & 0.000012 & 0.000010 & 0.000004 & 0.000233 & 0.000015 \\ \hline
+      GTS 450 & 0.000419 & 0.000419 & 0.000263 & 0.000333 & 0.000305 \\ \hline
+      GT 520M & 0.000006 & 0.000008 & 0.000037 & 0.000137 & 0.000385 \\ \hline
 
       \hline
     \end{tabular}
@@ -280,8 +284,8 @@ Foram feitas comparações entre as implementações do método para CPU utiliza
       \hline
       \multirow{2}{*}{Processadores}& \multicolumn{5}{|c|}{Quantidade de pontos iniciais} \\ \cline{2-6}
       & 16 & 32 & 64 & 128 & 256 \\ \hline
-      GTS 450 & 1.320237 & 1.478085 & 1.807288 & 2.468835 & 3.799146 \\ \hline
-      GT 520M & 1.426731 & 1.511143 & 1.727094 & 2.136336 & 3.011104\\ \hline
+      GTS 450 & 1.355632 & 1.490352 & 1.773907 & 2.392552 & 3.599853\\ \hline
+      GT 520M & 1.404058 & 1.492534 & 1.675477 & 2.077923 & 2.828944\\ \hline
 
       \hline
     \end{tabular}
@@ -293,12 +297,114 @@ Foram feitas comparações entre as implementações do método para CPU utiliza
       \hline
       \multirow{2}{*}{Processadores}& \multicolumn{5}{|c|}{Quantidade de pontos iniciais} \\ \cline{2-6}
       & 16 & 32 & 64 & 128 & 256 \\ \hline
-      GTS 450 & 0.014371 & 0.011243 & 0.015959 & 0.020297 & 0.022972 \\ \hline
-      GT 520M & 0.013149 & 0.028158 & 0.044772 & 0.028095 & 0.051903 \\ \hline
+      GTS 450 & 0.015841 & 0.010029 & 0.010473 & 0.011441 & 0.015122 \\ \hline
+      GT 520M & 0.008800 & 0.011051 & 0.009609 & 0.007901 & 0.008453 \\ \hline
 
       \hline
     \end{tabular}
     
+  \subsection{Distribuições}
+    Com desvio padrão baixo como o encontrontado, em todos os histogramas a concentração se dá toda sobre a média. Esta característica observada nos desvios padrões também são um forte indicativo de que a média é uma boa estatística para ser utilizada.    
+  
   \subsection{Conclusão}
-\section{Abstrações da VTK para uso de CUDA e OpenCL}
-\section{Integração com o MedSquare através do VTK}
+  Os tempos de execução com crescimento exponencial do método em CPU refletem claramente o custo de troca de contexto neste ambiente. Ou seja, a CPU se adapataria melhor a um algoritmo diferente com número fixo de threads igual ao de núcleos físicos do processador. Também no que diz respeito à CPU é evidente o poder de um barramento dedicado para comunicação, onde o tempo gasto em operações na memória praticamente não variou apesar do crescimento exponencial do problema.
+  
+  \begin{figure}[!h]
+    \begin{center}
+       \includegraphics[width=120mm, height=80mm]{images/cpu-means.png}
+       \label{fig:cpu-means}
+       \caption{Curioso notar que o processador Core 2 Duo bateu em duas vezes um processador Core i7, que é duas gerações posterior ao primeiro.}
+    \end{center}
+  \end{figure}
+  
+  Este gráfico ainda nos permite notar que em \textit{CPU} não há diferença prática de tempo entre as ordens apesar de uma realizar o dobro de operações de ponto flutuante. Isto reforça a tese de que o fator limitante para esta implementação em \textit{CPU} é o alto custo da troca de contexto.
+  
+  \newpage
+  Por outro lado, o método em \textit{GPU} obteve tempos de processamento muito inferiores aos de ambas as \textit{CPUs}, em alguns casos chegando à ordem de $10^{-4}$. Porém, a falta de um barramento dedicado causa altos tempos para as operações em memória.
+  
+  \begin{figure}[!h]
+    \begin{center}
+       \includegraphics[width=120mm, height=80mm]{images/gpu-means-double.png}
+       \label{fig:gpu-means-double}
+       \caption{A GTS450 começa a apresentar ganho real de performance a partir dos 256 pontos iniciais, como decorrência do seu maior número de \textit{stream multi-proccessors}}
+    \end{center}
+  \end{figure}
+  
+  Este gráfico ilustra um comportmento esperado para GPU, onde no início para um número pequeno de pontos observamos tempo constante, por estar aquém da capacidade do hardware. Então, conforme o problema continua crescendo exponencialmente, o tempo médio começa a crescer, mas linearmente.
+  
+  \newpage
+  O comportamento linear descrito também pode ser observado no que diz respeito às operações de memória.
+  
+  \begin{figure}[!h]
+    \begin{center}
+       \includegraphics[width=120mm, height=80mm]{images/gpu-memo-means-double.png}
+       \label{fig:gpu-memo-means-double}
+       \caption{Apesar do tamanho do problema crescer exponencialmente, o tempo gasto para operações de memória cresce de forma linear}
+    \end{center}
+  \end{figure}
+  
+  Com estes dados em mãos fica claro que o método em \textit{GPU} não é apenas melhor em comparação com seu equivalente em \textit{CPU}, mas é muito melhor em qualquer para uma quantidade de pontos não muito tão grande (apartir de 64).
+  
+  Mesmo com um resultado bastante satisfatório, ainda assim, é possível melhorá-lo abrindo mão de precisão e usando a memória \textit{RAM} em conjunto com a da placa gráfica. Para isto, foram feitas novas melhorias e testes com base no método de ordem 4 para a placa GTS 450.
+
+  \subsection{Utilização de precisão simples ao invés de dupla}
+  \begin{small}
+  Média dos tempos de execução para processamento em segundos:\\
+  \begin{tabular}{| c | c | c | c | c | c | c | c |}
+    \hline
+    \multirow{2}{*}{Precisão}& \multicolumn{7}{|c|}{Quantidade de pontos iniciais} \\ \cline{2-8}
+    & 16 & 32 & 64 & 128 & 256 & 512 & 1024 \\ \hline
+    Dupla & 0.089737 & 0.089613 & 0.102665 & 0.102715 & 0.102927 & 0.128983 & 0.176045\\ \hline
+    Simples & 0.074125 & 0.074505 & 0.074600 & 0.091314 & 0.091356 & 0.092422 & 0.094418\\ \hline
+
+    \hline
+  \end{tabular}
+  \end{small}  
+  \hspace{1mm}\newline
+  
+  \newpage
+  \begin{small}
+  \noindent Desvio padrão dos tempo de execução para processamento em segundos:\\
+  \begin{tabular}{| c | c | c | c | c | c | c | c |}
+    \hline
+    \multirow{2}{*}{Precisão}& \multicolumn{7}{|c|}{Quantidade de pontos iniciais} \\ \cline{2-8}
+    & 16 & 32 & 64 & 128 & 256 & 512 & 1024\\ \hline
+    Dupla & 0.000419 & 0.000419 & 0.000263 & 0.000333 & 0.000305 & 0.000339 & 0.000384\\ \hline
+    Simples & 0.000283 & 0.000272 & 0.000272 & 0.000208 & 0.000280 & 0.000336 & 0.000111\\ \hline
+
+    \hline
+  \end{tabular}
+  \end{small}
+  
+  \hspace{1mm}\newline
+  
+  \begin{small}
+  \noindent Média dos tempos de execução para operações em memória em segundos:\\
+  \begin{tabular}{| c | c | c | c | c | c | c | c |}
+    \hline
+    \multirow{2}{*}{Precisão}& \multicolumn{7}{|c|}{Quantidade de pontos iniciais} \\ \cline{2-8}
+    & 16 & 32 & 64 & 128 & 256 & 512 & 1024 \\ \hline
+    Dupla & 1.355632 & 1.490352 & 1.773907 & 2.392552 & 3.599853 & 5.984084 & 10.783370\\ \hline
+    Simples & 1.404058 & 1.492534 & 1.675477 & 2.077923 & 2.828944 & \\ \hline
+    \hline
+  \end{tabular}
+  \end{small}
+  
+  \hspace{1mm}\newline
+  
+  \noindent Desvio padrão dos tempo de execução para operações em memória em segundos:\\
+  \begin{tabular}{| c | c | c | c | c | c | c | c |}
+    \hline
+    \multirow{2}{*}{Precisão}& \multicolumn{7}{|c|}{Quantidade de pontos iniciais} \\ \cline{2-8}
+    & 16 & 32 & 64 & 128 & 256 & 512 & 1024\\ \hline
+    Dupla & 0.015841 & 0.010029 & 0.010473 & 0.011441 & 0.015122 & 0.016412 & 0.021922\\ \hline
+    Simples & 0.010561 & 0.010227 & 0.008126 & 0.016713 & 0.022187 & 0.030160 & 0.081429\\ \hline
+  \end{tabular}
+  
+    \subsubsection{Conclusão}
+    Com a precisão simples houve ligeiro ganho no tempo de processamento, mas houve uma ligeira perda no tempo de operações na memória que é a grande limitação desta implementação.
+  
+  \subsection{Utilização de memória presa}
+  
+  
+  \subsection{Avaliação da melhor combinação}
