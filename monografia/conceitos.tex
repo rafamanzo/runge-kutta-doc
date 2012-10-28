@@ -118,6 +118,13 @@ Antes de apresentar os detalhes das linguagens, é preciso destacar específicid
   O primeiro nível de memória é a memória local de cada thread privada, depois a memória compartilhada de cada bloco e, por fim, a memória global acessível por todas as threads. A memória global persiste até que seja desalocada pelo programa, enquanto as demais persistem apenas enquanto suas estruturas existem. As memórias local da thread e compartilhada do bloco são as mais rápidas ao custo de seu escopo limitado.
     
   \subsection{Linguagem OpenCL}
+  Atualmente mantida pelo Khronos Group (\ref{khronos}), um consórcio de várias empresas como AMD, Apple, NVIDIA e outras, é classificada como um padrão aberto multiplataforma de programação heterogênea (\textit{GPU}, \textit{CPU} e outros processadores) em paralelo.
+  
+  Assim como o \textit{CUDA}, do ponto de vista do programador, pode ser vista como uma extenxão da linguagem, mas apenas disponível para \textit{C}. Sua hierarquia de agrupamento possui apenas quatro níveis: contexto (\textit{context}); programa (\textit{program}); \textit{kernel}; e item de trabalho (\textit{work item}).
+  
+  Um contexto agrupa diversos dispositivos, suas memórias e as filas de comandos que estes recebem. Análogo a um bloco em CUDA, um programa agrupa diversos \textit{kernels}, que representam o código de um item de trabalho (parecido com as threads em CUDA) que é recebido por uma das filas do contexto para ser executado.
+  
+  O uso da memória dos disposistivos é abstraída por meio de buffers. Porém, no que diz respeito à hierarquia de memória, a arquitetura implementada pelo OpenCL é análoga a já descrita para a linguagem CUDA. A única diferença está na nomenclatura onde a memória local em OpenCL é equivalente à memória compartilhada em CUDA e a memória privada seria a memória local em CUDA. 
   
   \subsection{Biblioteca VTK}
   Atualmente na versão 5.10, a \textit{Visualization Toolkit} (ou \textit{VTK}), é uma poderosa biblioteca de computação gráfica muito utilizada para aplicações científicas (dentre estas aplicações está o  \textit{MedSquare} (\ref{medsquare}).
