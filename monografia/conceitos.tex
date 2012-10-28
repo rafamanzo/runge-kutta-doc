@@ -62,9 +62,9 @@ Se calcularmos o valor de cada EDO em um conjunto finito de pontos $P$ obteremos
     
     $f(P) = f(P_{1}) + \frac{(f(P_{2}) - f(P_{1}))}{(P_{2} - P_{1})}\ldotp (P - P_{1})$
     
-    Por sua vez a interpolação trilinear é inerentemente utilizada no $\Re ^{3}$. Ela pondera os oito pontos $P_{1}$, $P_{2}$, $P_{3}$, $P_{4}$, $P_{5}$, $P_{6}$, $P_{7}$ e $P_{8}$ definidos no campo para então obter $P$.
+    Por sua vez, a interpolação trilinear é inerentemente utilizada no $\Re ^{3}$. Ela pondera os oito pontos $P_{1}$, $P_{2}$, $P_{3}$, $P_{4}$, $P_{5}$, $P_{6}$, $P_{7}$ e $P_{8}$ definidos no campo para então obter $P$.
     
-    No caso do exemplo \ref{exemplo-campo}, podemos compreender estes quatro pontos como os vértices do cubo que contém o ponto de interesse.
+    No caso do exemplo \ref{exemplo-campo}, podemos compreender estes oito pontos como os vértices do cubo que contém o ponto de interesse.
     
     \begin{figure}[!h]
       \begin{center}
@@ -95,19 +95,20 @@ Mais conhecida como \textit{General-Purpose computing on Graphics Processing Uni
 
 Por exemplo, uma NVIDIA GeForce GTX 690 possui mais de 3000 núcleos de processamento (\textit{CUDA Cores}) a aproximadamente 900MHz cada e 4GB de memória dedicada (\ref{gtx690}). O que representa um pequeno \textit{mainframe} à disposição para a execução de algoritmos paralelos. 
 
-Ainda no princípio das placas gráficas dedicadas, percebendo seu poder computacional, teve início a programação de algoritmos gerais (isto é, algoritmos que não sejam de processamento gráfico) em termos de operações gráficas. Ou seja, os algoritmos eram traduzidos em termos multiplicações de matrizes para poderem ser processados na placa gráfica.
+Ainda no princípio das placas gráficas dedicadas, percebendo seu poder computacional, teve início a programação de algoritmos gerais (isto é, algoritmos que não sejam de processamento gráfico) em termos de operações gráficas. Ou seja, os algoritmos eram traduzidos em termos de multiplicações de matrizes para poderem ser processados na placa gráfica.
 
 Com o crescimento deste tipo de uso, surgiu a linguagem \textit{Cg} facilitando a confecção de programas para a placa gráfica, mas que no fim das contas era compilado em termos de \textit{DirectX} ou \textit{OpenGL shaders}. Ou seja, ainda era apenas uma abstração para o processamento gráfico.
 
-O que enfim levou a criação de linguagens de mais alto nível como \textit{OpenCL} e \textit{CUDA} que, do ponto de vista do programador, funcionam como uma extensão para linguagens como \textit{C}, \textit{C++}, \textit{Fortran} etc. Permitindo que quase não haja distinção entre programar para \textit{GPU} ou \textit{CPU}.
+O que enfim levou a criação de linguagens de mais alto nível como \textit{OpenCL} e \textit{CUDA}. Do ponto de vista do programador, funcionam como uma extensão para linguagens como \textit{C}, \textit{C++}, \textit{Fortran} etc. Permitindo que quase não haja distinção entre programar para \textit{GPU} ou \textit{CPU}.
 
 Antes de apresentar os detalhes das linguagens, é preciso destacar específicidades da programação para GPU que ainda não foram abstrataídas:
 
 \begin{itemize}
-  \item O trecho de código executado na \textit{GPU} é chamado de \textit{kernel}. Cada instância deste é chamada de \textit{thread}. Um conjunto de threads pode ser agrupado no que a NVIDIA chama de \textit{bloco}. E, por sua vez, estes podem ser agrupados no que a NVIDIA chama de \textit{grade};
+  \item O trecho de código executado na \textit{GPU} é chamado de \textit{kernel}. Cada instância deste é uma chamada de \textit{thread}. Um conjunto de threads pode ser agrupado no que a NVIDIA chama de \textit{bloco}. E, por sua vez, estes podem ser agrupados no que a NVIDIA chama de \textit{grade};
   \item Os dados sobre os quais os algoritmos vão operar precisam ser transferidos da memória principal à memória dedicada da placa gráfica, através do barramento, e o resultado de volta. Esta transferência pode ser muito lenta, pois além do próprio barramento ser um gargalo, este ainda é compartilhado com todos os demais periféricos. Portanto, o primeiro objetivo é minimizar estas transferências a apenas o necessário e, quando elas forem necessárias, que sejam feitas em grandes quantidades de dados para usar toda a banda;
   \item Os diversos núcleos de processamento da unidade de processamento gráfico na verdade estão fisicamente agrupados no que é chamado de \textit{stream multiprocessors} pela NVIDIA. Isto é importante, pois todas as \textit{threads} de um bloco devem ser executadas no mesmo \textit{stream multiprocessor}. Ou seja, para utilizar toda capacidade da placa gráfica, é preciso ter vários \textit{blocos};
-  \item A placa gráfica possui diferentes níveis de memória. A memória local contém as variáveis locais da thread, a memória compartilhada é a de acesso mais rápido para leitura, por estar dentro de cada \textit{stream multiprocessor}, e por fim a memória global. Para tornar o acesso à memória o menos custoso possível, é preciso fazer uso da memória compartilhada, embora o seu uso sem os devidos cuidados pode gerar erros de inconsistência semelhantes aos que podem ser vistos em um cache mal implementado. Ou seja, a escrita deve ser cuidadosa.
+  \item A placa gráfica possui diferentes níveis de memória. A memória local contém as variáveis locais da thread, a memória compartilhada é a de acesso mais rápido para leitura, por estar dentro de cada \textit{stream multiprocessor}, e por fim a memória global. Para tornar o acesso à memória o menos custoso possível, é preciso fazer uso da memória compartilhada, embora o seu uso sem os devidos cuidados pode gerar erros de inconsistência semelhantes aos que podem ser vistos em um cache mal implementado. Ou seja, a escrita deve ser cuidadosa;
+  \item É preciso levar em conta durante a programação os limites físicos da placa gráfica. O principal deles diz respeito à memória que possui espaço limitado em todos os níveis, desde a memória global até a quantidade de registradores que cada \textit{thread} em um \textit{bloco} pode utilizar (existe um limite de registradores por \textit{bloco} na verdade).
 \end{itemize}
   \subsection{Linguagem CUDA}
   Atualmente na versão 4.2, é classificada como uma arquitetura para computação de propósito geral em paralelo introduzida em 2006 pela NVIDIA. Do ponto de vista do programador é uma extensão disponível para as linguagens \textit{C}, \textit{C++} e \textit{FORTRAN}. Os principais elementos do \textit{CUDA} são a hierarquia de agrupamento das threads, os níveis de memória e as barreiras de sincronização.
@@ -119,3 +120,27 @@ Antes de apresentar os detalhes das linguagens, é preciso destacar específicid
   \subsection{Linguagem OpenCL}
   
   \subsection{Biblioteca VTK}
+  Atualmente na versão 5.10, a \textit{Visualization Toolkit} (ou \textit{VTK}), é uma poderosa biblioteca de computação gráfica muito utilizada para aplicações científicas (dentre estas aplicações está o  \textit{MedSquare} (\ref{medsquare}).
+  
+  Implementada na linguagem \textit{C++} utilizando orientação a objetos, ela fornece desde as classes capazes de representar trajetórias tridimensionais e campos vetoriais, até classes responsáveis pela interface gráfica com o usuário.
+  
+  Porém, este poder vem ao custo do desenvolvedor ter de compreender sua arquitetura de \textit{pipelines} e, ao menos, a interface das classes que utilizará. O que não é simples quando a documentação online é escassa ou já ficou obsoleta e a bibliografia é de difícil acesso.
+  
+  \subsubsection{Arquitetura de \textit{pipelines}}
+  Um pipeline é um conjunto de elementos que ao atuarem em conjunto possibilitam desde a leitura dos dados de entrada até a exibição na tela da transformação feita sobre estes dados. Para isso sua arquitetura divide-se em quatro elementos chave representados pelas classes:
+  \begin{itemize}
+    \item \textit{vtkInformation} é a classe responsável por armazenar os meta dados do pipeline e encapsular os dados para troca de informação entre as demais classes;
+    \item \textit{vtkDataObject} contém os dados sobre os quais o pipeline deve operar;
+    \item \textit{vtkAlgorithm} representa o algoritmo a ser executado pelo pipeline, como um filtro;
+    \item e \textit{vtkExecutive} representa a lógica necessário para que o pipeline seja utilizado pelo programa, isto é, como se conectar a ele e como executá-lo.
+  \end{itemize} 
+  
+  \subsubsection{Classes}
+  \label{classes-vtk}
+  Para a implementação do método são utlizadas diversas classes da biblioteca que em conjunto abstraem o campo vetorial e os pontos iniciais, aplicam o método e abstraem os pontos que compõe a fibra.
+  
+  Todos os dados de entrada do algoritmo são armazenados direta ou indiretamente (através de herança) por meio de um objeto da classe \textit{vtkDataObject}. O campo vetorial é armazenado nesta classe, enquanto que a lista de pontos iniciais é armazenada por outro objeto da casse \textit{vtkPolyData} que é subclasse de \textit{vtkPoints} que, por sua vez, é subclasse de \textit{vtkDataSet} que, enfim, é subclasse de \textit{vtkDataObject}. Ou seja, esta é uma classe fundamental para o armazenamento de dados.
+  
+  A aplicação do método é feita utilizando a classe \textit{vtkStreamLine} que por meio de heranças em cadeia, indiretamente herda de \textit{vtkAlgorithm}. Para operar, esta classe é composta pelos dados acima descritos, a determinação de um tamanho de passo e um integrador. Este integrador, no caso, é a \textit{vtkRungeKutta2} ou a \textit{vtkRungeKutta4}.
+  
+  Por fim, o resultado do método é novamente obtido em um objeto da classe \textit{vtkPolyData} para ser renderizado na tela.

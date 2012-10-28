@@ -65,5 +65,240 @@ As interações entre todas as classes que compõe o protótipo podem ser vistas
 
 \section{Protótipo das implementações utilizando a biblioteca VTK}
 \section{Comparação de perfomance entre as implementações}
+Foram feitas comparações entre as implementações do método para CPU utilizando \textit{POSIX threads} com o método para GPU em CUDA. Estes resultados foram obtidas em duas CPUs Intel e GPUs NVIDIA diferentes a fim de comprovar o que foi afirmado anteriormente sobre os desempenhos do método em cada um destes ambientes.
+
+  \subsection{Metodologia}
+    \subsubsection{Dados de entrada}
+    Para isto foi gerado um campo vetorial sintético com dimensões de 512 pontos no eixo x, 256 pontos no eixo y e outros 256 pontos no eixo z. Todos com o mesmo vetor direção $(0, 1, 0)$ e até 512 pontos iniciais da forma $(x, 0, 128)$, onde $0 \leq x \leq 512$.
+    
+    Os testes foram realizados para os primeiros 16, 32, 64, 128 e 256 pontos iniciais a fim de se obter como que o método escala em cada um dos ambientes.
+    
+    \subsubsection{Medições de tempo}
+    A medição de tempo é dividida em tempo consumido por operações em memória (alocação e transferência) e processamento do método. Sempre realizando a contagem de \textit{clocks} em cada um dos ambientes.
+    
+    \subsubsection{Casos}
+    Cada medição consistiu em executar, trinta vezes cada implementação para estes dados (restringindo a quantidade de pontos iniciais conforme descrito), obtendo a média e desvio padrão do tempo em segundos consumidos em operações de transferência de dados, alocação de memória e processamento dos pontos que compõe a trajetória.    
+
+  \subsection{Resultados em CPU}
+  Foram realizados os testes em duas CPUs Intel diferentes:
+  \begin{itemize}
+    \item Core 2 Duo E7400, com dois núcleos físicos e lógicos a 2.8GHz cada;
+    \item Core i7-2620M, com quatro núcleos físicos e lógicos a 2.7GHz cada.
+  \end{itemize}
+  
+  O primeiro utiliza dois módulos de memória DDR2 em Dual Channel, enquanto que o segundo utiliza dois módulos de memória DDR3 em Dual Channel.
+    \subsubsection{Runge-Kutta Ordem 2}
+    Média dos tempos de execução para processamento em segundos:\\
+    \begin{tabular}{| c | c | c | c | c | c |}
+      \hline
+      \multirow{2}{*}{Processadores}& \multicolumn{5}{|c|}{Quantidade de pontos iniciais} \\ \cline{2-6}
+      & 16 & 32 & 64 & 128 & 256 \\ \hline
+      Core 2 Duo & 1.142000 & 4.092000 & 16.435333 & 62.781000 & 302.174000 \\ \hline
+      Core i7 & 2.142667 & 7.820000 & 35.778333 & 148.151000 & 604.198333\\ \hline
+
+      \hline
+    \end{tabular}
+    
+    \hspace{1mm}\newline
+    
+    \noindent Desvio padrão dos tempo de execução para processamento em segundos:\\
+    \begin{tabular}{| c | c | c | c | c | c |}
+      \hline
+      \multirow{2}{*}{Processadores}& \multicolumn{5}{|c|}{Quantidade de pontos iniciais} \\ \cline{2-6}
+      & 16 & 32 & 64 & 128 & 256 \\ \hline
+      Core 2 Duo & 0.066403 & 0.131108 & 0.241809 & 1.270736 & 15.763295 \\ \hline
+      Core i7 &  0.160933 & 0.572346 & 0.807395 & 1.323819 & 7.807908 \\ \hline
+
+      \hline
+    \end{tabular}
+    
+    \hspace{1mm}\newline
+    
+    \noindent Média dos tempos de execução para operações em memória em segundos:\\
+    \begin{tabular}{| c | c | c | c | c | c |}
+      \hline
+      \multirow{2}{*}{Processadores}& \multicolumn{5}{|c|}{Quantidade de pontos iniciais} \\ \cline{2-6}
+      & 16 & 32 & 64 & 128 & 256 \\ \hline
+      Core 2 Duo & 2.118667 & 2.115333 & 2.109667 & 1.059667 & 2.120000 \\ \hline
+      Core i7 & 1.041333 & 1.063333 & 1.063667 & 1.118000 & 1.075333\\ \hline
+
+      \hline
+    \end{tabular}
+    
+    \hspace{1mm}\newline
+    
+    \noindent Desvio padrão dos tempo de execução para operações em memória em segundos:\\
+    \begin{tabular}{| c | c | c | c | c | c |}
+      \hline
+      \multirow{2}{*}{Processadores}& \multicolumn{5}{|c|}{Quantidade de pontos iniciais} \\ \cline{2-6}
+      & 16 & 32 & 64 & 128 & 256 \\ \hline
+      Core 2 Duo & 0.066403 & 0.014314 & 0.011075 & 0.011431 & 0.011255 \\ \hline
+      Core i7 & 0.052009 & 0.011643 & 0.807395 & 0.018345 & 0.023055 \\ \hline
+
+      \hline
+    \end{tabular}
+    
+    \subsubsection{Runge-Kutta Ordem 4} 
+    Média dos tempos de execução para processamento em segundos:\\
+    \begin{tabular}{| c | c | c | c | c | c |}
+      \hline
+      \multirow{2}{*}{Processadores}& \multicolumn{5}{|c|}{Quantidade de pontos iniciais} \\ \cline{2-6}
+      & 16 & 32 & 64 & 128 & 256 \\ \hline
+      Core 2 Duo & 1.309333 & 4.340333 & 16.764333 & 62.903667 & 294.720000 \\ \hline
+      Core i7 & 1.810333 & 7.136667 & 33.477333 & 138.473333 & 575.748333\\ \hline
+
+      \hline
+    \end{tabular}
+    
+    \hspace{1mm}\newline
+    
+    \noindent Desvio padrão dos tempo de execução para processamento em segundos:\\
+    \begin{tabular}{| c | c | c | c | c | c |}
+      \hline
+      \multirow{2}{*}{Processadores}& \multicolumn{5}{|c|}{Quantidade de pontos iniciais} \\ \cline{2-6}
+      & 16 & 32 & 64 & 128 & 256 \\ \hline
+      Core 2 Duo & 0.049324 & 0.168018 & 0.309124 & 3.004899 & 12.153864 \\ \hline
+      Core i7 & 0.127370 & 0.592792 & 2.102053 & 1.559161 & 12.905657 \\ \hline
+
+      \hline
+    \end{tabular}
+    
+    \hspace{1mm}\newline
+    
+    \noindent Média dos tempos de execução para operações em memória em segundos:\\
+    \begin{tabular}{| c | c | c | c | c | c |}
+      \hline
+      \multirow{2}{*}{Processadores}& \multicolumn{5}{|c|}{Quantidade de pontos iniciais} \\ \cline{2-6}
+      & 16 & 32 & 64 & 128 & 256 \\ \hline
+      Core 2 Duo & 2.097667 & 2.105000 & 2.102000 & 2.124333 & 2.116667 \\ \hline
+      Core i7 & 0.962667 & 1.079333 & 1.102333 & 1.118000 & 1.086667\\ \hline
+
+      \hline
+    \end{tabular}
+    
+    \hspace{1mm}\newline
+    
+    \noindent Desvio padrão dos tempo de execução para operações em memória em segundos:\\
+    \begin{tabular}{| c | c | c | c | c | c |}
+      \hline
+      \multirow{2}{*}{Processadores}& \multicolumn{5}{|c|}{Quantidade de pontos iniciais} \\ \cline{2-6}
+      & 16 & 32 & 64 & 128 & 256 \\ \hline
+      Core 2 Duo & 0.025388 & 0.009220 & 0.011075 & 0.048558 & 0.014453 \\ \hline
+      Core i7 & 0.013149 & 0.028158 & 0.044772 & 0.028095 & 0.026874 \\ \hline
+
+      \hline
+    \end{tabular}
+
+  \subsection{Resultados em GPU}
+    Foram realizados os testes em duas GPUs NVIDIA GeForce diferentes:
+  \begin{itemize}
+    \item GTS 450, com 192 CUDA Cores a 1566MHz cada e 1GB de memória GDDR5 à 1804MHz;
+    \item GT 520M, com 48 CUDA Cores a 1480Mhz cada e 1GB de memória DDR3 à 800MHz.
+  \end{itemize}
+  
+  De acordo com o fabricante, o primeiro possui performance média para transferência de dados para memória de 57.7GB/s, enquanto que a segunda possui 12.8GB/s.
+    \subsubsection{Runge-Kutta Ordem 2}
+    Média dos tempos de execução para processamento em segundos:\\
+    \begin{tabular}{| c | c | c | c | c | c |}
+      \hline
+      \multirow{2}{*}{Processadores}& \multicolumn{5}{|c|}{Quantidade de pontos iniciais} \\ \cline{2-6}
+      & 16 & 32 & 64 & 128 & 256 \\ \hline
+      GTS 450 & 0.050932 & 0.050917 & 0.050986 & 0.057882 & 0.082960 \\ \hline
+      GT 520M & 0.053987 & 0.053989 & 0.054044 & 0.061687 & 0.087785\\ \hline
+
+      \hline
+    \end{tabular}
+    
+    \hspace{1mm}\newline
+    
+    \noindent Desvio padrão dos tempo de execução para processamento em segundos:\\
+    \begin{tabular}{| c | c | c | c | c | c |}
+      \hline
+      \multirow{2}{*}{Processadores}& \multicolumn{5}{|c|}{Quantidade de pontos iniciais} \\ \cline{2-6}
+      & 16 & 32 & 64 & 128 & 256 \\ \hline
+      GTS 450 & 0.000256 & 0.000214 & 0.000262 & 0.000329 & 0.000375 \\ \hline
+      GT 520M & 0.000008 & 0.000013 & 0.000008 & 0.000317 & 0.000017 \\ \hline
+
+      \hline
+    \end{tabular}
+    
+    \hspace{1mm}\newline
+    
+    \noindent Média dos tempos de execução para operações em memória em segundos:\\
+    \begin{tabular}{| c | c | c | c | c | c |}
+      \hline
+      \multirow{2}{*}{Processadores}& \multicolumn{5}{|c|}{Quantidade de pontos iniciais} \\ \cline{2-6}
+      & 16 & 32 & 64 & 128 & 256 \\ \hline
+      GTS 450 & 1.316534 & 1.474646 & 1.803720 & 2.459200 & 3.821162 \\ \hline
+      GT 520M & 1.413581 & 1.498690 & 1.700291 & 2.165609 & 3.002206\\ \hline
+
+      \hline
+    \end{tabular}
+    
+    \hspace{1mm}\newline
+    
+    \noindent Desvio padrão dos tempo de execução para operações em memória em segundos:\\
+    \begin{tabular}{| c | c | c | c | c | c |}
+      \hline
+      \multirow{2}{*}{Processadores}& \multicolumn{5}{|c|}{Quantidade de pontos iniciais} \\ \cline{2-6}
+      & 16 & 32 & 64 & 128 & 256 \\ \hline
+      GTS 450 & 0.016359 & 0.012441 & 0.013954 & 0.016971 & 0.040012 \\ \hline
+      GT 520M & 0.043263 & 0.052338 & 0.042873 & 0.008214 & 0.073771 \\ \hline
+
+      \hline
+    \end{tabular}
+    
+    \subsubsection{Runge-Kutta Ordem 4} 
+    Média dos tempos de execução para processamento em segundos:\\
+    \begin{tabular}{| c | c | c | c | c | c |}
+      \hline
+      \multirow{2}{*}{Processadores}& \multicolumn{5}{|c|}{Quantidade de pontos iniciais} \\ \cline{2-6}
+      & 16 & 32 & 64 & 128 & 256 \\ \hline
+      GTS 450 & 0.050919 & 0.050901 & 0.050975 & 0.057876 & 0.082850\\ \hline
+      GT 520M & 0.053989 & 0.053988 & 0.054041 & 0.061721 & 0.087788\\ \hline
+
+      \hline
+    \end{tabular}
+    
+    \hspace{1mm}\newline
+    
+    \noindent Desvio padrão dos tempo de execução para processamento em segundos:\\
+    \begin{tabular}{| c | c | c | c | c | c |}
+      \hline
+      \multirow{2}{*}{Processadores}& \multicolumn{5}{|c|}{Quantidade de pontos iniciais} \\ \cline{2-6}
+      & 16 & 32 & 64 & 128 & 256 \\ \hline
+      GTS 450 & 0.000213 & 0.000183 & 0.000213 & 0.000374 & 0.000352 \\ \hline
+      GT 520M & 0.000012 & 0.000010 & 0.000004 & 0.000233 & 0.000015 \\ \hline
+
+      \hline
+    \end{tabular}
+    
+    \hspace{1mm}\newline
+    
+    \noindent Média dos tempos de execução para operações em memória em segundos:\\
+    \begin{tabular}{| c | c | c | c | c | c |}
+      \hline
+      \multirow{2}{*}{Processadores}& \multicolumn{5}{|c|}{Quantidade de pontos iniciais} \\ \cline{2-6}
+      & 16 & 32 & 64 & 128 & 256 \\ \hline
+      GTS 450 & 1.320237 & 1.478085 & 1.807288 & 2.468835 & 3.799146 \\ \hline
+      GT 520M & 1.426731 & 1.511143 & 1.727094 & 2.136336 & 3.011104\\ \hline
+
+      \hline
+    \end{tabular}
+    
+    \hspace{1mm}\newline
+    
+    \noindent Desvio padrão dos tempo de execução para operações em memória em segundos:\\
+    \begin{tabular}{| c | c | c | c | c | c |}
+      \hline
+      \multirow{2}{*}{Processadores}& \multicolumn{5}{|c|}{Quantidade de pontos iniciais} \\ \cline{2-6}
+      & 16 & 32 & 64 & 128 & 256 \\ \hline
+      GTS 450 & 0.014371 & 0.011243 & 0.015959 & 0.020297 & 0.022972 \\ \hline
+      GT 520M & 0.013149 & 0.028158 & 0.044772 & 0.028095 & 0.051903 \\ \hline
+
+      \hline
+    \end{tabular}
+    
+  \subsection{Conclusão}
 \section{Abstrações da VTK para uso de CUDA e OpenCL}
 \section{Integração com o MedSquare através do VTK}
