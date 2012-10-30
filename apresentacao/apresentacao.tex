@@ -180,6 +180,7 @@
 
   \begin{itemize}
     \item Aplicar o método em campos vetoriais
+    \item 
     \item Implementar o método de forma concorrente em \textit{GPU} com CUDA e OpenCL
   \end{itemize}
 \end{frame}
@@ -271,9 +272,10 @@
   \frametitle{O que foi feito}
 
   \begin{itemize}
-    \item Implementações do RK2 e RK4 em C++ e CUDA.
-    \item Profiling para as implementações C++ e CUDA.
-    \item Visualização do resultado do método em OpenGL.
+    \item Implementações do RK2 e RK4 em C++ e CUDA;
+    \item Testes comparativos do método em GPU e CPU;
+    \item Visualização do resultado do método em OpenGL;
+    \item Visualização do resultado do método através da VTK;
     \item Resultado do método pode ser exportado para o GNUPlot.
   \end{itemize}
 \end{frame}
@@ -283,6 +285,57 @@
   \framesubtitle{CUDA}
   
   \lstinputlisting[language=C++, basicstyle=\tiny]{code/rk4_kernel.cu}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Testes de performance}
+  \framesubtitle{Processamento}
+  
+  \begin{columns}
+    \begin{column}{.5\textwidth}
+      \begin{figure}[!h]
+        \begin{center}
+          \includegraphics[width=1.1\textwidth, height=.7\textwidth]{img/cpu-means.png}
+          \label{fig:cpu-means}
+          \caption{Média dos tempos de processamento em CPU pela quantidade de pontos iniciais}
+        \end{center}
+      \end{figure}
+    \end{column}
+    \begin{column}{.5\textwidth}
+      \begin{figure}[!h]
+        \begin{center}
+          \includegraphics[width=1.1\textwidth, height=.7\textwidth]{img/gpu-means-double.png}
+          \label{fig:cpu-means}
+          \caption{Média dos tempos de processamento em GPU pela quantidade de pontos iniciais}
+        \end{center}
+      \end{figure}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Testes de performance}
+  \framesubtitle{Memória}
+  
+  \begin{columns}
+    \begin{column}{.5\textwidth}
+      \begin{itemize}
+        \item Em CPU, devido ao se barramento dedicado, apesar de o problema crescer exponencialmente o tempo gasto em operações em memória é constatnte;
+        \item Por outro lado, na GPU este é o maior consumo de tempo, com crescimento linar (gráfico ao lado);
+        \item Porém a soma dos tempos de processamento com o de operações em memória ainda é muito mais vantajoso para a GPU.
+      \end{itemize}
+    \end{column}
+    \begin{column}{.5\textwidth}
+      \begin{figure}[!h]
+        \begin{center}
+          \includegraphics[width=1.1\textwidth, height=.7\textwidth]{img/gpu-memo-means-double.png}
+          \label{fig:cpu-means}
+          \caption{Média dos tempos de operações memória para GPU pela quantidade de pontos iniciais}
+        \end{center}
+      \end{figure}
+    \end{column}
+  \end{columns}
+
 \end{frame}
 
 \begin{frame}
