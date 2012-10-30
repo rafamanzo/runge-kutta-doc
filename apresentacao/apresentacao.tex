@@ -7,6 +7,18 @@
 \usepackage{listings}
 \usetheme{JuanLesPins}
 
+\makeatletter
+\setbeamertemplate{footline}
+{
+  \leavevmode%
+  \hbox{%
+  \begin{beamercolorbox}[wd=\paperwidth,ht=2.25ex,dp=1ex,right]{date in head/foot}%
+    \insertframenumber\hspace*{2ex} 
+  \end{beamercolorbox}}%
+  \vskip0pt%
+}
+\makeatother
+
 \title{Implementação do Método de Integração Numérica Runge-Kutta em GPGPU para Aplicações Científicas}
 \author{Giancarlo Rigo\\
         Rafael Reggiani Manzo\\
