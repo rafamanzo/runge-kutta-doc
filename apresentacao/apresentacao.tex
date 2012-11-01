@@ -42,9 +42,10 @@
   \frametitle{Na prática}
   
   \begin{itemize}
-    \item Aplicações para visualização de imagens por difusão de tensores (\textit{DTI - Diffusion Tensors Images}) costumam oferecer uma funcionalidade chamada de tractografia (\textit{fiber tracking}).
-    \item Uma das formas de oferecer esta funcionalidade é com o algoritmo de Runge-Kutta para aproximação de problemas de valor inicial (\textit{IVP - Initial Value Problem}).
-    \item Mas este algotimo é computacionalmente custoso na CPU. O que torna impossível sua implementação em tempo real.
+    \item Aplicações para visualização de imagens por difusão de tensores (\textit{DTI - Diffusion Tensors Images}) costumam oferecer uma funcionalidade chamada de tractografia (\textit{fiber tracking});
+    \item Por trás desta funcionalidade estão diversas instâncias independentes de problemas de valor inicial (ou integração numérica de uma equação diferencial ordinária);
+    \item A solução destes problemas pode ser aproximada pelo algoritmo de Runge-Kutta;
+    \item Porém, quando temos centenas de instâncias do problema, os cálculos podem levar também centenas de segundos. O que torna impossível sua implementação em tempo real;
     \item Para tonar possível os cálculos em tempo real implementações em GPU são uma solução já utilizada. 
   \end{itemize}
   
@@ -400,6 +401,19 @@
       \caption{Visualização através da implementação com a biblioteca VTK para um campo 32x32x32 representando a intersecção de duas hélices, com pontos iniciais na base de uma das hélices. Esta biblioteca permite facilmente visualizar o resultado (em vermelho) e os vetores do campo (em azul)}
     \end{center}
   \end{figure}
-    
 \end{frame}
+
+\section{Conclusão}
+\begin{frame}
+  \frametitle{Conclusões}
+  \framesubtitle{}
+
+  \begin{itemize}
+    \item A discretização de EDOs como campo campo vetorial e a adaptação do método de Runge-Kutta não comprometem, visualmente, a precisão do resultado;
+    \item A implementação de um \textit{kernel} em CUDA e OpenCL que aplique o método foi comprovada como possível;
+    \item Também foi comprovada como sendo muito mais rápida que uma implementação equivalente em C++ para CPU;
+    \item Portanto, a tractografia em tempo real é possível através de CUDA e OpenCL.
+  \end{itemize}
+\end{frame}
+
 \end{document}
