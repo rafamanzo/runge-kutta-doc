@@ -26,9 +26,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.77948613"
-     inkscape:cx="845.3057"
-     inkscape:cy="1242.2671"
+     inkscape:zoom="1.5589723"
+     inkscape:cx="390.12994"
+     inkscape:cy="1096.2799"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -201,7 +201,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -1641,7 +1641,7 @@
            y="1294.7244"
            style="font-size:14.76510811px" /></flowRegion><flowPara
          id="flowPara4282"
-         style="font-size:14.76510811px;text-align:justify;text-anchor:start">   As implementações mencionadas são importantes para ganhar familiaridade com o método e as tecnologias sendo utilizadas. Possibilitando a aplicação à compos vetoriais em testes para comprovar que o resultado visual é o esperado.</flowPara><flowPara
+         style="font-size:14.76510811px;text-align:justify;text-anchor:start">   As implementações mencionadas são importantes para ganhar familiaridade com o método e as tecnologias sendo utilizadas. Possibilitando a aplicação à campos vetoriais em testes para comprovar que o resultado visual é o esperado.</flowPara><flowPara
          id="flowPara4284"
          style="font-size:14.76510811px;text-align:justify;text-anchor:start" /><flowPara
          id="flowPara4286"
