@@ -1,6 +1,7 @@
 \chapter{Atividades Realizadas}
 
 \section{Protótipo das implementações do método}
+\label{primeiroprototipo}
 A implementação do método foi toda feita utilizando orientação a objetos em C++, com excessão das funções específicas ao cálculo que possuem implementações, em CUDA, OpenCL e C++. Estas funções específicas ao cálculo consistem de operações básicas com vetores, aproximações para o campo vetorial e o método de Runge-Kutta em si. O código compartilhado entre as demais implementações vai desde as estruturas de dados até representações dos resultados em OpenGL.
 
 O código pode ser encontrado em seu repositório Git \newline(em \href{https://github.com/rafamanzo/runge-kutta}{https://github.com/rafamanzo/runge-kutta}) é organizado basicamente em quatro pastas:
@@ -63,7 +64,30 @@ As interações entre todas as classes que compõe o protótipo podem ser vistas
   
   Por fim, no último campo as direções possuem uma distribuição normal com média 10 e variância 1 e sua dimensão é 256x256x256. Ele possui um único ponto inicial aleatório e tamanho de passo 0.1.
 
-\section{Protótipo das implementações utilizando a biblioteca VTK}
+\section{Protótipo utilizando a biblioteca VTK}
+  Foi utilizada a versão 5.8 da biblioteca VTK (\ref{vtk-5.8}) novamente com C++ para gerar um segundo protótipo equivalente ao anterior (\ref{primeiroprototipo}), capaz de carregar um campo vetorial no formato Analyze e aplicar os métodos de ordem 2 e 4 já implementados na VTK para CPU. Assim, permitindo o planejamento das abstrações necessárias para criar implementações em GPU.
+  
+  Neste protótipo, muito do código gerado para o primeiro foi reaproveitado. Seu código fonte pode ser encontrado, assim como o primeiro, em seu repositório Git (\href{https://github.com/rafamanzo/runge-kutta-vtk}{https://github.com/rafamanzo/runge-kutta-vtk}).
+  
+  \subsection{Estrutura}
+  A estrutura deste protótipo pode ser entendida como uma simplificação da primeira, contando com apenas 4 classes utilizadas para interagir com as diversas classes da VTK:
+  \begin{itemize}
+    \item \textbf{AnalyzeReader} é responsável por utilizar a bibliteca \textit{CImg} (também utilizada no primeiro) para ler o arquivo no formato Analyze fornecido na entrada e criar com isto criar uma instância da classe \textit{vtkImageData}, com a qual o VTK poderá trabalhar;
+    \item \textbf{Input} recebe os argumentos de entrada e processá-los adequadamente;
+    \item \textbf{Tracer} realiza a aplicação do método;
+    \item \textbf{Renderer} recebe o resultado da aplicação do método e o exibe na tela já com uma interface que permite escala e rotações.
+  \end{itemize}
+
+  As interações entre estas classes e destas com a VTK são ilustradas pelo diagrama de classes simplificado:
+  
+  \begin{figure}[!h]
+    \begin{center}
+      \includegraphics[width=120mm, height=60mm]{images/diagramadeclasse.png}
+      \label{fig:diagramadeclassevtk}
+      \caption{Diagrama de classes simplificado para o protótipo}
+    \end{center}
+  \end{figure}
+  
   \subsection{Planejamento abstrações da VTK para uso de CUDA e OpenCL}
 
 \section{Comparação de perfomance do método entre as implementações em CPU e GPU}
