@@ -385,8 +385,7 @@ Foram feitas comparações entre as implementações do método para CPU utiliza
     \multirow{2}{*}{Precisão}& \multicolumn{7}{|c|}{Quantidade de pontos iniciais} \\ \cline{2-8}
     & 16 & 32 & 64 & 128 & 256 & 512 & 1024 \\ \hline
     Dupla & 1.355632 & 1.490352 & 1.773907 & 2.392552 & 3.599853 & 5.984084 & 10.783370\\ \hline
-    Simples & 1.404058 & 1.492534 & 1.675477 & 2.077923 & 2.828944 & \\ \hline
-    \hline
+    Simples & 1.912072 & 2.047864 & 2.327917 & 2.984783 & 4.182320 & 6.618064 & 11.512310 \\ \hline
   \end{tabular}
   \end{small}
   
@@ -405,6 +404,67 @@ Foram feitas comparações entre as implementações do método para CPU utiliza
     Com a precisão simples houve ligeiro ganho no tempo de processamento, mas houve uma ligeira perda no tempo de operações na memória que é a grande limitação desta implementação.
   
   \subsection{Utilização de memória presa}
+  \begin{small}
+  Média dos tempos de execução para processamento em segundos:\\
+  \begin{tabular}{| c | c | c | c | c | c | c | c |}
+    \hline
+    \multirow{2}{*}{Memória}& \multicolumn{7}{|c|}{Quantidade de pontos iniciais} \\ \cline{2-8}
+    & 16 & 32 & 64 & 128 & 256 & 512 & 1024 \\ \hline
+    Global & 0.074125 & 0.074505 & 0.074600 & 0.091314 & 0.091356 & 0.092422 & 0.094418\\ \hline
+    Presa & 0.074107 & 0.074444 & 0.090507 & 0.107728 & 0.107685 & 0.108624 & 0.110673\\ \hline
+
+    \hline
+  \end{tabular}
+  \end{small}  
+  \hspace{1mm}\newline
+  
+  \newpage
+  \begin{small}
+  \noindent Desvio padrão dos tempo de execução para processamento em segundos:\\
+  \begin{tabular}{| c | c | c | c | c | c | c | c |}
+    \hline
+    \multirow{2}{*}{Memória}& \multicolumn{7}{|c|}{Quantidade de pontos iniciais} \\ \cline{2-8}
+    & 16 & 32 & 64 & 128 & 256 & 512 & 1024\\ \hline
+    Global & 0.000283 & 0.000272 & 0.000272 & 0.000208 & 0.000280 & 0.000336 & 0.000111\\ \hline
+    Presa & 0.000230 & 0.000118 & 0.000211 & 0.000266 & 0.000235 & 0.000231 & 0.000273\\ \hline
+
+    \hline
+  \end{tabular}
+  \end{small}
+  
+  \hspace{1mm}\newline
+  
+  \begin{small}
+  \noindent Média dos tempos de execução para operações em memória em segundos:\\
+  \begin{tabular}{| c | c | c | c | c | c | c | c |}
+    \hline
+    \multirow{2}{*}{Memória}& \multicolumn{7}{|c|}{Quantidade de pontos iniciais} \\ \cline{2-8}
+    & 16 & 32 & 64 & 128 & 256 & 512 & 1024 \\ \hline
+    Global & 1.912072 & 2.047864 & 2.327917 & 2.984783 & 4.182320 & 6.618064 & 11.512310 \\ \hline
+    Presa & 1.925960 & 2.070551 & 2.380262 & 3.026972 & 4.279094 & 6.787730 & 11.785125\\ \hline
+  \end{tabular}
+  \end{small}
+  
+  \hspace{1mm}\newline
+  
+  \noindent Desvio padrão dos tempo de execução para operações em memória em segundos:\\
+  \begin{tabular}{| c | c | c | c | c | c | c | c |}
+    \hline
+    \multirow{2}{*}{Memória}& \multicolumn{7}{|c|}{Quantidade de pontos iniciais} \\ \cline{2-8}
+    & 16 & 32 & 64 & 128 & 256 & 512 & 1024\\ \hline
+    Gloval & 0.010561 & 0.010227 & 0.008126 & 0.016713 & 0.022187 & 0.030160 & 0.081429\\ \hline
+    Presa & 0.010899 & 0.026004 & 0.016693 & 0.013016 & 0.026585 & 0.024440 & 0.036797\\ \hline
+  \end{tabular}
+  
+    \subsubsection{Conclusão}
+    Utilizando a memória presa não houve ganho de performance nos tempos (inclusive houve ligeira perda de performance), porém ainda é um recurso bastante interessante. Isto pois o uso deste recurso faz que ao invés de ser utilizada a memória da placa gráfica seja utilizada a memória principal da máquina. Visto que a memória da placa gráfica costuma ter menos espaço disponível que a memória principal, isto permite o processamento de problemas com concjuntos de dados ainda maiores.
   
   
   \subsection{Avaliação da melhor combinação}
+  O primeiro conjunto de testes em GPU nos permite concluir que, de fato, o método de ordem 2 consome metade do tempo acaba consumindo metado do tempo de processamento que o de ordem 4 ao custo de perda de precisão. Porém isto pode ser compensado, quando necessário, aumentando o tamanho do passo do método.
+  
+  Analisando as melhorias, apesar de  não terem implicado em mais desempenho, o uso de precisão simples e memória presa trouxeram ganhos do ponto de vista do espaço em memória necessário para o processamento do problema, permitindo o processamento de problemas ainda maiores.
+  
+  O uso de precisão simples reduziu pela metade a quantidade de memória necessária para a resolução do problema, mas, também, ao custo de se perder precisão sobre a resposta. No entanto esta perda será relevante apenas para campos vetoriais bastante complexos e, mesmo neste caso, pode ser compensada quando é diminuído o tamanho do passo do algoritmo novamente.
+  
+  A memória presa, por sua vez, não reduz o espaço necessário. Ela realiza a alocação na memória principal e deixa esta disponível para a placa gráfica. Com esta mudança no local dos dados o tamanho do campo vetorial suportado aumenta da mesma forma que a quantidade máxima de pontos gerados por cada ponto inicial.
