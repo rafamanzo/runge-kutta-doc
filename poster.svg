@@ -27,8 +27,8 @@
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.5589723"
-     inkscape:cx="390.12994"
-     inkscape:cy="1096.2799"
+     inkscape:cx="696.10074"
+     inkscape:cy="248.28536"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -201,7 +201,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -1645,7 +1645,7 @@
          id="flowPara4284"
          style="font-size:14.76510811px;text-align:justify;text-anchor:start" /><flowPara
          id="flowPara4286"
-         style="font-size:14.76510811px;text-align:justify;text-anchor:start"> Da mesma forma, os testes de performance comparando GPU e CPU servem para garantir e comprovar que o ganho obtido não é apenas teórico.</flowPara></flowRoot>    <path
+         style="font-size:14.76510811px;text-align:justify;text-anchor:start">    Da mesma forma, os testes de performance comparando GPU e CPU servem para garantir e comprovar que o ganho obtido não é apenas teórico.</flowPara></flowRoot>    <path
        sodipodi:type="arc"
        style="fill:#3c8dc5;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
        id="path4176"
@@ -1914,7 +1914,7 @@
            x="506.08643"
            y="1784.0002" /></flowRegion><flowPara
          id="flowPara4185"
-         style="font-size:15px;text-align:justify;text-anchor:start">  Comparando a mesma implementação do método onde cada ponto inicial origina uma thread entre CPU e GPU podemos notar o quão grande é a diferença entre um e outro.</flowPara><flowPara
+         style="font-size:15px;text-align:justify;text-anchor:start">  Comparando a mesma implementação do método, onde cada ponto inicial origina uma thread, podemos notar o quão grande é a diferença entre CPU e GPU.</flowPara><flowPara
          style="font-size:15px;text-align:justify;text-anchor:start"
          id="flowPara4187" /><flowPara
          style="font-size:15px;text-align:justify;text-anchor:start"
