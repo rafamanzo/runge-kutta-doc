@@ -147,9 +147,8 @@
     OpenCL    
     
     \begin{itemize}
-      \item A marca é propriedade da Apple (desenvolveu a primeira versão), mas desenvolvido atualmente como colaboração entre AMD, IBM, Intel e NVIDIA.
+      \item A marca é propriedade da Apple (desenvolveu a primeira versão), mas é desenvolvido pelo Khronos Group, um consórcio de empresas que atualmente inclui AMD, ARM, Intel e NVIDIA e outras empresas.
       \item Executado em GPUs e CPUs de qualquer fabricante desde que com os drivers apropriados.
-      \item Obrigatoriamente o fonte OpenCL tem que estar separado do restante.
     \end{itemize}
   \end{column}
 \end{columns}
@@ -186,7 +185,7 @@
   \framesubtitle{OpenCL}
   
   \begin{itemize}
-    \item Cada instância de um \textit{kernel} é chamada de item de trabalho (\textit{work-item)} que podem ser agupadas em gtupos de trabalho (\textit{work-groups});
+    \item Cada instância de um \textit{kernel} é chamada de item de trabalho (\textit{work-item)} que podem ser agupadas em grupos de trabalho (\textit{work-groups});
     \item Por ser multiplataforma, existe um nível superior que é o contexto (\textit{context}). Ele, além de agrupar grupos de trabalho, agrupa todos os dispositivos e suas memórias;
     \item Seus níveis de memória são: \textbf{privada} (exclusiva de cada \textit{thread} e muito rápida), \textbf{local} (rápida e todas as \textit{threads} no mesmo bloco têm acesso a ela), \textbf{constante} (todas as \textit{threads} de todos os blocos leêm, mas é lenta) e \textbf{global} (todas as \textit{threads} de todos os blocos leêm e escrevem, muito lenta);
   \end{itemize}
@@ -299,7 +298,7 @@
   \frametitle{O que foi feito}
 
   \begin{itemize}
-    \item Implementações do RK2 e RK4 em C++ e CUDA;
+    \item Implementações do RK2 e RK4 em C++, CUDA e OpenCL;
     \item Testes comparativos do método em GPU e CPU;
     \item Visualização do resultado do método em OpenGL;
     \item Visualização do resultado do método através da VTK;
@@ -312,6 +311,13 @@
   \framesubtitle{CUDA}
   
   \lstinputlisting[language=C++, basicstyle=\tiny]{code/rk4_kernel.cu}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Kernel RK4}
+  \framesubtitle{OpenCL}
+  
+  \lstinputlisting[language=C++, basicstyle=\tiny]{code/rk4_kernel.cl}
 \end{frame}
 
 \begin{frame}
@@ -347,8 +353,8 @@
   \begin{columns}
     \begin{column}{.5\textwidth}
       \begin{itemize}
-        \item Em CPU, devido ao se barramento dedicado, apesar de o problema crescer exponencialmente o tempo gasto em operações em memória é constatnte;
-        \item Por outro lado, na GPU este é o maior consumo de tempo, com crescimento linar (gráfico ao lado);
+        \item Em CPU, apesar de o problema crescer exponencialmente o tempo gasto em operações em memória é constante, devido ao se barramento dedicado;
+        \item Por outro lado, na GPU este é o maior consumo de tempo, com crescimento linear (gráfico ao lado);
         \item Porém a soma dos tempos de processamento com o de operações em memória ainda é muito mais vantajoso para a GPU.
       \end{itemize}
     \end{column}
