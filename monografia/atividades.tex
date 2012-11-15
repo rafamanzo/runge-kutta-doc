@@ -47,12 +47,11 @@ As interações entre todas as classes que compõe o protótipo podem ser vistas
     \subsubsection{Observações sobre o método em C++}
     Esta implementação, ao contrário das demais, foi feita sequencial e apenas não foi feita orientada a objetos para seguir a arquitetura necessária para as outras duas implementações.
     
-    \subsubsection{Observações sobre o método em CUDA}
-    Nesta implementação para \textit{GPU}, além do limite de 10000 pontos que podem ser gerados por cada ponto, é feita uma rechecagem após alocar toda a memória necessária para o \textit{DataSet} calculando novamente a quantidade máxima de pontos que podem ser gerados a partir de cada ponto inicial baseado na memória dedicada que restou. Então, o limite é o mínimo entre 10000 e este valor calculado.
-    Outro ponto importante de destacar é que a chamada é feita com apenas um bloco contendo uma \textit{thread} para cada ponto inicial sobre o qual o algoritmo deverá ser aplicado.
-    
-    \subsubsection{Observações sobre o método em OpenCL}
-    
+    \subsubsection{Observações sobre o método em GPU}
+    Nestas implementações em CUDA e OpenCL para \textit{GPU}, além do limite de 10000 pontos que podem ser gerados por cada ponto, é feita uma rechecagem após alocar toda a memória necessária para o \textit{DataSet} calculando novamente a quantidade máxima de pontos que podem ser gerados a partir de cada ponto inicial baseado na memória dedicada que restou. Então, o limite é o mínimo entre 10000 e este valor calculado.
+
+    Ainda são checa as características GPU (quantidade de SMs) de forma a alocar toda sua capacidade de processamento sempre que possível. Similarmente é em CUDA checada a quantidade máxima de memória local que cada bloco pode ocupar para garantir que esta não seja excedida. Isto é algo com que o OpenCL já lida sem que o programador tenha que se preocupar.
+     
   \subsection{Geração de campos vetoriais sintéticos}
   Campos vetoriais extensos ocupam muito espaço em disco, mesmo, compactados para serem distribuídos de forma prática junto do protótipo. Então, para torna-los disponíveis junto com o protótipo, foram escritos scripts \textit{PHP} que os geram todos eles contidos dentro da pasta \textit{example-factories}.
   
