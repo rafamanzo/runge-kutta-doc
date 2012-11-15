@@ -1,6 +1,6 @@
 \chapter{Resultados e produtos obtidos}
 
-\section{Implementações concorrentes dos métodos Runge-Kutta, Nearest Neighbour e Interpolação Trilinear}
+\section{Implementações dos métodos Runge-Kutta, Nearest Neighbour e Interpolação Trilinear}
   \subsection{Protótipo básico}
   O protótipo básico foi uma prova de conceito bem sucedida para a implementação do método implementação em si e suas limitações, bem como para o uso das linguagens CUDA e OpenCL para este fim.
   
@@ -8,7 +8,7 @@
   
   {\scriptsize
   \begin{verbatim}
-rafael@BURN-E:~/workspace/runge-kutta$ make cuda
+$ make cuda
 g++ -c -Wall -pedantic -Wextra  -Iinclude main.cpp
 g++ -c -Wall -pedantic -Wextra  -Iinclude io/input.cpp
 g++ -c -Wall -pedantic -Wextra  -Iinclude core/dataset.cpp
@@ -35,7 +35,7 @@ nvcc main.o input.o dataset.o fiber.o output.o cylinder.o window_manager.o scene
   
   \begin{figure}[!h]
     \begin{center}
-      \includegraphics[width=140mm, height=80mm]{images/fibraecampo.png}
+      \includegraphics[width=72mm, height=100mm]{images/fibraecampo.png}
       \label{fig:fibraecampo}
       \caption{Campo 32x32x32 com duas hélices. Ao chegar na intersecção, a fibra se desvia para um fora do campo e o método entende que terminou de propaga-la devido à baixa intensidade dos vetores.}
     \end{center}
@@ -43,3 +43,44 @@ nvcc main.o input.o dataset.o fiber.o output.o cylinder.o window_manager.o scene
   
   \newpage
   \subsection{Protótipo utilizando a VTK}
+  Este protótipo utilizou a versão 5.6 da biblioteca VTK para servir como uma prova de que é possível implementar o método dentro da biblioteca, posteriormente sendo útil para o planejamento do que deve ser feito para extende-lo em GPU no futuro.
+  
+  A única dependência que existe, é a instalação da biblioteca VTK 5.6. Com isto, sua compilação é ainda mais simples que o protótipo anterior utilizando software CMake. Os resultados de uma compilação bem sucedida podem ser vistos a seguir:
+  
+  {\scriptsize
+  \begin{verbatim}
+  $ cmake .
+  -- The C compiler identification is GNU 4.7.2
+  -- The CXX compiler identification is GNU 4.7.2
+  -- Check for working C compiler: /usr/bin/gcc
+  -- Check for working C compiler: /usr/bin/gcc -- works
+  -- Detecting C compiler ABI info
+  -- Detecting C compiler ABI info - done
+  -- Check for working CXX compiler: /usr/bin/c++
+  -- Check for working CXX compiler: /usr/bin/c++ -- works
+  -- Detecting CXX compiler ABI info
+  -- Detecting CXX compiler ABI info - done
+  -- Configuring done
+  -- Generating done
+  -- Build files have been written to: ./runge-kutta-vtk
+  $ make
+  Scanning dependencies of target RungeKutta
+  [ 20%] Building CXX object CMakeFiles/RungeKutta.dir/Main.cpp.o
+  [ 40%] Building CXX object CMakeFiles/RungeKutta.dir/io/input/Input.cpp.o
+  [ 60%] Building CXX object CMakeFiles/RungeKutta.dir/io/input/AnalyzeReader.cpp.o
+  [ 80%] Building CXX object CMakeFiles/RungeKutta.dir/core/cpp/Tracer.cpp.o
+  [100%] Building CXX object CMakeFiles/RungeKutta.dir/io/output/Renderer.cpp.o
+  Linking CXX executable RungeKutta
+  [100%] Built target RungeKutta
+  \end{verbatim}
+  }
+  
+  Sua interface possui as mesmas funcionalidades que a do protótipo anterior, permitindo rotação, translação e escala. Da mesma forma este protótipo também não é capaz de lidar com indeterminações em um campo vetorial.
+  
+  \begin{figure}[!h]
+    \begin{center}
+      \includegraphics[width=72mm, height=100mm]{images/fibraecampo-vtk.png}
+      \label{fig:fibraecampo-vtk}
+      \caption{Campo 32x32x32 com duas hélices. Ao chegar na intersecção, a fibra se desvia para um fora do campo e o método entende que terminou de propaga-la devido à baixa intensidade dos vetores.}
+    \end{center}
+  \end{figure}
