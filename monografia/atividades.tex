@@ -82,14 +82,23 @@ As interações entre todas as classes que compõe o protótipo podem ser vistas
   
   \begin{figure}[!h]
     \begin{center}
-      \includegraphics[width=120mm, height=60mm]{images/diagramadeclasse.png}
+      \includegraphics[width=125mm, height=60mm]{images/diagramadeclassevtk.png}
       \label{fig:diagramadeclassevtk}
-      \caption{Diagrama de classes simplificado para o protótipo}
+      \caption{Diagrama de classes simplificado para o protótipo com VTK}
     \end{center}
   \end{figure}
   
+  É possível notar que o número de classes necessárias aumentou com relação ao protótipo anterior (\ref{primeiroprototipo}). Porém, boa parte das classes envolvidas neste protótipo são da VTK e apenas as quatro descritas anteriormente tiveram de ser realmente escritas. E mesmo entre estas quatro classes não existe dependência além de uma composição entre a AnalyzeReader e Input.
+  
+  Isto demonstra que, apesar de utilizar a VTK envolva um número maior de classes sobre as quais o desenvolvedor deve ter conhecimento, ela proporciona um código muito mais enxuto e com baixa dependência entre as classes, representando um protótipo superior em qualidade de código.
+  
   \subsection{Planejamento abstrações da VTK para uso de CUDA e OpenCL}
-
+  Basicamente, todo processamento consiste de transferência dos dados dados de entrada à memória, processamento destes dados gerando outros dados de saída e, por fim, a transferência destes dados de saída para a memória.
+  
+  No caso, o objetivo é possibilitar a aplicação do método em GPU através da VTK. Para tanto, novas implementações das classes da VTK que estejam envolvidas nestas três partes do processamento do método descritas anteriormente. Mais especificamente as classes das quais a classe Tracer depende.
+  
+  Nesta classe a entrada é recebida em objetos de duas classes da VTK: vtkDataObject (campo vetorial); e vtkPolyData (pontos iniciais). Então, o método utilizado para integração é uma subclasse de vtkInitialProblemSolver para, por fim a classe vtkStreamLine realizar o processamento e devolver a saída em um vtkPolyData. Sendo estas as classes que devem ser abstraídas para GPU.
+  
 \section{Comparação de perfomance do método entre as implementações em CPU e GPU}
 Foram feitas comparações entre as implementações do método para CPU utilizando \textit{POSIX threads} com o método para GPU em CUDA. Estes resultados foram obtidos em duas CPUs Intel e GPUs NVIDIA diferentes a fim de comprovar o que foi afirmado anteriormente sobre os desempenhos do método em cada um destes ambientes.
 
