@@ -126,14 +126,14 @@ Antes de apresentar os detalhes das linguagens, é preciso destacar específicid
   
   O uso da memória dos disposistivos é abstraída por meio de buffers. Porém, no que diz respeito à hierarquia de memória, a arquitetura implementada pelo OpenCL é análoga a já descrita para a linguagem CUDA. A única diferença está na nomenclatura onde a memória local em OpenCL é equivalente à memória compartilhada em CUDA e a memória privada seria a memória local em CUDA. 
   
-  \subsection{Biblioteca VTK}
-  Atualmente na versão 5.10, a \textit{Visualization Toolkit} (ou \textit{VTK}), é uma poderosa biblioteca de computação gráfica muito utilizada para aplicações científicas (dentre estas aplicações está o  \textit{MedSquare} (\ref{medsquare}).
-  
-  Implementada na linguagem \textit{C++} utilizando orientação a objetos, ela fornece desde as classes capazes de representar trajetórias tridimensionais e campos vetoriais, até classes responsáveis pela interface gráfica com o usuário.
-  
-  Porém, este poder vem ao custo do desenvolvedor ter de compreender sua arquitetura de \textit{pipelines} e, ao menos, a interface das classes que utilizará. O que não é simples quando a documentação online é escassa ou já ficou obsoleta e a bibliografia é de difícil acesso.
-  
-  \subsubsection{Arquitetura de \textit{pipelines}}
+\section{Biblioteca VTK}
+Atualmente na versão 5.10, a \textit{Visualization Toolkit} (ou \textit{VTK}), é uma poderosa biblioteca de computação gráfica muito utilizada para aplicações científicas (dentre estas aplicações está o  \textit{MedSquare} (\ref{medsquare}).
+
+Implementada na linguagem \textit{C++} utilizando orientação a objetos, ela fornece desde as classes capazes de representar trajetórias tridimensionais e campos vetoriais, até classes responsáveis pela interface gráfica com o usuário.
+
+Porém, este poder vem ao custo do desenvolvedor ter de compreender sua arquitetura de \textit{pipelines} e, ao menos, a interface das classes que utilizará. O que não é simples quando a documentação online é escassa ou já ficou obsoleta e a bibliografia é de difícil acesso.
+
+  \subsection{Arquitetura de \textit{pipelines}}
   Um pipeline é um conjunto de elementos que ao atuarem em conjunto possibilitam desde a leitura dos dados de entrada até a exibição na tela da transformação feita sobre estes dados. Para isso sua arquitetura divide-se em quatro elementos chave representados pelas classes:
   \begin{itemize}
     \item \textit{vtkInformation} é a classe responsável por armazenar os meta dados do pipeline e encapsular os dados para troca de informação entre as demais classes;
@@ -141,13 +141,13 @@ Antes de apresentar os detalhes das linguagens, é preciso destacar específicid
     \item \textit{vtkAlgorithm} representa o algoritmo a ser executado pelo pipeline, como um filtro;
     \item e \textit{vtkExecutive} representa a lógica necessário para que o pipeline seja utilizado pelo programa, isto é, como se conectar a ele e como executá-lo.
   \end{itemize} 
-  
-  \subsubsection{Classes}
+
+  \subsection{Classes}
   \label{classes-vtk}
   Para a implementação do método são utlizadas diversas classes da biblioteca que em conjunto abstraem o campo vetorial e os pontos iniciais, aplicam o método e abstraem os pontos que compõe a fibra.
-  
+
   Todos os dados de entrada do algoritmo são armazenados direta ou indiretamente (através de herança) por meio de um objeto da classe \textit{vtkDataObject}. O campo vetorial é armazenado nesta classe, enquanto que a lista de pontos iniciais é armazenada por outro objeto da casse \textit{vtkPolyData} que é subclasse de \textit{vtkPoints} que, por sua vez, é subclasse de \textit{vtkDataSet} que, enfim, é subclasse de \textit{vtkDataObject}. Ou seja, esta é uma classe fundamental para o armazenamento de dados.
-  
+
   A aplicação do método é feita utilizando a classe \textit{vtkStreamLine} que por meio de heranças em cadeia, indiretamente herda de \textit{vtkAlgorithm}. Para operar, esta classe é composta pelos dados acima descritos, a determinação de um tamanho de passo e um integrador. Este integrador, no caso, é a \textit{vtkRungeKutta2} ou a \textit{vtkRungeKutta4}.
-  
+
   Por fim, o resultado do método é novamente obtido em um objeto da classe \textit{vtkPolyData} para ser renderizado na tela.
