@@ -2,14 +2,14 @@
 
 \section{Protótipo das implementações do método}
 \label{primeiroprototipo}
-A implementação do método foi toda feita utilizando orientação a objetos em C++, com excessão das funções específicas ao cálculo que possuem implementações, em CUDA, OpenCL e C++. Estas funções específicas ao cálculo consistem de operações básicas com vetores, aproximações para o campo vetorial e o método de Runge-Kutta em si. O código compartilhado entre as demais implementações vai desde as estruturas de dados até representações dos resultados em OpenGL.
+A implementação do método foi toda feita utilizando orientação a objetos em \textit{C++}, com excessão das funções específicas ao cálculo que possuem implementações, em \textit{CUDA}, \textit{OpenCL} e \textit{C++}. Estas funções específicas ao cálculo consistem de operações básicas com vetores, aproximações para o campo vetorial e o método de Runge-Kutta em si. O código compartilhado entre as demais implementações vai desde as estruturas de dados até representações dos resultados em \textit{OpenGL}.
 
-O código pode ser encontrado em seu repositório Git \newline(em \href{https://github.com/rafamanzo/runge-kutta}{https://github.com/rafamanzo/runge-kutta}) é organizado basicamente em quatro pastas:
+O código pode ser encontrado em seu repositório \textit{Git} \newline(em \href{https://github.com/rafamanzo/runge-kutta}{https://github.com/rafamanzo/runge-kutta}) é organizado basicamente em quatro pastas:
 \begin{itemize}
   \item \textbf{core} contém as três implementações do método nas pastas \textit{c}, \textit{cuda} e \textit{opencl}; além das estruturas de dados que repensentam a entrada (\textit{dataset.cpp}) e a saída do método (\textit{fiber.cpp}).
   \item \textbf{example-factories} contém os scripts que geram arquivos de entrada para o protótipo de campos vetoriais sintéticos como exemplos;
   \item \textbf{includes} contém todos os cabeçalhos necessários, facilitando sua inclusão;
-  \item \textbf{io} contém as classes que cuidam da entrada e saída do protótipo. A pasta \textit{gui} contém as abstrações utilizadas para a criação de uma interface gráfica com Glut e OpenGL.
+  \item \textbf{io} contém as classes que cuidam da entrada e saída do protótipo. A pasta \textit{gui} contém as abstrações utilizadas para a criação de uma interface gráfica com \textit{Glut} e \textit{OpenGL}.
 \end{itemize}
 
 \newpage
@@ -25,9 +25,9 @@ As interações entre todas as classes que compõe o protótipo podem ser vistas
   \subsection{Estruturas compartilhadas em C++}
   A estrutura mais básica é a \textit{vector} contida em \textit{include/dataset.h}, consistindo de três \textit{doubles}. Sua responsabilidade é representar tanto vetores quanto pontos no $\Re ^{3}$. Neste mesmo arquivo também está a representação da classe \textit{DataSet}, cujo uso é representar as informações de entrada referentes ao campo vetorial e encapsular seu acesso. Analogamente, a classe \textit{Fiber} é responsável por representar os resultados da aplicação do algoritmo.
   
-  Além destas abstrações de entrada e saída, existem classes que de fato são responsáveis pela entrada e saída do protótipo. A mais simples é a classe que cuida da entrada, \textit{Input}, que possui os métodos para ler um arquivo de texto que contenha as informações sobre o campo vetorial, pontos iniciais e tamanho de passo (conforme descrito no arquivo \textit{README} que acompanha o protótipo). Outra opção de entrada é o formato Analyze que é suportado pelo biblioteca $\textit{CImg}_{\ref{CImg}}$ e portanto o método da classe \textit{Input} que processa este tipo de entrada apenas faz uma chamada a esta biblioteca.
+  Além destas abstrações de entrada e saída, existem classes que de fato são responsáveis pela entrada e saída do protótipo. A mais simples é a classe que cuida da entrada, \textit{Input}, que possui os métodos para ler um arquivo de texto que contenha as informações sobre o campo vetorial, pontos iniciais e tamanho de passo (conforme descrito no arquivo \textit{README} que acompanha o protótipo). Outra opção de entrada é o formato Analyze que é suportado pelo biblioteca \textit{CImg} (\ref{CImg}) e portanto o método da classe \textit{Input} que processa este tipo de entrada apenas faz uma chamada a esta biblioteca.
   
-  Por fim, a última estrutura compartilhada entre as três implementações é a saída. A forma mais simples de visualizar os resultados é através do $\textit{gnuplot}_{\ref{gnuplot}}$ passando para este o arquivo \textit{rk2-vs-rk4} que é criado ao fim da execução do algoritmo. Por outro lado, a saída pode ser bastante mais complexa que apenas uma classe, como é a entrada, devido à visualização com \textit{Glut} e \textit{OpenGL}.
+  Por fim, a última estrutura compartilhada entre as três implementações é a saída. A forma mais simples de visualizar os resultados é através do \textit{gnuplot} (\ref{gnuplot}) passando para este o arquivo \textit{rk2-vs-rk4} que é criado ao fim da execução do algoritmo. Por outro lado, a saída pode ser bastante mais complexa que apenas uma classe, como é a entrada, devido à visualização com \textit{Glut} e \textit{OpenGL}.
   
   Esta visualização é composta das classes, aqui denomidas como primitivas, que contém representações de cilindros e cones (classes \textit{Cylinder} e \textit{Cone}) e as responsáveis por representar coleções destas classes (\textit{CyllinderCollection} e \textit{ConeCollection}). Estas classes primitivas contém principalmente informações sobre como renderizar estes objetos.
   
@@ -53,57 +53,57 @@ As interações entre todas as classes que compõe o protótipo podem ser vistas
     Ainda são checa as características GPU (quantidade de SMs) de forma a alocar toda sua capacidade de processamento sempre que possível. Similarmente é em CUDA checada a quantidade máxima de memória local que cada bloco pode ocupar para garantir que esta não seja excedida. Isto é algo com que o OpenCL já lida sem que o programador tenha que se preocupar.
      
   \subsection{Geração de campos vetoriais sintéticos}
-  Campos vetoriais extensos ocupam muito espaço em disco, mesmo, compactados para serem distribuídos de forma prática junto do protótipo. Então, para torna-los disponíveis junto com o protótipo, foram escritos scripts \textit{PHP} que os geram todos eles contidos dentro da pasta \textit{example-factories}.
+  Campos vetoriais extensos ocupam muito espaço em disco, mesmo, compactados para serem distribuídos de forma prática junto do protótipo. Então, para torná-los disponíveis junto com o protótipo, foram escritos scripts \textit{PHP} que os geram todos eles contidos dentro da pasta \textit{example-factories}.
   
   O campo mais simples gerado possui dimensões 128x128x20, representando uma rotação sobre o eixo z. Nele, o método é aplicado com tamanho de passo 0.1 e pontos iniciais: (0, 16, 10); (0, 32, 10); (0, 48, 10); (0, 64, 10); (0, 80, 10); (0, 96, 10); e  (0, 112, 10). O segundo campo é uma inversão periódica no sentido da coordenada y, num campo de tamanho 512x512x128. A aplicação do método sobre ele se dá com tamanho de passo 0.2 e tem um único ponto inicial: (0, 64, 64).
   
-  Os dois campos anteriores são úteis para vrificar se o método se comporta como esperado, mas são pouco úteis para medir a performance e não reproduzem uma variedade de casos. Portanto, os dois exemplos a seguir procuram suprir estas carências.
+  Os dois campos anteriores são úteis para verificar se o método se comporta como esperado, mas são pouco úteis para medir a performance e não reproduzem uma variedade de casos. Portanto, os dois exemplos a seguir procuram suprir estas carências.
   
   O terceiro exemplo é um campo com direções aleatórias com dimensão 256x256x256. Para este campo o método é aplicado com tamanho de passo 0.1 e também são criados 256 pontos iniciais com posições aleatórias.
   
   Por fim, no último campo as direções possuem uma distribuição normal com média 10 e variância 1 e sua dimensão é 256x256x256. Ele possui um único ponto inicial aleatório e tamanho de passo 0.1.
 
 \section{Protótipo utilizando a biblioteca VTK}
-  Foi utilizada a versão 5.8 da biblioteca VTK (\ref{vtk-5.8}) novamente com C++ para gerar um segundo protótipo equivalente ao anterior (\ref{primeiroprototipo}), capaz de carregar um campo vetorial no formato Analyze e aplicar os métodos de ordem 2 e 4 já implementados na VTK para CPU. Assim, permitindo o planejamento das abstrações necessárias para criar implementações em GPU.
+  Foi utilizada a versão 5.8 da biblioteca \textit{VTK} (\ref{vtk-5.8}) novamente com \textit{C++} para gerar um segundo protótipo equivalente ao anterior (\ref{primeiroprototipo}), capaz de carregar um campo vetorial no formato Analyze e aplicar os métodos de ordem 2 e 4 já implementados na \textit{VTK} para \textit{CPU}. Assim, permitindo o planejamento das abstrações necessárias para criar implementações em \textit{GPU}.
   
   Neste protótipo, muito do código gerado para o primeiro foi reaproveitado. Seu código fonte pode ser encontrado, assim como o primeiro, em seu repositório Git (\href{https://github.com/rafamanzo/runge-kutta-vtk}{https://github.com/rafamanzo/runge-kutta-vtk}).
   
   \subsection{Estrutura}
-  A estrutura deste protótipo pode ser entendida como uma simplificação da primeira, contando com apenas 4 classes utilizadas para interagir com as diversas classes da VTK:
+  A estrutura deste protótipo pode ser entendida como uma simplificação da primeira, contando com apenas 4 classes utilizadas para interagir com as diversas classes da \textit{VTK}:
   \begin{itemize}
-    \item \textbf{AnalyzeReader} é responsável por utilizar a bibliteca \textit{CImg} (também utilizada no primeiro) para ler o arquivo no formato Analyze fornecido na entrada e criar com isto criar uma instância da classe \textit{vtkImageData}, com a qual o VTK poderá trabalhar;
-    \item \textbf{Input} recebe os argumentos de entrada e processá-los adequadamente;
+    \item \textbf{AnalyzeReader} é responsável por utilizar a bibliteca \textit{CImg} (também utilizada no primeiro) para ler o arquivo no formato Analyze fornecido na entrada e com isto criar uma instância da classe \textit{vtkImageData}, com a qual o \textit{VTK} poderá trabalhar;
+    \item \textbf{Input} recebe os argumentos de entrada e os processa, carregando o campo vetorial inclusive;
     \item \textbf{Tracer} realiza a aplicação do método;
     \item \textbf{Renderer} recebe o resultado da aplicação do método e o exibe na tela já com uma interface que permite escala e rotações.
   \end{itemize}
 
-  As interações entre estas classes e destas com a VTK são ilustradas pelo diagrama de classes simplificado:
+  As interações entre estas classes e destas com a \textit{VTK} são ilustradas pelo diagrama de classes simplificado:
   
   \begin{figure}[!h]
     \begin{center}
       \includegraphics[width=125mm, height=60mm]{images/diagramadeclassevtk.png}
       \label{fig:diagramadeclassevtk}
-      \caption{Diagrama de classes simplificado para o protótipo com VTK}
+      \caption{Diagrama de classes simplificado para o protótipo com \textit{VTK}}
     \end{center}
   \end{figure}
   
-  É possível notar que o número de classes necessárias aumentou com relação ao protótipo anterior (\ref{primeiroprototipo}). Porém, boa parte das classes envolvidas neste protótipo são da VTK e apenas as quatro descritas anteriormente tiveram de ser realmente escritas. E mesmo entre estas quatro classes não existe dependência além de uma composição entre a AnalyzeReader e Input.
+  É possível notar que o número de classes necessárias aumentou com relação ao protótipo anterior (\ref{primeiroprototipo}). Porém, boa parte das classes envolvidas neste protótipo são da \textit{VTK} e apenas as quatro descritas anteriormente tiveram de ser realmente escritas. E mesmo entre estas quatro classes não existe dependência além de uma composição entre a AnalyzeReader e Input.
   
-  Isto demonstra que, apesar de utilizar a VTK envolva um número maior de classes sobre as quais o desenvolvedor deve ter conhecimento, ela proporciona um código muito mais enxuto e com baixa dependência entre as classes, representando um protótipo superior em qualidade de código.
+  Isto demonstra que, apesar de utilizar a \textit{VTK} envolver um número maior de classes sobre as quais o desenvolvedor deve ter conhecimento, ela proporciona um código muito mais enxuto e com baixa dependência entre as classes, representando um protótipo superior em qualidade de código.
   
   \subsection{Planejamento abstrações da VTK para uso de CUDA e OpenCL}
   Basicamente, todo processamento consiste de transferência dos dados dados de entrada à memória, processamento destes dados gerando outros dados de saída e, por fim, a transferência destes dados de saída para a memória.
   
-  No caso, o objetivo é possibilitar a aplicação do método em GPU através da VTK. Para tanto, novas implementações das classes da VTK que estejam envolvidas nestas três partes do processamento do método descritas anteriormente. Mais especificamente as classes das quais a classe Tracer depende.
+  No caso, o objetivo é possibilitar a aplicação do método em \textit{GPU} através da \textit{VTK}. Para tanto, novas implementações das classes da \textit{VTK} que estejam envolvidas nestas três partes do processamento do método descritas anteriormente. Mais especificamente as classes das quais a classe \textit{Tracer} depende.
   
-  Nesta classe a entrada é recebida em objetos de duas classes da VTK: vtkDataObject (campo vetorial); e vtkPolyData (pontos iniciais). Então, o método utilizado para integração é uma subclasse de vtkInitialProblemSolver para, por fim a classe vtkStreamLine realizar o processamento e devolver a saída em um vtkPolyData. Sendo estas as classes que devem ser abstraídas para GPU.
+  Nesta classe a entrada é recebida em objetos de duas classes da \textit{VTK}: \textit{vtkDataObject} (campo vetorial); e \textit{vtkPolyData} (pontos iniciais). Então, o método utilizado para integração é uma subclasse de \textit{vtkInitialProblemSolver} para, por fim a classe \textit{vtkStreamLine} realizar o processamento e devolver a saída em um \textit{vtkPolyData}. Sendo estas as classes que devem ser abstraídas para \textit{GPU}.
   
 \section{Comparação de perfomance do método entre as implementações em CPU e GPU}
-Foram feitas comparações entre as implementações do método para CPU utilizando \textit{POSIX threads} com o método para GPU em CUDA. Estes resultados foram obtidos em duas CPUs Intel e GPUs NVIDIA diferentes a fim de comprovar o que foi afirmado anteriormente sobre os desempenhos do método em cada um destes ambientes.
+Foram feitas comparações entre as implementações do método para \textit{CPU} utilizando \textit{POSIX threads} com o método para \textit{GPU} em \textit{CUDA}. Estes resultados foram obtidos em duas \textit{CPUs} Intel e \textit{GPUs} NVIDIA diferentes a fim de comprovar o que foi afirmado anteriormente sobre os desempenhos do método em cada um destes ambientes.
 
   \subsection{Metodologia}
     \subsubsection{Dados de entrada}
-    Para isto foi gerado um campo vetorial sintético com dimensões de 512 pontos no eixo x, 256 pontos no eixo y e outros 256 pontos no eixo z. Todos com o mesmo vetor direção $(0, 1, 0)$ e até 1024 pontos iniciais da forma $(x, 0, 128)$, onde $0 \leq x \leq 512$ e $z = 128$ ou $z = 129$.
+    Para isto foi gerado um campo vetorial sintético com dimensões de 512 pontos no eixo x, 256 pontos no eixo y e outros 256 pontos no eixo z. Todos com o mesmo vetor direção $(0, 1, 0)$ e até 1024 pontos iniciais da forma $(x, 0, z)$, onde $0 \leq x \leq 512$ e $z = 128$ ou $z = 129$.
     
     Os testes foram realizados para os primeiros 16, 32, 64, 128 e 256 pontos iniciais a fim de se obter como que o método escala em cada um dos ambientes.
     
@@ -116,7 +116,7 @@ Foram feitas comparações entre as implementações do método para CPU utiliza
     Cada medição consistiu em executar trinta vezes cada implementação para estes dados (restringindo a quantidade de pontos iniciais conforme descrito). Então, obtendo a média e desvio padrão do tempo em segundos consumidos em operações de transferência de dados, alocação de memória e processamento dos pontos que compõe a trajetória, bem como um histograma.
 
   \subsection{Resultados em CPU}
-  Foram realizados os testes em duas CPUs Intel diferentes:
+  Foram realizados os testes em duas \textit{CPUs} Intel diferentes:
   \begin{itemize}
     \item Core 2 Duo E7400, com dois núcleos físicos e lógicos a 2.8GHz cada;
     \item Core i7-2620M, com quatro núcleos físicos e lógicos a 2.7GHz cada.
@@ -339,7 +339,7 @@ Foram feitas comparações entre as implementações do método para CPU utiliza
     Com desvio padrão baixo como o encontrontado, em todos os histogramas a concentração se dá toda sobre a média. Esta característica observada nos desvios padrões também são um forte indicativo de que a média é uma boa estatística para ser utilizada.    
   
   \subsection{Conclusão}
-  Os tempos de execução com crescimento exponencial do método em CPU refletem claramente o custo de troca de contexto neste ambiente. Ou seja, a CPU se adapataria melhor a um algoritmo diferente com número fixo de threads igual ao de núcleos físicos do processador. Também no que diz respeito à CPU é evidente o poder de um barramento dedicado para comunicação, onde o tempo gasto em operações na memória praticamente não variou apesar do crescimento exponencial do problema.
+  Os tempos de execução com crescimento exponencial do método em \textit{CPU} refletem claramente o custo de troca de contexto neste ambiente. Ou seja, a \textit{CPU} se adapataria melhor a um algoritmo diferente com número fixo de threads igual ao de núcleos físicos do processador. Também no que diz respeito à \textit{CPU} é evidente o poder de um barramento dedicado para comunicação, onde o tempo gasto em operações na memória praticamente não variou apesar do crescimento exponencial do problema.
   
   \begin{figure}[!h]
     \begin{center}
@@ -362,7 +362,7 @@ Foram feitas comparações entre as implementações do método para CPU utiliza
     \end{center}
   \end{figure}
   
-  Este gráfico ilustra um comportmento esperado para GPU, onde no início para um número pequeno de pontos observamos tempo constante, por estar aquém da capacidade do hardware. Então, conforme o problema continua crescendo exponencialmente, o tempo médio começa a crescer, mas linearmente.
+  Este gráfico ilustra um comportmento esperado para \textit{GPU}, onde no início para um número pequeno de pontos observamos tempo constante, por estar aquém da capacidade do hardware. Então, conforme o problema continua crescendo exponencialmente, o tempo médio começa a crescer, mas linearmente.
   
   \newpage
   O comportamento linear descrito também pode ser observado no que diz respeito às operações de memória.
@@ -375,7 +375,7 @@ Foram feitas comparações entre as implementações do método para CPU utiliza
     \end{center}
   \end{figure}
   
-  Com estes dados em mãos fica claro que o método em \textit{GPU} não é apenas melhor em comparação com seu equivalente em \textit{CPU}, mas é muito melhor em qualquer para uma quantidade de pontos não muito tão grande (apartir de 64).
+  Com estes dados em mãos fica claro que o método em \textit{GPU} não é apenas melhor em comparação com seu equivalente em \textit{CPU}, mas é muito melhor em qualquer caso para uma quantidade de pontos não tão grande (apartir de 64).
   
   Mesmo com um resultado bastante satisfatório, ainda assim, é possível melhorá-lo abrindo mão de precisão e usando a memória \textit{RAM} em conjunto com a da placa gráfica. Para isto, foram feitas novas melhorias e testes com base no método de ordem 4 para a placa GTS 450.
 
@@ -493,7 +493,7 @@ Foram feitas comparações entre as implementações do método para CPU utiliza
   
   
   \subsection{Avaliação da melhor combinação}
-  O primeiro conjunto de testes em GPU nos permite concluir que, de fato, o método de ordem 2 consome metade do tempo acaba consumindo metado do tempo de processamento que o de ordem 4 ao custo de perda de precisão. Porém isto pode ser compensado, quando necessário, aumentando o tamanho do passo do método.
+  O primeiro conjunto de testes em \textit{GPU} nos permite concluir que, de fato, o método de ordem 2 consome metade do tempo de processamento que o de ordem 4 ao custo de perda de precisão. Porém isto pode ser compensado, quando necessário, aumentando o tamanho do passo do método.
   
   Analisando as melhorias, apesar de  não terem implicado em mais desempenho, o uso de precisão simples e memória presa trouxeram ganhos do ponto de vista do espaço em memória necessário para o processamento do problema, permitindo o processamento de problemas ainda maiores.
   

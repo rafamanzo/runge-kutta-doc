@@ -40,9 +40,7 @@ Logo, dado um Problema de Valor Inicial conforme descrito acima com uma única e
 \section{Campo vetorial como discretização de EDOs}
 Se calcularmos o valor de cada EDO em um conjunto finito de pontos $P$ obteremos então um campo vetorial que pode ser compreendido como a discretização destas equações neste conjunto limitado.
   \subsection{Algoritmos de aproximação}\label{aproximacao}
-  Porém esta discretização exige uma aproximação para o caso onde desejamos obter um o valor da equação, em um ponto não definido no campo vetorial.
-
-  \label{exemplo-campo}Como, por exemplo, o caso onde as coordenadas de todos os pontos são inteiros e o ponto desejado e alguma de suas coordenadas ao invés de ser inteira é um racional.
+  Porém esta discretização exige uma aproximação para o caso onde desejamos obter um o valor da equação, em um ponto não definido no campo vetorial. \label{exemplo-campo}Como, por exemplo, o caso onde as coordenadas de todos os pontos são inteiros e o ponto desejado tem alguma de suas coordenadas racional.
 
     \subsubsection{Nearest Neighbour}
     No caso do exemplo acima (\ref{exemplo-campo}), este algoritmo simplesmente aproxima o ponto desejado para o ponto mais próximo a este que esteja definido no campo vetorial.
@@ -127,7 +125,7 @@ Antes de apresentar os detalhes das linguagens, é preciso destacar específicid
   O uso da memória dos disposistivos é abstraída por meio de buffers. Porém, no que diz respeito à hierarquia de memória, a arquitetura implementada pelo OpenCL é análoga a já descrita para a linguagem CUDA. A única diferença está na nomenclatura onde a memória local em OpenCL é equivalente à memória compartilhada em CUDA e a memória privada seria a memória local em CUDA. 
   
 \section{Biblioteca VTK}
-Atualmente na versão 5.10, a \textit{Visualization Toolkit} (ou \textit{VTK}), é uma poderosa biblioteca de computação gráfica muito utilizada para aplicações científicas (dentre estas aplicações está o  \textit{MedSquare} (\ref{medsquare}).
+Atualmente na versão 5.10, a \textit{Visualization Toolkit} (ou \textit{VTK}), é uma poderosa biblioteca de computação gráfica muito utilizada para aplicações científicas (dentre estas aplicações está o  $\textit{MedSquare}^{\ref{medsquare}}$).
 
 Implementada na linguagem \textit{C++} utilizando orientação a objetos, ela fornece desde as classes capazes de representar trajetórias tridimensionais e campos vetoriais, até classes responsáveis pela interface gráfica com o usuário.
 
@@ -139,7 +137,7 @@ Porém, este poder vem ao custo do desenvolvedor ter de compreender sua arquitet
     \item \textit{vtkInformation} é a classe responsável por armazenar os meta dados do pipeline e encapsular os dados para troca de informação entre as demais classes;
     \item \textit{vtkDataObject} contém os dados sobre os quais o pipeline deve operar;
     \item \textit{vtkAlgorithm} representa o algoritmo a ser executado pelo pipeline, como um filtro;
-    \item e \textit{vtkExecutive} representa a lógica necessário para que o pipeline seja utilizado pelo programa, isto é, como se conectar a ele e como executá-lo.
+    \item e \textit{vtkExecutive} representa a lógica necessária para que o pipeline seja utilizado pelo programa, isto é, como se conectar a ele e como executá-lo.
   \end{itemize} 
 
   \subsection{Classes}
