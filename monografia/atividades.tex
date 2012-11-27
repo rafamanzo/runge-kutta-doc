@@ -101,6 +101,8 @@ As interações entre todas as classes que compõe o protótipo podem ser vistas
 \section{Comparação de perfomance do método entre as implementações em CPU e GPU}
 Foram feitas comparações entre as implementações do método para \textit{CPU} utilizando \textit{POSIX threads} com o método para \textit{GPU} em \textit{CUDA}. Estes resultados foram obtidos em duas \textit{CPUs} Intel e \textit{GPUs} NVIDIA diferentes a fim de comprovar o que foi afirmado anteriormente sobre os desempenhos do método em cada um destes ambientes.
 
+A elaboração detes testes contou com os conselhos do mestrando Paulo Carlos Santos no IME-USP e consulta ao conteúdo de sua qualificação: \textit{Ferramentas para Extração de Informações de Desempenho em GPUs NVIDIA}.
+
   \subsection{Metodologia}
     \subsubsection{Dados de entrada}
     Para isto foi gerado um campo vetorial sintético com dimensões de 512 pontos no eixo x, 256 pontos no eixo y e outros 256 pontos no eixo z. Todos com o mesmo vetor direção $(0, 1, 0)$ e até 1024 pontos iniciais da forma $(x, 0, z)$, onde $0 \leq x \leq 512$ e $z = 128$ ou $z = 129$.
@@ -450,7 +452,6 @@ Foram feitas comparações entre as implementações do método para \textit{CPU
   \end{small}  
   \hspace{1mm}\newline
   
-  \newpage
   \begin{small}
   \noindent Desvio padrão dos tempo de execução para processamento em segundos:\\
   \begin{tabular}{| c | c | c | c | c | c | c | c |}

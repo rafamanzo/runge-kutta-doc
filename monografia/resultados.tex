@@ -41,7 +41,26 @@ nvcc main.o input.o dataset.o fiber.o output.o cylinder.o window_manager.o scene
     \end{center}
   \end{figure}
   
-  \newpage
+  Indo além, os testes deste protótipo com ressonâncias reais gerou o mesmo resultado do software de exploração de imagens médicas BioImage Suite (\ref{bioimage}), como podemos observar a seguir.
+  
+  \begin{figure}[!h]
+    \begin{center}
+      \includegraphics[width=100mm, height=72mm]{images/bioimage-dti.png}
+      \label{fig:bioimage-dti}
+      \caption{Resultado da tractografia realizada pelo BioImage Suite em uma ressonância magnética.}
+    \end{center}
+  \end{figure}
+  
+  \begin{figure}[!h]
+    \begin{center}
+      \includegraphics[width=100mm, height=72mm]{images/prototype-dti.png}
+      \label{fig:prototype-dti}
+      \caption{Resultado da tractografia realizada pelo pelo protótipo na mesma ressonância magnética da figura 4.2.}
+    \end{center}
+  \end{figure}
+  
+  Como podemos observar, o resultado (em vermelho) obtido por ambos é o mesmo, confirmando a corretude do protótipo gerado comparando-o a um software já consolidado.
+  
   \subsection{Protótipo utilizando a VTK}
   Este protótipo utilizou a versão 5.6 da biblioteca \textit{VTK} para servir como uma prova de que é possível implementar o método dentro da biblioteca, posteriormente sendo útil para o planejamento do que deve ser feito para extende-lo em \textit{GPU} no futuro.
   
@@ -79,8 +98,8 @@ nvcc main.o input.o dataset.o fiber.o output.o cylinder.o window_manager.o scene
   
   \begin{figure}[!h]
     \begin{center}
-      \includegraphics[width=72mm, height=100mm]{images/fibraecampo-vtk.png}
+      \includegraphics[width=100mm, height=72mm]{images/fibraecampo-vtk.png}
       \label{fig:fibraecampo-vtk}
-      \caption{Campo 32x32x32 com duas hélices. Ao chegar na intersecção, a fibra se desvia para um fora do campo e o método entende que terminou de propaga-la devido à baixa intensidade dos vetores.}
+      \caption{Campo 32x32x32 com duas hélices. Ao chegar na intersecção, a fibra se desvia para um fora do campo e o método entende que terminou de propaga-la devido à baixa intensidade dos vetores ou se desvia para outraq hélice devido à indeterminação do campo na intersecção.}
     \end{center}
   \end{figure}
