@@ -21,8 +21,7 @@
 
 \title{Implementação do Método de Integração Numérica Runge-Kutta em GPGPU para Aplicações Científicas}
 \author{Giancarlo Rigo\\
-        Rafael Reggiani Manzo\\
-        \textbf{Surpevisor:} Prof. Doutor Marcel P. Jackowski}
+        Rafael Reggiani Manzo}
 
 \begin{document}
 \maketitle
@@ -106,6 +105,7 @@
 \end{frame}
 
 \subsection{GPGPU}
+
 \begin{frame}
   \frametitle{GPGPU}
   \framesubtitle{General Purpose Computing on Graphics Processing Units}
@@ -120,6 +120,49 @@
   Então este é um ambiente bastante propenso para implementarmos nosso algoritmo e obtermos uma implementação do método de Runge-Kutta em tempo real.
 \end{frame}
 
+\begin{frame}
+  \frametitle{Paralelismo}
+  \framesubtitle{Conceito}
+  
+  \begin{itemize}
+    \item Em computação, paralelismo consiste em executar trechos diferentes de um algoritmo ao mesmo tempo ao invés de fazê-lo sequencialmente;
+    \item Por exemplo, podemos pensar na soma de oito números;
+    \item Sequencialmente, se cada soma consome uma unidade de tempo, esta soma tomaria 6 unidades;
+    \item Porém, realizando as somas duas a duas em paralelo reduzimos este tempo pela metade;
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Paralelismo}
+  \framesubtitle{Exemplo ilustrado}
+
+  2 + 2 + 2 + 2 + 2 + 2 + 2 + 2
+
+  \begin{columns}
+    \begin{column}{.3\textwidth}
+      \textbf{Soma sequencial}
+    
+      \begin{enumerate}
+        \item 2 + 2 = 4;
+        \item 4 + 2 = 6;
+        \item 6 + 2 = 8;
+        \item 8 + 2 = 10;
+        \item 10 + 2 = 12;
+        \item 12 + 2 = 14;
+        \item 14 + 2 = 16.
+      \end{enumerate}
+    \end{column}
+    \begin{column}{.7\textwidth}
+      \textbf{Soma em paralelo}
+    
+      \begin{enumerate}
+        \item (2+2) + (2+2) + (2+2) + (2+2) = 4 + 4 + 4 + 4;
+        \item (4+4) + (4+4) = 8 + 8;
+        \item (8+8) = 16.
+      \end{enumerate}
+    \end{column}
+  \end{columns}
+\end{frame}
 \begin{frame}
   \frametitle{Implementação de algoritmos gerais em GPU}
   \begin{itemize}
@@ -152,44 +195,6 @@
     \end{itemize}
   \end{column}
 \end{columns}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Características importantes da arquitetura da GPU}
-  \framesubtitle{Geral}
-  
-  \begin{itemize}
-    \item O trecho de código executado na GPU é chamado de \textit{kernel};
-    \item Um mesmo \textit{kernel} possui várias instâncias sendo executadas concorrentemente. Estas instâncias podem ser agrupadas em até dois níveis;
-    \item Existem quatro níveis diferentes de memória nas GPUs com diferentes escopos e velocidades de acesso;
-    \item A GPU se encarrega do escalonamento.
-  \end{itemize}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Características importantes da arquitetura da GPU}
-  \framesubtitle{CUDA e NVIDIA}
-  
-  \begin{itemize}
-    \item Cada instância de um \textit{kernel} é chamada de \textit{thread} que por sua vez podem estar agrupadas em blocos (\textit{blocks}) que, por fim, se agrupam em grades (\textit{grids});
-    \item Seus níveis de memória são: \textbf{local} (exclusiva de cada \textit{thread} e muito rápida), \textbf{compartilhada} (rápida e todas as \textit{threads} no mesmo bloco têm acesso a ela), \textbf{constante} (todas as \textit{threads} de todos os blocos leêm, mas é lenta) e \textbf{global} (todas as \textit{threads} de todos os blocos leêm e escrevem, muito lenta);
-    \item Os núcleos da GPU estão agrupados em SMs (\textit{stream multiprocessors}) cada um com uma memória compartilhada dedicada;
-    \item Todas as threads de um bloco são necessariamente escalonadas para o mesmo SM;
-    \item Sua menor unidade de escalonamento é um \textit{warp}, que corresponde a um conjunto de 16 \textit{threads}.
-  \end{itemize}
-
-\end{frame}
-
-\begin{frame}
-  \frametitle{Características importantes da arquitetura da GPU}
-  \framesubtitle{OpenCL}
-  
-  \begin{itemize}
-    \item Cada instância de um \textit{kernel} é chamada de item de trabalho (\textit{work-item)} que podem ser agupadas em grupos de trabalho (\textit{work-groups});
-    \item Por ser multiplataforma, existe um nível superior que é o contexto (\textit{context}). Ele, além de agrupar grupos de trabalho, agrupa todos os dispositivos e suas memórias;
-    \item Seus níveis de memória são: \textbf{privada} (exclusiva de cada \textit{thread} e muito rápida), \textbf{local} (rápida e todas as \textit{threads} no mesmo bloco têm acesso a ela), \textbf{constante} (todas as \textit{threads} de todos os blocos leêm, mas é lenta) e \textbf{global} (todas as \textit{threads} de todos os blocos leêm e escrevem, muito lenta);
-  \end{itemize}
-
 \end{frame}
 
 \section{Motivação}
@@ -264,6 +269,20 @@
 \end{frame}
 
 \subsection{Trajetórias de fibras de substância branca cerebral utilizando ressonância magnética}
+\begin{frame}
+  \frametitle{Tractografia}
+  \framesubtitle{Imagens Por Difusão de Tensores}
+  
+  \begin{itemize}
+    \item São obtidas através do resultado da análise de como prótons interagem com as moléculas, geralmente água;
+    \item Permitindo a análise do processo de difusão destas;
+    \item Estas imagens podem ter diferentes dimensões em quantidade de pontos e espaçamentos entre estes pontos, dependendo de como foi calibrado o equipamento de ressonância magnética;
+    \item Uma resolução usual para imagens de um coração é a de 256 pontos no eixo x, outros 256 no eixo y e mais 128 pontos no eixo z, com espeçamento por volta de 5mm entre cada ponto.
+  \end{itemize}
+
+  
+\end{frame}
+
 \begin{frame}
   \frametitle{Tractografia}
   \framesubtitle{Fibra}
