@@ -1,5 +1,82 @@
 \chapter{PME2603 - Tecnologia e Desenvolvimento Social II}
 \section{Introdução}
-\section{Conceitos e tecnologias estudadas}
-\section{Resultados}
+A disciplina de Tecnologia e Desenvolvimento Social II (PME2603) é oferecia pelo departamento de engenharia mecânica da Escola Politécnica como uma disciplina optativa livre para toda a USP. Os docentes responsáveis por ela, Antonio Luis de Campos Mariani e Douglas Lauria fazem parte do projeto PoliCidadã (\ref{policidada}).
+
+Seu objetivo é desenvolver projetos de tecnologia com cunho social. Ou seja, através da aplicação de tecnologia antender demandas de membros da sociedade que não são o foco da empresas que desenvolvem tecnologia.
+
+Neste contexto, os docentes nos chamaram a atenção para o contexto social que esta monografia têm ao viabilizar que softwares livres para exploração de imagens médicas agreguem a funcionalidade de tractografia em tempo real disponível apenas em softwares proprietários e com custo elevado.
+
+\section{Objetivos}
+Assim, com esta possibilidade em vista foram levantados dados sobre os custos dos softwares que realizam a exploração de imagens médicas e qual seria o impacto para a sociedade da disponibilização gratuita desta tecnologia.
+
+Além disto, para permitir uma maior compreensão do projeto, foram abordados temas específicos de computação que durante a monografia são assumidos de conheciento do leitor mas que, neste novo contexto, não são populares.
+
+\section{Conceitos}
+  \subsection{Custos de software}
+  Os softwares para exploração de imagens médicas, além da tractografia, oferecem diversos outros recursos para exploração de imagens. Desta forma, os custos aqui expostos dizem respeito à todo o software e não só apenas à funcionalidade.
+  
+  No Brasil poucas empresas trabalham neste ramo devido à escassez de pessoas capacitadas e também à popularização da ressonância magnética que começa a acontecer apenas agora.
+  
+  Uma destas empresas é a Artis (\ref{artis}), com sedes em São Paulo e Brasília, com a qual conseguimos entrar em contato e levantar um custo total de software mais hardware de R\$ 300.000 para a solução deles nacional e outra, de seu concorrente mais forte importada do canada, com custo aproximado de R\$ 1.000.000.
+  
+  O hardware consiste de um computador, um conjunto de câmeras e guias cirúrgicas. Estimando seus preços, o computador fica em torno de R\$ 2000, o conjunto de câmeras mais R\$ 2.000, e as guias cirúrgicas por volta de R\$ 50.000, totalizando R\$ 54.000. Isto leva a um custo estimado de R\$ 246.000 para a solução nacional.
+  
+  Uma vez que ninguém no ramo revela seus preços e como eles são compostos, obviamente, isto é apenas uma estimativa, feita com base em conversas informais, mas é suficiente para o propósito de dimensionar o valor do software nestes produtos, que compõe cerca de 80\% do custo.
+  
+  Valor que para países como o Brasil são extremamente elevados, principalmente para o sistema público de saúde. Desta forma um software livre para explorar estas imagens é fundamental para tornar este tipo de recurso médico acessível.
+  
+  \subsection{Paralelismo}
+    Na parte objetiva da monografia o termo paralelismo foi empregado diversas vezes para descrever uma propriedade do algoritmo responsável pela tractografia que permite seu processamento em tempo real.
+    
+    Este é um conceito de computação que descreve quando um algoritmo possui trechos que podem ser executados simultaneamente. Ou seja, dois ou mais trechos do algoritmo são executados ao mesmo tempo em processadores diferentes.
+    
+    Hoje, onde processadores possuem ao menos dois núcleos e alguns chegam até a dezesseis, a execução em paralelo dos algoritmos é de suma importância para se tirar proveito de todo o potencial do hardware.
+  
+    \subsubsection{Teoria}
+    Paralelismo se baseia fortemente na idéia de divisão e conquista. Ou seja, um problema grande que pode ser subdividido em problemas menores e a combinação do resultado detes subproblemas pequenos gera o resultado do primeiro problema maior. Em paralelismo, cada um destes subproblemas é resolvido simultânemente.
+    
+    Porém, escrever algoritmos paralelos é mais complexo que escrever algoritmos sequenciais. Isso acontece pois ao desenvolver estes algoritmos, quando os subproblemas possuem alguma dependência (um subproblema depende de um resultado intermediário de outro por exemplo) entre si é preciso pensar em como sincronizar as diversas instâncias sendo executadas simultâneamente a fim de garantir uma resposta correta.
+    
+    Este tipo de problema, conhecido como exclusão mútua, pode ser compreendido como dois individúos que desejam utilizar um recurso ao mesmo tempo. Porém se mais de um indivíduo utilizar este recurso ao mesmo tempo, este se desintegra. Então, uma solução seria o primeiro indivíduo a chegar deixa um aviso de que está utilizando o recurso e quando terminar o retira. Os demais a chegarem esperam o aviso ser retirado e um a um podem utilizar o recurso garantindo sua integrigade.
+    
+    Contudo, quando um indivíduo esquece de remover seu aviso, todos os demais esperarão indefinidamente e nunca poderão utlizar o recurso, causando um outro problema que deve ser levado em conta conhecido por \textit{deadlock}.
+    
+    \subsubsection{Exemplo}
+    
+    Uma forma simples de ilustrar o poder do paralelismo é pensando na soma de números. Tomemos oito números dois e calculemos sua soma sequencialmente:
+    \begin{enumerate}
+      \item 2 + 2 = 4;
+      \item 4 + 2 = 6;
+      \item 6 + 2 = 8;
+      \item 8 + 2 = 10;
+      \item 10 + 2 = 12;
+      \item 12 + 2 = 14;
+      \item 14 + 2 = 16.
+    \end{enumerate}
+    
+    Considerando que cada soma consome uma unidade de tempo para ser executada, o tempo necessário foi sete. Agora resolvamos o mesmo problema, mas compreendendo que os números podem ser agrupados dois a dois sem alterar o resultado:
+    \begin{enumerate}
+      \item (2+2) + (2+2) + (2+2) + (2+2) = 4 + 4 + 4 + 4
+      \item (4+4) + (4+4) = 8 + 8;
+      \item (8+8) = 16.
+    \end{enumerate}
+    
+    Desta forma, foi obtido o mesmo resultado mas consumindo apenas 3 unidades de tempo.
+  
+  \subsection{Processamento geral na unidade de processamento gráfico}
+  A unidade de processamento gráfico, mais conhecida por sua sigla em inglês \textit{GPU} (\textit{Graphics Processing Unit}), é um hardware desenvolvimento para o processamento de imagens. Como imagens em geral são grandes matrizes, este é um hardware especializado em trabalhar com operações sobre matrizes.
+  
+  O princípio da computação de propósito geral na unidade de processamento gráfico (\textit{GPGPU - General Puporse computing on Graphics Processing Unit}), ou seja algoritmos quaisquer ao invés de apenas os de processamento de imagens, se deu com desenvolvedores realmente convertendo o seus algoritmos em termos de operações com matrizes.
+  
+  Felizmente com a popularização deste tipo de uso da placa gráfica, surgiram arquiteturas melhores para se trabalhar. Hoje as mais difundidas são CUDA e OpenCL. A primeira é exclusiva para placas gráficas NVIDIA sendo de compreensão mais simples, sendo propriedade desta. Enquanto que a segunda é livre e se propõe a funcionar para qualquer hardware, sendo capaz de realizar processamento.
+
+\section{Conclusão}
+Desta forma, o produto da monografia tendo em vista a avaliação de custos de software para exploração de imagens médicas, representa um passo importante para tornar esta tecnologia acessível à toda a população.
+
+Da mesma forma, o detalhamento dos tópicos comuns à computação de parapelismo e \textit{GPGPU} visam tornar estes resultados mais acessíveis a pessoas de outras áreas que possam desejar aproveitar este trabalho.
+
 \section{Referências}
+\begin{itemize}
+  \item\label{policidada} \href{http://policidada.poli.usp.br/}{PoliCidadã - http://policidada.poli.usp.br/}
+  \item\label{artis} \href{http://www.artis.com.br/eximius/index\_eximius.php}{Artis - http://www.artis.com.br/eximius/index\_eximius.php}
+\end{itemize}
