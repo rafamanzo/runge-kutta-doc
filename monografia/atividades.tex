@@ -98,7 +98,7 @@ As interações entre todas as classes que compõe o protótipo podem ser vistas
   
   Nesta classe a entrada é recebida em objetos de duas classes da \textit{VTK}: \textit{vtkDataObject} (campo vetorial); e \textit{vtkPolyData} (pontos iniciais). Então, o método utilizado para integração é uma subclasse de \textit{vtkInitialProblemSolver} para, por fim a classe \textit{vtkStreamLine} realizar o processamento e devolver a saída em um \textit{vtkPolyData}. Sendo estas as classes que devem ser abstraídas para \textit{GPU}.
   
-\section{Comparação de perfomance do método entre as implementações em CPU e GPU}
+\section{Comparação de perfomance entre CPU e GPU}
 Foram feitas comparações entre as implementações do método para \textit{CPU} utilizando \textit{POSIX threads} com o método para \textit{GPU} em \textit{CUDA}. Estes resultados foram obtidos em duas \textit{CPUs} Intel e \textit{GPUs} NVIDIA diferentes a fim de comprovar o que foi afirmado anteriormente sobre os desempenhos do método em cada um destes ambientes.
 
 A elaboração detes testes contou com os conselhos do mestrando Paulo Carlos Santos no IME-USP e consulta ao conteúdo de sua qualificação: \textit{Ferramentas para Extração de Informações de Desempenho em GPUs NVIDIA}.
@@ -490,7 +490,7 @@ A elaboração detes testes contou com os conselhos do mestrando Paulo Carlos Sa
   \end{tabular}
   
     \subsubsection{Conclusão}
-    Utilizando a memória presa não houve ganho de performance nos tempos (inclusive houve ligeira perda de performance), porém ainda é um recurso bastante interessante. Isto pois o uso deste recurso faz que ao invés de ser utilizada a memória da placa gráfica seja utilizada a memória principal da máquina. Visto que a memória da placa gráfica costuma ter menos espaço disponível que a memória principal, isto permite o processamento de problemas com concjuntos de dados ainda maiores.
+    Utilizando a memória presa não houve ganho de performance nos tempos (inclusive houve ligeira perda de performance), porém ainda é um recurso bastante interessante. Isto pois o uso deste recurso faz que ao invés de ser utilizada a memória da placa gráfica seja utilizada a memória principal da máquina. Visto que a memória da placa gráfica costuma ter menos espaço disponível que a memória principal, isto permite o processamento de problemas com conjuntos de dados ainda maiores.
   
   
   \subsection{Avaliação da melhor combinação}
