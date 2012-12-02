@@ -1,5 +1,19 @@
-\chapter{MAC0431 - Introdução à Programação Paralela e Distribuída}
+\chapter{MAC0431 - Intro. à Prog. Paralela e Distribuída}
 \section{Introdução}
+  Em um dos exercícios programas da disciplina de Introdução à Programação Paralela e Distribuída seu tema foi livre. Os únicos requesitos eram implementar um algoritmo paralelo utilizan o \textit{Apache Hadoop} (\ref{hadoop}). O que foi uma feliz coincidência para testarmos o método desenvolvido em um ambiente distribuído.
+
 \section{Conceitos e tecnologias estudadas}
+  \subsection{Apache Hadoop}
+  \textit{Hadoop} é um arcabouço bastante difundido que permite o processamento distribuído de grandes quantidades de dados. Ele se apóia em dois procedimentos muito comuns em programação funcional: as funções \textit{map} e \textit{reduce}.
+  
+  A função \textit{map} é aplicada sobre cada elemento de um vetor dado representando o processamento distribuído. Este novo vetor é passado à função \textit{reduce} que agregará os dados deste vetor para produzir o resultado final.
+
 \section{Resultados}
+  O código produzido com a implementação do método pode ser encontrado em \href{git@github.com:rafamanzo/runge-kutta-hadoop}{git@github.com:rafamanzo/runge-kutta-hadoop}.
+  
+  Esta implementação do método o vetor inicial consiste de todos os pontos iniciais para os quais queremos aplicar o método. Então a função \textit{map} é programada para aplicar o método de Runge-Kutta de ordem 4. Como este já é o resultado desejado, a função \textit{reduce} foi programada para apenas escrever os resultados do map em disco sem agregar nada.
+
 \section{Referências}
+  \begin{itemize}
+  \item \label{hadoop} \href{http://hadoop.apache.org/}{Hadoop - http://hadoop.apache.org/}
+\end{itemize}
