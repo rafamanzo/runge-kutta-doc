@@ -1,0 +1,117 @@
+\documentclass[a4paper,11pt]{report}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[brazil]{babel}
+\usepackage{hyperref}
+
+\title{Software livre para visualização de imagens médicas em tempo real}
+\author{Giancarlo Rigo\\
+        Rafael Reggiani Manzo}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+\begin{abstract}
+Este trabalho se baseia na monografia elaborada para o Instituto de Matemática e Estatística como trabalho de conclusão de curso no ano de 2012 (\ref{monografia}).
+
+Neste trabalho foi abordada uma das técnicas para exploração de imagens médicas conhecida como tractografia, que consiste da reconstrução de fibras musculares ou do tecido branco cerebral a partir de imagens de ressonância magnética por difusão de tensores.
+
+Seus objetivos foram a implementação da técnica de forma usual, em \textit{CPU}, e de forma paralela, em \textit{GPU}, sendo possível na segunda obter a resposta em tempo real.
+
+Como este tipo de funcionalidade em tempo real está disponível em muitos poucos softwares que são pagos, neste trabalho abordaremos como os resultados desta monografia podem ser integrados a softwares livres (gratuitos) e qual seria seu impacto.
+\end{abstract}
+
+\chapter{Introdução}
+A disciplina de Tecnologia e Desenvolvimento Social II (PME2603) é oferecida pelo departamento de engenharia mecânica da Escola Politécnica como uma disciplina optativa livre para toda a USP. Os docentes responsáveis por ela, Antonio Luis de Campos Mariani e Douglas Lauria fazem parte do projeto PoliCidadã (\ref{policidada}).
+
+Seu objetivo é desenvolver projetos de tecnologia com cunho social. Ou seja, através da aplicação de tecnologia, antender demandas de membros da sociedade que não são o foco das empresas que desenvolvem tecnologia, por não darem lucro a estas.
+
+Neste contexto, os docentes nos chamaram a atenção para o viés social que esta monografia tem ao viabilizar que softwares livres para exploração de imagens médicas agreguem a funcionalidade de tractografia em tempo real disponível apenas em softwares proprietários e com custo elevado.
+
+\chapter{Objetivos}
+Assim, com esta possibilidade em vista foram levantados dados sobre os custos dos softwares que realizam a exploração de imagens médicas e qual seria o impacto para a sociedade da disponibilização gratuita desta tecnologia.
+
+Além disto, para permitir uma maior compreensão do projeto, foram abordados temas específicos de computação que durante a monografia são assumidos de conhecimento do leitor mas que, neste novo contexto, não são populares mas são fundamentais para a compreensão da monografia.
+
+\chapter{Conceitos}
+  \section{Custos de software}
+  Os softwares para exploração de imagens médicas, além da tractografia, oferecem diversos outros recursos para exploração de imagens. Desta forma, os custos aqui expostos dizem respeito à todo o software e não só apenas à funcionalidade.
+  
+  No Brasil poucas empresas trabalham neste ramo devido à escassez de pessoas capacitadas e também à popularização da ressonância magnética que começa a acontecer apenas agora.
+  
+  Uma destas empresas é a Artis (\ref{artis}), com sedes em São Paulo e Brasília, com a qual conseguimos entrar em contato e levantar um custo total de software mais hardware de R\$ 300.000 para a solução deles nacional e outra, de seu concorrente mais forte importada do Canada, com custo aproximado de R\$ 1.000.000.
+  
+  O hardware consiste de um computador, um conjunto de câmeras e guias cirúrgicas. Estimando seus preços, o computador fica em torno de R\$ 2000, o conjunto de câmeras mais R\$ 2.000, e as guias cirúrgicas por volta de R\$ 50.000, totalizando R\$ 54.000. Isto leva a um custo estimado de R\$ 246.000 para o software da solução nacional.
+  
+  Uma vez que ninguém no ramo revela seus preços e como eles são compostos, obviamente, isto é apenas uma estimativa, feita com base em conversas informais, mas é suficiente para o propósito de dimensionar o valor do software nestes produtos, que compõe cerca de 80\% do custo.
+  
+  Valor que para países como o Brasil são extremamente elevados, principalmente para o sistema público de saúde. Desta forma um software livre para explorar estas imagens é fundamental para tornar este tipo de recurso médico acessível à toda a população.
+  
+  \section{Paralelismo}
+    Na parte objetiva da monografia o termo paralelismo foi empregado diversas vezes para descrever uma propriedade do algoritmo responsável pela tractografia que permite seu processamento em tempo real.
+    
+    Este é um conceito de computação que descreve quando um algoritmo possui trechos que podem ser executados simultaneamente. Ou seja, dois ou mais trechos do algoritmo são executados ao mesmo tempo em processadores diferentes.
+    
+    Hoje, onde processadores possuem ao menos dois núcleos e alguns chegam até a dezesseis, a execução em paralelo dos algoritmos é de suma importância para se tirar proveito de todo o potencial do hardware.
+  
+    \subsection{Teoria}
+    Paralelismo se baseia fortemente na idéia de divisão e conquista. Ou seja, um problema grande que pode ser subdividido em problemas menores e a combinação do resultado detes subproblemas pequenos gera o resultado do primeiro problema maior. Em paralelismo, cada um destes subproblemas é resolvido simultânemente.
+    
+    Porém, escrever algoritmos paralelos é mais complexo que escrever algoritmos sequenciais. Isso acontece pois ao desenvolver estes algoritmos, quando os subproblemas possuem alguma dependência (um subproblema depende de um resultado intermediário de outro por exemplo) entre si é preciso pensar em como sincronizar as diversas instâncias sendo executadas simultâneamente a fim de garantir uma resposta correta.
+    
+    Este tipo de problema, conhecido como exclusão mútua, pode ser compreendido como dois individúos que desejam utilizar um recurso ao mesmo tempo. Porém se mais de um indivíduo utilizar este recurso ao mesmo tempo, este se desintegra. Então, uma solução seria o primeiro indivíduo a chegar deixar um aviso de que está utilizando o recurso e quando terminar o retira. Os demais ao chegarem esperam o aviso ser retirado e um a um podem utilizar o recurso garantindo sua integrigade.
+    
+    Contudo, quando um indivíduo esquece de remover seu aviso, todos os demais esperarão indefinidamente e nunca poderão utlizar o recurso, causando um outro problema que deve ser levado em conta conhecido por \textit{deadlock}.
+    
+    \subsection{Exemplo}
+    
+    Uma forma simples de ilustrar o poder do paralelismo é pensando na soma de números. Tomemos oito números dois e calculemos sua soma sequencialmente:
+    \begin{enumerate}
+      \item 2 + 2 = 4;
+      \item 4 + 2 = 6;
+      \item 6 + 2 = 8;
+      \item 8 + 2 = 10;
+      \item 10 + 2 = 12;
+      \item 12 + 2 = 14;
+      \item 14 + 2 = 16.
+    \end{enumerate}
+    
+    Considerando que cada soma consome uma unidade de tempo para ser executada, o tempo necessário foi sete. Agora resolvamos o mesmo problema, mas compreendendo que os números podem ser agrupados dois a dois sem alterar o resultado:
+    \begin{enumerate}
+      \item (2+2) + (2+2) + (2+2) + (2+2) = 4 + 4 + 4 + 4
+      \item (4+4) + (4+4) = 8 + 8;
+      \item (8+8) = 16.
+    \end{enumerate}
+    
+    Desta forma, foi obtido o mesmo resultado mas consumindo apenas 3 unidades de tempo.
+  
+  \section{Processamento geral na unidade de processamento gráfico}
+  A unidade de processamento gráfico, mais conhecida por sua sigla em inglês \textit{GPU} (\textit{Graphics Processing Unit}), é um hardware desenvolvimento para o processamento de imagens. Como imagens em geral são grandes matrizes, este é um hardware especializado em trabalhar com operações sobre matrizes.
+  
+  O princípio da computação de propósito geral na unidade de processamento gráfico (\textit{GPGPU - General Puporse computing on Graphics Processing Unit}), ou seja executar algoritmos quaisquer ao invés de apenas os de processamento de imagens, se deu com desenvolvedores realmente convertendo o seus algoritmos em termos de operações com matrizes.
+  
+  Felizmente com a popularização deste tipo de uso da placa gráfica, surgiram arquiteturas melhores para se trabalhar. Hoje as mais difundidas são CUDA e OpenCL. A primeira é exclusiva para placas gráficas NVIDIA sendo de compreensão mais simples, sendo propriedade desta. Enquanto que a segunda é livre e se propõe a funcionar para qualquer hardware, sendo capaz de realizar processamento.
+  
+  \section{Integração a softwares}
+  Conforme mencionado na monografia a biblioteca \textit{VTK} é largamente utilizada por softwares científicos em geral e em especial os de exploração de imagens médicas.
+  
+  Apesar de ter sua certa complexidade,possui seu código aberto para que qualquer um o altere e adicione novas funcionalidades. Desta forma, conforme descrito na subseção 3.2.2 da monografia, é possível criar implementações do método em \textit{GPU} nela, sendo a forma ideal de integrar o método a outros softwares.
+  
+  Outra opção, talvez mais simples, é, com base nas classes do primeiro protótipo descritas na seção 3.1 da monografia, agregar as classes produzidas para este que dizem respeito à aplicação do método.
+
+\chapter{Conclusão}
+Desta forma, o produto da monografia, levando em conta a avaliação de custos de software para exploração de imagens médicas, representa um passo importante para tornar esta tecnologia acessível à toda a população, uma vez que esta tecnologia é pouco comum e sem uma alternativa em software livre.
+
+Igualmente, o detalhamento dos tópicos comuns à computação como paralelismo e \textit{GPGPU} visam tornar estes resultados mais acessíveis a pessoas de outras áreas que possam desejar aproveitar este trabalho.
+
+\chapter{Referências}
+\begin{itemize}
+  \item\label{monografia} \href{http://www.linux.ime.usp.br/~rafamz/runge-kutta-doc/proposta/index.html}{Monografia - http://www.linux.ime.usp.br/~rafamz/runge-kutta-doc/proposta/index.html}
+  \item\label{policidada} \href{http://policidada.poli.usp.br/}{PoliCidadã - http://policidada.poli.usp.br/}
+  \item\label{artis} \href{http://www.artis.com.br/eximius/index\_eximius.php}{Artis - http://www.artis.com.br/eximius/index\_eximius.php}
+\end{itemize}
+
+\end{document}
