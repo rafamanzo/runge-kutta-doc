@@ -1,0 +1,76 @@
+\documentclass[a4paper,11pt]{report}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[brazil]{babel}
+\usepackage{hyperref}
+
+\title{Diário - Software livre para visualização de imagens médicas em tempo real}
+\author{Giancarlo Rigo\\
+        Rafael Reggiani Manzo}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+\chapter{Diário}
+
+Baseado nos posts produzidos durante a elaboração da monografia referida no relatório contidos no blog \href{http://tccimeusp2012.blogspot.com.br/}{http://tccimeusp2012.blogspot.com.br/}.
+
+Sempre que nos refirirmos a professor estamos mencionando o Prof. Dr. Marcel P. Jackowski.
+
+\section{24/03/2012 - Resumo de atividades anteriores}
+Este blog é parte dos requisitos da matéria MAC0499 - Trabalho de Formatura Supervisionado do Bacharelado em Ciência da Computação do Instituto de Matemática e Estatística da Universidade de São Paulo, também conhecido como TCC do BCC-IME-USP.
+
+Nós, Giancarlo Rigo e Rafael Reggiani Manzo, nos propomos a implementar Tractografia em Tempo Real no MedSquare sob orientação do Professor Doutor Marcel P. Jackowski. Faremos uso das liguagens CUDA e OpenCL para implementação em GPGPU.
+
+Abaixo resumo das reuniões com o Professor Marcel:
+01/12/2011 - Conversamos com o professor pela primeira vez, revelando nossa intenção de sermos orientados por ele.
+08/12/2011 - O Professor nos apresentou a proposta de tema para o TCC.
+08/02/2012 - Primeira reunião onde discutimos sobre o tema, implementação e demais assuntos relacionados.
+12/03/2012 - Reunião sobre as primeiras dificuldades com a implementação de EDOs e aproximações.
+19/03/2012 - Reunião com o Professor e o Mestrando Paulo Carlos Ferreira dos Santos.
+
+\section{10/04/2012 - Primeiros resultados}
+No dia 10/04/2012 nos encontramos com o Professor Marcel e mostramos o algoritmo Runge-Kutta implementado em CUDA funcionando para campos vetoriais sintéticos. Então, ficou decidido que o próximo passo a tomar eram ter uma versão em OpenCL também e uma interface em glut e opengl.
+
+\section{21/05/2012 - Prosseguimento e ajustes}
+No dia 21/05 tivemos mais uma reunião com o professor Marcel na qual além mostramos os avanços no software, fizemos uma breve apresentação sobre o que foi feito e discutimos alguns pontos da proposta que deve ser entregue.
+
+Além disto, ficou decido que precisamos realizar os testes do algoritmos em campos sintéticos mais complexos, modificar a ordem dos tópicos na nossa apresentação e já começarmos a escrever os capítulos da monografia conforme avançarmos no desenvolvimento.
+
+\section{12/07/2012 - Protótipo corrigido}
+No dia 12/07/2012 nos reunimos com o professor para mostrar o estado atual do que foi desenvolvido. Neste dia demonstramos a interface com Glut e OpenGL corrigida, juntamente com o resultado para dois novos campos vetoriais sintéticos.
+
+Além disto, ficou decidida uma reunião para o dia 30/08/2012 na qual mostraremos um levantamento de softwares parecidos, parte da monografia e apresentação prontos e o resultado para um campo sintético fornecido pelo professor.
+
+\section{30/08/2012 - Documentação}
+No dia 30/08 nos reunimos com professor para conversar sobre como tratar os dados no dataset que nos foi enviado, discutir a apresentação e primeiro e segundo capítulos da monografia.
+
+A partir disto foram definidas mudanças a serem feitas tanto na apresentação quanto no primeiro capítulo da monografia. Bem como, será feito um exemplo no VTK de uso do Runge-Kutta com a própria biblioteca que vem com este.
+
+\section{31/08/2012 - Protótipo VTK}
+Após pesquisarmos sobre quais classes na biblioteca VTK seriam úteis ao desenvolvimento do protótipo, nos reunimos com o professor Marcel para esclarecermos dúvidas que restaram.
+
+Então ficou concluído que de fato precisamos utlizar uma instância de vtkGenericStreamTracer para aplicar o método. Esta deve receber os pontos iniciais em um vtkPointSet e o campo em um vtkImageData (na verdade um vtkAssignAttribute).
+
+Também notamos que para implementar GPU será preciso criar uma nova classe análoga à vtkGenericStreamTracer, mas com métodos voltados para GPU.
+
+Por fim, também notamos que para a consistência do trabalho será imporante desenvolvermos alguns testes de performance.
+
+\section{30/10/2012 - Testes de performance}
+No dia 23/10/2012 no encontramos novamente com o professor Marcel para apresentarmos os resultados dos testes comparativos entre GPU e CPU, que foram bastante animadores com a GPU sendo amplamente mais rápida.
+
+Para complementar este trabalho concordamos e realizar novos testes com novos argumentos de compilação, testando o uso de precisão simples nos cálculos e mémória travada.
+
+\section{02/12/2012 - Conclusão}
+No dia 12/11/2012 apresentamos nosso Trabalho de Conclusão de Curso ao Professor Carlinhos, ao Professor Marcel e aos demais colegas que estavam no auditório.
+
+Concluímos a Monografia, que será entregue amanhã (03/12/2012).
+
+Com isto finalizamos o trabalho proposto no início do ano.
+
+Para verificar os resultados obtidos, a monografia, o código fonte e outras informações:
+\href{www.linux.ime.usp.br/~gian/mac499}{www.linux.ime.usp.br/~gian/mac499}
+\end{document}
